@@ -1,0 +1,29 @@
+# if you are on a mac.
+**/.DS_Store
+
+**/*.pyc
+
+libs/*
+do-like-javac
+tools
+
+dynamic_analysis/dljc/bin/__randoop_files/
+
+type_inference/annotation-tools/
+type_inference/checker-framework-inference/
+type_inference/checker-framework/
+type_inference/dataflowexample
+type_inference/generic-type-inference-solver/
+type_inference/jsr308-langtools/
+type_inference/do-like-javac/
+corpus/annotated/
+corpus/**/logs/
+**/*.jaif
+**/__java_file_names.txt
+
+# Pycharm
+.idea/*
+
+TODO_*.*
+**/*.inv.gz
+invClass/
