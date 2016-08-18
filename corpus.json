@@ -1,44 +1,49 @@
 {
-    "projects": [
+    "projects": {
+        "boofcv":
         {
             "name" : "boofcv",
             "git-url": "https://github.com/lessthanoptimal/BoofCV.git",
             "git-ref": "16fff968dbbe07af4a9cb14395a89cde18ffb72e",
-            "build": ["gradle jar"],
-            "clean": ["gradle clean"]
+            "build": "gradle jar",
+            "clean": "gradle clean"
         },
 
+        "catalano":
         {
             "name" : "catalano",
             "git-url": "https://github.com/apache/cassandra",
             "git-ref": "19c2d22e93c52bc4699a0b5a0fdcdeedd3826449",
             "build-dir": "Catalano.Image",
-            "build": ["ant jar"],
-            "clean": ["ant clean"]
+            "build": "ant jar",
+            "clean": "ant clean"
         },
 
+        "imgscalr":
         {
             "name" : "imgscalr",
-            "git-url": "https://github.com/bcgit/bc-java",
-            "git-ref": "a8e61f4ec613b7bf4cb77bd1dacd3ab54d982cbe",
-            "build": ["ant jar"],
-            "clean": ["ant clean"]
+            "git-url": "https://github.com/thebuzzmedia/imgscalr.git",
+            "git-ref": "e1e1da77c12570f5c21d2f6ef42f0ce80c3fa092",
+            "build": "ant jar",
+            "clean": "ant clean"
         },
 
+        "dyn4j":
         {
             "name" : "dyn4j",
             "git-url": "https://github.com/aas-integration/dyn4j.git",
             "git-ref": "88073bd45b83ecdc61fc40b73baf4df1fa50411f",
-            "build": ["ant build"],
-            "clean": ["ant clean"]
+            "build": "ant build",
+            "clean": "ant clean"
         },
 
+        "jreactphysics3d":
         {
             "name": "jreactphysics3d",
             "git-url": "https://github.com/kovertopz/jReactPhysics3D.git",
             "git-ref": "8da0120f5fa2254a7e98a14f3446d97096bb0fd7",
-            "build": ["mvn package -Dmaven.test.skip=true"],
-            "clean": ["mvn clean"]
+            "build": "mvn package -Dmaven.test.skip=true",
+            "clean": "mvn clean"
         }
-    ]
+    }
 }

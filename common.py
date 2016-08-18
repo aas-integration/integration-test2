@@ -1,9 +1,10 @@
-import os, subprocess, traceback, sys
+import os, subprocess, traceback, sys, json
 from contextlib import contextmanager
 
 WORKING_DIR = os.path.dirname(os.path.realpath(__file__))
 LIBS_DIR = os.path.join(WORKING_DIR, "libs")
 CORPUS_DIR = os.path.join(WORKING_DIR, "corpus")
+CORPUS_INFO = None
 TOOLS_DIR = os.path.join(WORKING_DIR, "tools")
 
 DLJC_BINARY = os.path.join(TOOLS_DIR, "do-like-javac", "dljc")
@@ -103,8 +104,21 @@ def get_method_summary_from_dot_path(dot_path):
   sig_arr = new_method_sig.split(' ')
   return source_path+"::"+sig_arr[2]+"::"+sig_arr[1]
 
+def get_corpus_info():
+  global CORPUS_INFO
+  if not CORPUS_INFO:
+    with open(os.path.join(WORKING_DIR, 'corpus.json')) as f:
+      CORPUS_INFO = json.loads(f.read())
+
+  return CORPUS_INFO
+
 def get_project_dir(project_name):
-  return os.path.join(CORPUS_DIR, project_name)
+  project = project_info(project_name)
+
+  if 'build-dir' in project:
+    return os.path.join(CORPUS_DIR, project['name'], project['build-dir'])
+  else:
+    return os.path.join(CORPUS_DIR, project['name'])
 
 def get_kernel_path(project_name):
   return os.path.join(get_project_dir(project_name), DLJC_OUTPUT_DIR, '_target_classes', 'kernel.txt')
@@ -113,7 +127,10 @@ def get_method_path(project_name):
   return os.path.join(get_project_dir(project_name), DLJC_OUTPUT_DIR, '_target_classes', 'methods.txt')
 
 def get_project_list():
-  return [project for project in  os.listdir(CORPUS_DIR) if os.path.isdir(get_project_dir(project))]
+  return get_corpus_info()['projects'].keys()
+
+def project_info(project_name):
+  return get_corpus_info()['projects'][project_name]
 
 def get_simprog(py_file):
   return os.path.join(SIMPROG_DIR, py_file)
@@ -121,22 +138,20 @@ def get_simprog(py_file):
 def clean_project(project):
   project_dir = get_project_dir(project)
   with cd(project_dir):
-    with open(os.path.join(project_dir, 'clean_command.txt'), 'r') as f:
-      clean_command = f.readline().strip().split()
-      run_cmd(clean_command)
+    clean_command = project_info(project)['clean'].strip().split()
+    run_cmd(clean_command)
 
 def run_dljc(project, tools, options=[]):
   project_dir = get_project_dir(project)
   with cd(project_dir):
-    with open(os.path.join(project_dir, 'build_command.txt'), 'r') as f:
-      build_command = f.readline().strip().split()
-      dljc_command = [DLJC_BINARY,
-                      '-o', DLJC_OUTPUT_DIR,
-                      '-t', ','.join(tools)]
-      dljc_command.extend(options)
-      dljc_command.append('--')
-      dljc_command.extend(build_command)
-      run_cmd(dljc_command, print_output=True)
+    build_command = project_info(project)['build'].strip().split()
+    dljc_command = [DLJC_BINARY,
+                    '-o', DLJC_OUTPUT_DIR,
+                    '-t', ','.join(tools)]
+    dljc_command.extend(options)
+    dljc_command.append('--')
+    dljc_command.extend(build_command)
+    run_cmd(dljc_command, print_output=True)
 
 
 CHECKER_ENV_SETUP = False

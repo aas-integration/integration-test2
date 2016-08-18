@@ -1,6 +1,5 @@
-import json
 import os
-from common import run_cmd, cd, CORPUS_DIR
+from common import run_cmd, cd, CORPUS_DIR, get_corpus_info
 
 def git_update(project):
   if project['git-ref'] not in run_cmd(['git', 'rev-parse', 'HEAD']):
@@ -38,23 +37,19 @@ def download_project(project):
     print "Already downloaded %s." % (project['name'])
 
 def update_project(project):
-  if 'git-url' in project:
-    git_update(project)
-  elif 'hg-url' in project:
-    hg_update(project)
-  elif 'svn-url' in project:
-    svn_update(project)
+  with cd(project['name']):
+    if 'git-url' in project:
+      git_update(project)
+    elif 'hg-url' in project:
+      hg_update(project)
+    elif 'svn-url' in project:
+      svn_update(project)
 
 def main():
-  j = None
-  with open('corpus.json') as f:
-    j = json.loads(f.read())
-
   with cd(CORPUS_DIR):
-    for project in j['projects']:
+    for project in get_corpus_info()['projects'].values():
       download_project(project)
-      with cd(project['name']):
-        update_project(project)
+      update_project(project)
 
 if __name__ == "__main__":
   main()
