@@ -11,10 +11,6 @@ def run_petablox(project):
     common.run_cmd(petablox_cmd)
 
 def add_project_to_corpus(project):
-  """ Assumes that the project_dir contains a
-  text file named build_command.txt that contains the build command(s) for the
-  project in this directory, and a clean_command.txt that will clean the project.
-  """
   print "STARTED CLEANING PROJECT"
   common.clean_project(project)
   print "FINISHED CLEANING PROJECT"
@@ -83,7 +79,7 @@ def get_dtrace_file_for_project(project):
 
 def main():
   kf = open("corpus_kernel.txt", "w")
-  #for project in ["JReactPhysics3D"]:
+
   for project in common.get_project_list():
     print "Analyzing {}".format(project)
     project_kernel_file = add_project_to_corpus(project)
