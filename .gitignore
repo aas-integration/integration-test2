@@ -3,6 +3,7 @@
 
 **/*.pyc
 
+corpus
 libs/*
 do-like-javac
 tools

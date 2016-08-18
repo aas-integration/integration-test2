@@ -17,12 +17,12 @@ def run_cmd(cmd, print_output=False):
     print ("Running %s" % ' '.join(cmd))
   try:
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    if print_output:
-      for line in iter(process.stdout.readline, b''):
-        output = output + line
+    for line in iter(process.stdout.readline, b''):
+      output = output + line
+      if print_output:
         sys.stdout.write(line)
         sys.stdout.flush()
-      process.stdout.close()
+    process.stdout.close()
     process.wait()
   except:
     print ('calling {cmd} failed\n{trace}'.format(cmd=' '.join(cmd),trace=traceback.format_exc()))
@@ -36,6 +36,10 @@ def cd(newdir):
     yield
   finally:
     os.chdir(prevdir)
+
+def mkdir(newdir):
+  if not os.path.isdir(newdir):
+    os.makedirs(newdir)
 
 def get_method_from_daikon_out(daikon_out):
   arr1 = daikon_out.split('.')
