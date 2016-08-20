@@ -1,5 +1,6 @@
 import os, sys
 import logging
+import json
 from collections import defaultdict
 
 import pip
@@ -38,6 +39,42 @@ class GraphKernel(object):
 		#print("graph: "+dot_file)
 		#print("number of nodes: "+ str(self.g.number_of_nodes()))
 		#print("number of labels: "+ str(len(self.get_all_labels())))
+
+	def read_cluster_info(self, cluster_json):
+		"""
+		read in a json file containing node clustering information
+		"""
+		mapping = defaultdict(list)
+		with open(cluster_json) as json_data:
+			data = json.load(json_data)
+			for d  in data['mappings']:
+				for c in d['types']:
+					mapping[c] = mapping[c] + d['labels']
+		for key in mapping:
+			mapping[key] = sorted(mapping[key])
+		return mapping
+
+	def relabel_graph(self, label_map):
+		"""
+		Relabel the graph using a label-to-label map.
+		"""
+		for n in self.g.nodes():
+			if 'label' in self.g.node[n]: # some node may not have any label!
+				if self.g.node[n]['label'] in label_map:
+					if len(label_map[self.g.node[n]['label']]) > 0: # may have 0 label
+						self.g.node[n]['label'] = label_map[self.g.node[n]['label']][0] # one-to-many map
+
+	def edge_contract(self, u, v, self_loop=False):
+		"""
+		Contract the edge (u,v) and relabel u using the concatenation of the labels at u and v
+		"""
+		try:
+			ulabel = self.g.node[u]['label']
+			vlabel = self.g.node[v]['label']
+			self.g = nx.contracted_edge(self.g, (u,v), self_loop)
+			self.g.node[u]['label']=ulabel+vlabel
+		except ValueError as err:
+			print(err)
 
 	def get_all_labels(self):
 		s = set()
