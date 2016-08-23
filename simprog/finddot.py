@@ -19,7 +19,7 @@ def main():
 	print(user_prog_graph_dot_file)
 	for r in result_program_list:
 		print(r)
-	print("Time taken to find the similar dots:"+ str(end-start) + "seconds")
+	print("Time taken to find the similar dots: "+ str(end-start) + " seconds")
 
 if __name__  == '__main__':
 	main()

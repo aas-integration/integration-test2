@@ -10,6 +10,10 @@ TOOLS_DIR = os.path.join(WORKING_DIR, "tools")
 DLJC_BINARY = os.path.join(TOOLS_DIR, "do-like-javac", "dljc")
 DLJC_OUTPUT_DIR = "dljc-out"
 
+DOT_DIR = {}
+DOT_DIR["jreactphysics3d"] = ["_target_classes"]
+DOT_DIR["dyn4j"] = ["_bin", "_output_examples", "_output_junit", "_output_sandbox"]
+
 SIMPROG_DIR = os.path.join(WORKING_DIR, "simprog")
 
 def run_cmd(cmd, print_output=False):
@@ -59,8 +63,8 @@ def find_dot_name(method_name, method_file):
         return dot_name
   return None
 
-def get_dot_path(project_name, dot_name):
-  return os.path.join(get_project_dir(project_name), DLJC_OUTPUT_DIR, '_target_classes', dot_name)
+def get_dot_path(project_name, output_dir, dot_name):
+  return os.path.join(get_project_dir(project_name), DLJC_OUTPUT_DIR, output_dir, dot_name)
 
 def get_jar(jar_name):
   path = os.path.join(LIBS_DIR, jar_name)
@@ -120,11 +124,11 @@ def get_project_dir(project_name):
   else:
     return os.path.join(CORPUS_DIR, project['name'])
 
-def get_kernel_path(project_name):
-  return os.path.join(get_project_dir(project_name), DLJC_OUTPUT_DIR, '_target_classes', 'kernel.txt')
+def get_kernel_path(project_name, output_dir):
+  return os.path.join(get_project_dir(project_name), DLJC_OUTPUT_DIR, output_dir, 'kernel.txt')
 
-def get_method_path(project_name):
-  return os.path.join(get_project_dir(project_name), DLJC_OUTPUT_DIR, '_target_classes', 'methods.txt')
+def get_method_path(project_name, output_dir):
+  return os.path.join(get_project_dir(project_name), DLJC_OUTPUT_DIR, output_dir, 'methods.txt')
 
 def get_project_list():
   return get_corpus_info()['projects'].keys()
