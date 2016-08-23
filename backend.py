@@ -1,5 +1,6 @@
 import os, sys
 import common
+import fetch_corpus
 
 def run_petablox(project):
   with common.cd(common.get_project_dir(project)):
@@ -78,16 +79,23 @@ def get_dtrace_file_for_project(project):
     return None
 
 def main():
-  kf = open("corpus_kernel.txt", "w")
+  fetch_corpus.fetch_corpus()
 
-  for project in common.get_project_list():
-    print "Analyzing {}".format(project)
-    project_kernel_file = add_project_to_corpus(project)
-    with open(project_kernel_file, "r") as fi: kf.write(fi.read())
-    dtrace = get_dtrace_file_for_project(project)
-    if dtrace:
-      print "Generated {}".format(dtrace)
-  kf.close()
+  with open("corpus_kernel.txt", "w") as kf:
+    for project in common.get_project_list():
+      try:
+        print "Analyzing {}".format(project)
+
+        project_kernel_file = add_project_to_corpus(project)
+        with open(project_kernel_file, "r") as fi:
+          kf.write(fi.read())
+
+        dtrace = get_dtrace_file_for_project(project)
+        if dtrace:
+          print "Generated {}".format(dtrace)
+      except Exception as e:
+        print "Error analyzing {}: {}".format(project, e)
 
 if __name__ == '__main__':
   main()
+  os._exit(0)

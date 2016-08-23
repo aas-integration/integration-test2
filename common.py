@@ -1,4 +1,5 @@
 import os, subprocess, traceback, sys, json
+from threading import Timer
 from contextlib import contextmanager
 
 WORKING_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -12,22 +13,38 @@ DLJC_OUTPUT_DIR = "dljc-out"
 
 SIMPROG_DIR = os.path.join(WORKING_DIR, "simprog")
 
-def run_cmd(cmd, print_output=False):
-  output = ""
+def run_cmd(cmd, print_output=False, timeout=None):
+  def kill_proc(proc, stats):
+    stats['timed_out'] = True
+    proc.kill()
+
+  stats = {'timed_out': False,
+           'output': ''}
+  timer = None
+
   if print_output:
     print ("Running %s" % ' '.join(cmd))
   try:
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    if timeout:
+      timer = Timer(timeout, kill_proc, [process, stats])
+      timer.start()
+
     for line in iter(process.stdout.readline, b''):
-      output = output + line
+      stats['output'] = stats['output'] + line
       if print_output:
         sys.stdout.write(line)
         sys.stdout.flush()
     process.stdout.close()
     process.wait()
+    stats['return_code'] = process.returncode
+    if timer:
+      timer.cancel()
+
   except:
     print ('calling {cmd} failed\n{trace}'.format(cmd=' '.join(cmd),trace=traceback.format_exc()))
-  return output
+  return stats
 
 @contextmanager
 def cd(newdir):
@@ -151,7 +168,7 @@ def run_dljc(project, tools, options=[]):
     dljc_command.extend(options)
     dljc_command.append('--')
     dljc_command.extend(build_command)
-    run_cmd(dljc_command, print_output=True)
+    run_cmd(dljc_command, print_output=True, timeout=1800.0)
 
 
 CHECKER_ENV_SETUP = False

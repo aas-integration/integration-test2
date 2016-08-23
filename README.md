@@ -10,13 +10,9 @@ How to run:
 
 This downloads all the jars, compiles stuff, etc. Only needs to be run once.
 
-    python fetch_corpus.py
-
-This fetches all of the projects in the corpus, specified in corpus.json.
-
     python backend.py
 
-Compiles the corpus projects, generates tests and dtrace files, computes dot files, runs petablox.
+Downloads the corpus, compiles the corpus projects, generates tests and dtrace files, computes dot files, runs petablox.
 
     python frontend.py
 
