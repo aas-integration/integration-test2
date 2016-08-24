@@ -22,10 +22,12 @@ def add_project_to_corpus(project):
   Run daikon.Chicory on tests to create dtrace file
   Precompute graph kernels that are independent of ontology stuff
   """
+  #, 'dyntrace'
   common.run_dljc(project,
-                  ['dyntrace', 'graphtool'],
+                  ['graphtool'],
                   ['--graph-jar', common.get_jar('prog2dfg.jar'),
-                   '--dyntrace-libs', common.LIBS_DIR])
+                   '--dyntrace-libs', common.LIBS_DIR],
+                   timelimit=30.0)
 
   """ run petablox """
   #run_petablox(project_dir)

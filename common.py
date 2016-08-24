@@ -158,7 +158,7 @@ def clean_project(project):
     clean_command = project_info(project)['clean'].strip().split()
     run_cmd(clean_command)
 
-def run_dljc(project, tools, options=[]):
+def run_dljc(project, tools, options=[], timelimit=1800.0):
   project_dir = get_project_dir(project)
   with cd(project_dir):
     build_command = project_info(project)['build'].strip().split()
@@ -168,7 +168,7 @@ def run_dljc(project, tools, options=[]):
     dljc_command.extend(options)
     dljc_command.append('--')
     dljc_command.extend(build_command)
-    run_cmd(dljc_command, print_output=True, timeout=1800.0)
+    run_cmd(dljc_command, print_output=True, timeout=timelimit)
 
 
 CHECKER_ENV_SETUP = False
