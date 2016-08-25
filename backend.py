@@ -27,7 +27,7 @@ def add_project_to_corpus(project):
                   ['graphtool'],
                   ['--graph-jar', common.get_jar('prog2dfg.jar'),
                    '--dyntrace-libs', common.LIBS_DIR],
-                   timelimit=30.0)
+                   timelimit=300.0)
 
   """ run petablox """
   #run_petablox(project_dir)
@@ -92,9 +92,9 @@ def main():
         with open(project_kernel_file, "r") as fi:
           kf.write(fi.read())
 
-        dtrace = get_dtrace_file_for_project(project)
-        if dtrace:
-          print "Generated {}".format(dtrace)
+#        dtrace = get_dtrace_file_for_project(project)
+#        if dtrace:
+#          print "Generated {}".format(dtrace)
       except Exception as e:
         print "Error analyzing {}: {}".format(project, e)
 
