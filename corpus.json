@@ -12,8 +12,8 @@
         "catalano":
         {
             "name" : "catalano",
-            "git-url": "https://github.com/apache/cassandra",
-            "git-ref": "19c2d22e93c52bc4699a0b5a0fdcdeedd3826449",
+            "git-url": "https://github.com/DiegoCatalano/Catalano-Framework.git",
+            "git-ref": "dbc87ab52fbdd14a1d2262035b334f9c089b971e",
             "build-dir": "Catalano.Image",
             "build": "ant jar",
             "clean": "ant clean"
