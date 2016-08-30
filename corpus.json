@@ -45,5 +45,26 @@
             "build": "mvn package -Dmaven.test.skip=true",
             "clean": "mvn clean"
         }
+
+
+        "react":
+        {
+            "name": "react",
+            "git-url": "https://github.com/flow/react.git",
+            "git-ref": "e8f7ee5ec666d2d1783c8a16b9cbd49bc11f037c",
+            "build": "gradle compileJava",
+            "clean": "gradle clean"
+        }
+
+
+        "jmonkeyengine":
+        {
+            "name": "jmonkeyengine",
+            "git-url": "https://github.com/jMonkeyEngine/jmonkeyengine.git",
+            "git-ref": "977610bbd7d9f000e4f79804465eec6a743b3789",
+            "build": "gradle compileJava",
+            "clean": "gradle clean"
+        }
+
     }
 }
