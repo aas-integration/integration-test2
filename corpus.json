@@ -44,7 +44,7 @@
             "git-ref": "8da0120f5fa2254a7e98a14f3446d97096bb0fd7",
             "build": "mvn package -Dmaven.test.skip=true",
             "clean": "mvn clean"
-        }
+        },
 
 
         "react":
@@ -54,7 +54,7 @@
             "git-ref": "e8f7ee5ec666d2d1783c8a16b9cbd49bc11f037c",
             "build": "gradle compileJava",
             "clean": "gradle clean"
-        }
+        },
 
 
         "jmonkeyengine":
@@ -64,6 +64,15 @@
             "git-ref": "977610bbd7d9f000e4f79804465eec6a743b3789",
             "build": "gradle compileJava",
             "clean": "gradle clean"
+        },
+
+        "jbox2d":
+        {
+            "name": "jbox2d",
+            "git-url": "https://github.com/jbox2d/jbox2d.git",
+            "git-ref": "3746b69de71d3d23818cd4367b884c020c194981",
+            "build": "mvn compile -pl !jbox2d-testbed-jogl,!jbox2d-testbed-javafx",
+            "clean": "mvn clean"
         }
 
     }
