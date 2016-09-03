@@ -13,9 +13,9 @@ def main():
 	repo_kernel_file = sys.argv[1]
 	user_prog_graph_dot_file = sys.argv[2]
 	top_k = int(sys.argv[3])
-        cluster_json = None
-        if len(sys.argv)==5:
-                cluster_json = sys.argv[4]
+    cluster_json = None
+    if len(sys.argv)==5:
+    	cluster_json = sys.argv[4]
 	start = time.time()
 	result_program_list = find_top_k_similar_program(repo_kernel_file, user_prog_graph_dot_file, user_prog_graph_dot_file, top_k, 3, cluster_json)
 	end = time.time()
