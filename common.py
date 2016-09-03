@@ -1,4 +1,5 @@
-import os, subprocess, traceback, sys, json
+import os, traceback, sys, json
+import subprocess32 as subprocess
 from contextlib import contextmanager
 
 WORKING_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -12,7 +13,11 @@ DLJC_OUTPUT_DIR = "dljc-out"
 
 DOT_DIR = {}
 DOT_DIR["jreactphysics3d"] = ["_target_classes"]
-DOT_DIR["dyn4j"] = ["_bin", "_output_examples", "_output_junit", "_output_sandbox"]
+#DOT_DIR["dyn4j"] = ["_bin", "_output_examples", "_output_junit", "_output_sandbox"]
+DOT_DIR["dyn4j"] = ["_bin"]
+DOT_DIR["react"] = ["_build_classes_main"]
+DOT_DIR["jmonkeyengine"] = ["_jme3-core_build_classes_main"]
+DOT_DIR["jbox2d"] = ["_jbox2d-testbed_target_classes"]
 
 SIMPROG_DIR = os.path.join(WORKING_DIR, "simprog")
 
