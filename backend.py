@@ -45,10 +45,10 @@ def main():
     cluster_json = sys.argv[1]
 
   kf = open("corpus_kernel.txt", "w")
-  for project in ["dyn4j", "jreactphysics3d"]:
+  for project in ["dyn4j", "jreactphysics3d", "catalano"]:
   #for project in common.get_project_list():
     print "Analyzing {}:".format(project)
-    add_project_to_corpus(project, kf)
+    add_project_to_corpus(project, kf, cluster_json)
   kf.close()
 
 if __name__ == '__main__':

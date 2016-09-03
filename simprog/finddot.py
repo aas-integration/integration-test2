@@ -17,9 +17,9 @@ def main():
 	if len(sys.argv)==5:
 		cluster_json = sys.argv[4]
 	start = time.time()
-	result_program_list = find_top_k_similar_program(repo_kernel_file, user_prog_graph_dot_file, 'g', top_k, 3, cluster_json)
+	result_program_list = find_top_k_similar_program(repo_kernel_file, user_prog_graph_dot_file, user_prog_graph_dot_file, top_k, 3, cluster_json)
 	end = time.time()
-	print(user_prog_graph_dot_file)
+	print
 	for r in result_program_list:
 		print(r)
 	print("Time taken to find the similar dots: "+ str(end-start) + " seconds")
