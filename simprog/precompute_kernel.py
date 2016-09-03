@@ -10,12 +10,12 @@ fo = open(kernel_file, 'w')
 for r, ds, fs in os.walk(repo_dir):
 	for f in fnmatch.filter(fs, '*.dot'):
 		# build graph kerenel
-		print f
-		gk = GraphKernel('g')
+		# print f
+		gk = GraphKernel(f)
 		gk.read_dot_graph(os.path.join(r, f))
 		if len(sys.argv) == 4:			
 			label_map = gk.read_cluster_info(sys.argv[3])
-			gk.relabel_graph(label_map)
+			gk.relabel_graph(label_map)                        
 		gk.init_wl_kernel()
 		wls = gk.compute_wl_kernel(num_iter)
 		wl_str = "###".join([";;;".join([",,,".join([str(x), str(y)]) for (x,y) in wl]) for wl in wls])
