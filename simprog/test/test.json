@@ -1,0 +1,13 @@
+{
+  "mappings": [
+    {
+      "types": [
+        "net.smert.jreactphysics3d.mathematics.Vector3",
+	      "org.dyn4j.geometry.Vector2"
+      ],
+      "labels": [
+        "Vector"
+      ]
+    }
+  ]
+}

@@ -11,7 +11,7 @@ for r, ds, fs in os.walk(repo_dir):
 	for f in fnmatch.filter(fs, '*.dot'):
 		# build graph kerenel
 		print f
-		gk = GraphKernel('g')
+		gk = GraphKernel(f)
 		gk.read_dot_graph(os.path.join(r, f))
 		if len(sys.argv) == 4:			
 			label_map = gk.read_cluster_info(sys.argv[3])

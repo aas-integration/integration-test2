@@ -1,0 +1,129 @@
+digraph dot {
+	"net.smert.jreactphysics3d.mathematics.Transform_8435_8749" [label="net.smert.jreactphysics3d.mathematics.Transform"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8419_8736" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"net.smert.jreactphysics3d.body.RigidBody_8552_8756" [label="net.smert.jreactphysics3d.body.RigidBody"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8429_8748" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"boolean_8420_8742" [label="boolean"  shape=oval ];
+
+	"<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 subtract(net.smert.jreactphysics3d.mathematics.Vector3)>_8439_8729" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=octagon ];
+
+	"net.smert.jreactphysics3d.body.RigidBody_8417_8728" [label="net.smert.jreactphysics3d.body.RigidBody"  shape=oval ];
+
+	"<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 add(net.smert.jreactphysics3d.mathematics.Vector3)>_8428_8743" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=octagon ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8432_8734" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Transform_8434_8726" [label="net.smert.jreactphysics3d.mathematics.Transform"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8558_8755" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"<net.smert.jreactphysics3d.mathematics.Transform: net.smert.jreactphysics3d.mathematics.Vector3 getPosition()>_8437_8733" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=octagon ];
+
+	"<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 zero()>_8562_8753" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=octagon ];
+
+	"boolean_8553_8762" [label="boolean"  shape=oval ];
+
+	"<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 add(net.smert.jreactphysics3d.mathematics.Vector3)>_8442_8722" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=octagon ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8563_8759" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8414_8744" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8427_8738" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 zero()>_8556_8765" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=octagon ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8418_8727" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 zero()>_8565_8767" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=octagon ];
+
+	"<net.smert.jreactphysics3d.body.Body: void setIsSleeping(boolean)>_8566_8758" [label="void"  shape=octagon ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8555_8754" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8415_8723" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"boolean_8423_8730" [label="boolean"  shape=oval ];
+
+	"<net.smert.jreactphysics3d.mathematics.Vector3: void <init>(net.smert.jreactphysics3d.mathematics.Vector3)>_8433_8731" [label="void"  shape=octagon ];
+
+	"net.smert.jreactphysics3d.body.RigidBody_8416_8741" [label="net.smert.jreactphysics3d.body.RigidBody"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8438_8740" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8560_8751" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 zero()>_8559_8766" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=octagon ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8436_8745" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"boolean_8422_8737" [label="boolean"  shape=oval ];
+
+	"int_8424_8747" [label="int"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8557_8761" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8430_8725" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 cross(net.smert.jreactphysics3d.mathematics.Vector3)>_8441_8724" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=octagon ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8554_8757" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8426_8739" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"boolean_8421_8746" [label="boolean"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8431_8750" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+	"net.smert.jreactphysics3d.mathematics.Vector3_8440_8732" [label="net.smert.jreactphysics3d.mathematics.Vector3"  shape=oval ];
+
+
+	"boolean_8423_8730" -> "boolean_8422_8737" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8436_8745" -> "<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 subtract(net.smert.jreactphysics3d.mathematics.Vector3)>_8439_8729" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Transform_8434_8726" -> "<net.smert.jreactphysics3d.mathematics.Transform: net.smert.jreactphysics3d.mathematics.Vector3 getPosition()>_8437_8733" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8415_8723" -> "net.smert.jreactphysics3d.mathematics.Vector3_8419_8736" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8430_8725" -> "net.smert.jreactphysics3d.mathematics.Vector3_8429_8748" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8440_8732" -> "<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 add(net.smert.jreactphysics3d.mathematics.Vector3)>_8442_8722" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8432_8734" -> "net.smert.jreactphysics3d.mathematics.Vector3_8431_8750" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8557_8761" -> "<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 zero()>_8559_8766" [label=""];
+	"net.smert.jreactphysics3d.body.RigidBody_8417_8728" -> "net.smert.jreactphysics3d.body.RigidBody_8552_8756" [label=""];
+	"net.smert.jreactphysics3d.body.RigidBody_8417_8728" -> "boolean_8423_8730" [label=""];
+	"boolean_8553_8762" -> "<net.smert.jreactphysics3d.body.Body: void setIsSleeping(boolean)>_8566_8758" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8430_8725" -> "net.smert.jreactphysics3d.mathematics.Vector3_8563_8759" [label=""];
+	"net.smert.jreactphysics3d.body.RigidBody_8417_8728" -> "net.smert.jreactphysics3d.mathematics.Vector3_8427_8738" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8560_8751" -> "<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 zero()>_8562_8753" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8414_8744" -> "net.smert.jreactphysics3d.mathematics.Vector3_8418_8727" [label=""];
+	"net.smert.jreactphysics3d.body.RigidBody_8552_8756" -> "net.smert.jreactphysics3d.mathematics.Vector3_8555_8754" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8554_8757" -> "<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 zero()>_8556_8765" [label=""];
+	"net.smert.jreactphysics3d.body.RigidBody_8416_8741" -> "net.smert.jreactphysics3d.body.RigidBody_8417_8728" [label=""];
+	"net.smert.jreactphysics3d.body.RigidBody_8417_8728" -> "net.smert.jreactphysics3d.mathematics.Transform_8435_8749" [label=""];
+	"net.smert.jreactphysics3d.body.RigidBody_8552_8756" -> "net.smert.jreactphysics3d.mathematics.Vector3_8558_8755" [label=""];
+	"boolean_8421_8746" -> "boolean_8420_8742" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8427_8738" -> "net.smert.jreactphysics3d.mathematics.Vector3_8560_8751" [label=""];
+	"int_8424_8747" -> "boolean_8553_8762" [label=""];
+	"net.smert.jreactphysics3d.body.RigidBody_8552_8756" -> "net.smert.jreactphysics3d.mathematics.Vector3_8430_8725" [label=""];
+	"<net.smert.jreactphysics3d.mathematics.Transform: net.smert.jreactphysics3d.mathematics.Vector3 getPosition()>_8437_8733" -> "net.smert.jreactphysics3d.mathematics.Vector3_8436_8745" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8418_8727" -> "<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 add(net.smert.jreactphysics3d.mathematics.Vector3)>_8428_8743" [label=""];
+	"<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 cross(net.smert.jreactphysics3d.mathematics.Vector3)>_8441_8724" -> "net.smert.jreactphysics3d.mathematics.Vector3_8440_8732" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8431_8750" -> "<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 subtract(net.smert.jreactphysics3d.mathematics.Vector3)>_8439_8729" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8429_8748" -> "<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 add(net.smert.jreactphysics3d.mathematics.Vector3)>_8442_8722" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8431_8750" -> "<net.smert.jreactphysics3d.mathematics.Vector3: void <init>(net.smert.jreactphysics3d.mathematics.Vector3)>_8433_8731" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8418_8727" -> "<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 cross(net.smert.jreactphysics3d.mathematics.Vector3)>_8441_8724" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8427_8738" -> "net.smert.jreactphysics3d.mathematics.Vector3_8426_8739" [label=""];
+	"net.smert.jreactphysics3d.body.RigidBody_8417_8728" -> "boolean_8421_8746" [label=""];
+	"<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 subtract(net.smert.jreactphysics3d.mathematics.Vector3)>_8439_8729" -> "net.smert.jreactphysics3d.mathematics.Vector3_8438_8740" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8555_8754" -> "net.smert.jreactphysics3d.mathematics.Vector3_8554_8757" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8438_8740" -> "<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 cross(net.smert.jreactphysics3d.mathematics.Vector3)>_8441_8724" [label=""];
+	"net.smert.jreactphysics3d.body.RigidBody_8552_8756" -> "<net.smert.jreactphysics3d.body.Body: void setIsSleeping(boolean)>_8566_8758" [label=""];
+	"net.smert.jreactphysics3d.body.RigidBody_8552_8756" -> "net.smert.jreactphysics3d.mathematics.Vector3_8427_8738" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8426_8739" -> "<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 add(net.smert.jreactphysics3d.mathematics.Vector3)>_8428_8743" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8558_8755" -> "net.smert.jreactphysics3d.mathematics.Vector3_8557_8761" [label=""];
+	"net.smert.jreactphysics3d.body.RigidBody_8417_8728" -> "net.smert.jreactphysics3d.mathematics.Vector3_8430_8725" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Transform_8435_8749" -> "net.smert.jreactphysics3d.mathematics.Transform_8434_8726" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8419_8736" -> "<net.smert.jreactphysics3d.mathematics.Vector3: void <init>(net.smert.jreactphysics3d.mathematics.Vector3)>_8433_8731" [label=""];
+	"net.smert.jreactphysics3d.mathematics.Vector3_8563_8759" -> "<net.smert.jreactphysics3d.mathematics.Vector3: net.smert.jreactphysics3d.mathematics.Vector3 zero()>_8565_8767" [label=""];
+}
