@@ -137,9 +137,12 @@ class Similarity(object):
 			print(g)
 			print(wl_pairs[:k])
 
-	def find_top_k_similar_graphs(self, graph_dot_file, graph_name, k, num_iter):
+	def find_top_k_similar_graphs(self, graph_dot_file, graph_name, k, num_iter, cluster_json=None):
 		gk = GraphKernel(graph_name)
 		gk.read_dot_graph(graph_dot_file)
+                if cluster_json:
+                        label_map = gk.read_cluster_info(cluster_json)
+                        gk.relabel_graph(label_map)
 		gk.init_wl_kernel()
 		wl = gk.compute_wl_kernel(num_iter)
 		#graph_size = gk.g.number_of_nodes()
