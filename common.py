@@ -12,12 +12,12 @@ DLJC_BINARY = os.path.join(TOOLS_DIR, "do-like-javac", "dljc")
 DLJC_OUTPUT_DIR = "dljc-out"
 
 DOT_DIR = {}
-DOT_DIR["jreactphysics3d"] = ["_target_classes"]
+DOT_DIR["jreactphysics3d"] = "_target_classes"
 #DOT_DIR["dyn4j"] = ["_bin", "_output_examples", "_output_junit", "_output_sandbox"]
-DOT_DIR["dyn4j"] = ["_bin"]
-DOT_DIR["react"] = ["_build_classes_main"]
-DOT_DIR["jmonkeyengine"] = ["_jme3-core_build_classes_main"]
-DOT_DIR["jbox2d"] = ["_jbox2d-testbed_target_classes"]
+DOT_DIR["dyn4j"] = "_bin"
+DOT_DIR["react"] = "_build_classes_main"
+DOT_DIR["jmonkeyengine"] = "_jme3-core_build_classes_main"
+DOT_DIR["jbox2d"] = "_jbox2d-testbed_target_classes"
 
 SIMPROG_DIR = os.path.join(WORKING_DIR, "simprog")
 
