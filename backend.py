@@ -57,7 +57,7 @@ def generate_project_kernel(project, cluster_json=None):
 
 def main():
   
-  project_list = ["dyn4j", "jreactphysics3d", "jbox2d", "react", "jmonkeyengine"]
+  project_list = common.LIMITED_PROJECT_LIST
 
   parser = argparse.ArgumentParser()
   parser.add_argument("-c", "--cluster", type=str, help="path to the json file that contains clustering information")

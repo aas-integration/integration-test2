@@ -11,6 +11,8 @@ TOOLS_DIR = os.path.join(WORKING_DIR, "tools")
 DLJC_BINARY = os.path.join(TOOLS_DIR, "do-like-javac", "dljc")
 DLJC_OUTPUT_DIR = "dljc-out"
 
+LIMITED_PROJECT_LIST = ["dyn4j", "jreactphysics3d", "jbox2d", "react", "jmonkeyengine"]
+
 DOT_DIR = {}
 DOT_DIR["jreactphysics3d"] = "_target_classes"
 #DOT_DIR["dyn4j"] = ["_bin", "_output_examples", "_output_junit", "_output_sandbox"]
