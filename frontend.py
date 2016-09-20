@@ -57,7 +57,7 @@ def main():
   common.mkdir(args.dir)
 
   for project in project_list:
-    result_file = os.path.join(common.WORKING_DIR, args.dir, project, "_", "result.txt")
+    result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
     check_similarity(project, result_file, args.cluster)
     
 if __name__ == '__main__':
