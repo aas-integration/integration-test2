@@ -76,7 +76,7 @@ def main():
   for project in project_list:
     pl = list(project_list) # create a copy
     pl.remove(project)
-    gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project, "_", "kernel.txt"))
+    gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt"))
 
 if __name__ == '__main__':
   main()
