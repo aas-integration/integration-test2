@@ -10,7 +10,7 @@ import common
 sys.path.insert(0, 'simprog')
 from similarity import Similarity
 
-def main(corpus, result_file, ck_file="corpus_kernel"):
+def main(corpus, result_file, ck_file="corpus_kernel", cluster_json=None):
   """ SUMMARY: use case of the user-driven functionality of PASCALI.
   """
   dot_to_method_map = {}
@@ -40,7 +40,7 @@ def main(corpus, result_file, ck_file="corpus_kernel"):
   found_similar = 0
   fo = open(result_file, 'w')
   for dot_file in corpus_dot_to_method_map.keys():
-    result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num)
+    result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num, cluster_json)
     line = dot_file+":\n"
     count = 0
     total +=1
@@ -61,8 +61,10 @@ def main(corpus, result_file, ck_file="corpus_kernel"):
 if __name__ == '__main__':
   #corpus = common.get_project_list()
   #corpus = ["dyn4j", "jreactphysics3d", "react", "jbox2d", "jmonkeyengine"]
-  #corpus = ["dyn4j"]
   corpus = sys.argv[1]
   result_file = sys.argv[2]
   ck_file = sys.argv[3]
-  main(corpus, result_file, ck_file)
+  cluster_json = None
+  if len(sys.argv)==5:
+    cluster_json = sys.argv[4]
+  main(corpus, result_file, ck_file, cluster_json)

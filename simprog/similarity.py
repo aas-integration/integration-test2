@@ -26,8 +26,14 @@ class Similarity(object):
 				line_array = newline.split('\t')
 				prog = line_array[0]
 				kernel_str = line_array[1]
-				gsize = int(line_array[2])
+                                gsize = 0
+                                try:
+                                        gsize = int(line_array[2])
+                                except IndexError:
+                                        print line_array[1]
+                                        sys.exit(1)
 				if gsize==0:
+                                        print "{0} is empty!!!".format(prog)
 					kernel = []
 				else:
 					kernel = self.read_kernel_vector_str(kernel_str)
@@ -102,8 +108,14 @@ class Similarity(object):
 			ratio_list = [1.0/(num_iter+1)]*(num_iter+1) # uniform weight for now
 			#ratio_list = [0.1, 0.2, 0.3, 0.4]
 			#ratio_list = [0.25, 0.25, 0.25, 0.25]
+                        
 			for i in range(num_iter+1):
-				wl_kernel += ratio_list[i]*self.compute_vector_scalar_product(wl1[i], wl2[i])/(self.compute_vector_2norm(wl1[i])*self.compute_vector_2norm(wl2[i]))
+                                try:
+                                        wl_kernel += ratio_list[i]*self.compute_vector_scalar_product(wl1[i], wl2[i])/(self.compute_vector_2norm(wl1[i])*self.compute_vector_2norm(wl2[i]))
+                                except IndexError:
+                                        print len(wl1)
+                                        print len(wl2)
+                                        sys.exit(1)
 			return wl_kernel
 
 	def compute_similarity_between_vectors2(self, wl1, wl2, num_iter):
@@ -111,15 +123,17 @@ class Similarity(object):
 
 	def compute_similarity_using_stored_vectors(self, wl, num_iter):
 		"""data parallelism"""
+                """
 		pool = mp.Pool(mp.cpu_count())
 		partial_f = functools.partial(compute_similarity_between_vectors, wl1=wl, num_iter=num_iter)
 		similarity_vector = pool.map(partial_f, [self.wl_vectors[x] for x in self.graphs])
 		pool.close()
 		pool.join()
-		#graph_num = len(self.graphs)
-		#similarity_vector = [0 for x in range(graph_num)]
-		#for i in range(graph_num):
-		#	similarity_vector[i] = self.compute_similarity_between_vectors(wl, self.wl_vectors[self.graphs[i]], num_iter)
+                """
+		graph_num = len(self.graphs)
+		similarity_vector = [0 for x in range(graph_num)]
+		for i in range(graph_num):
+			similarity_vector[i] = self.compute_similarity_between_vectors(wl, self.wl_vectors[self.graphs[i]], num_iter)
 		return similarity_vector
 
 	def compute_test_kernel(self, test_wls, num_iter):
