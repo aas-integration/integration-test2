@@ -11,7 +11,7 @@ import argparse
 sys.path.insert(0, 'simprog')
 from similarity import Similarity
 
-def check_similarity(project, result_file, cluster_json=None):
+def check_similarity(project, result_file, kernel_file, cluster_json=None):
   """ SUMMARY: use case of the user-driven functionality of PASCALI.
   """
   dot_to_method_map = {}
@@ -33,7 +33,7 @@ def check_similarity(project, result_file, cluster_json=None):
 
   # check similarity
   sim = Similarity()
-  sim.read_graph_kernels(os.path.join(common.WORKING_DIR, ck_file))
+  sim.read_graph_kernels(kernel_file)
   top_k = 5 # top k most similar methods
   iter_num = 3 # number of iteration of the WL-Kernel method
   fo = open(result_file, 'w')
@@ -52,13 +52,15 @@ def main():
   parser = argparse.ArgumentParser()
   parser.add_argument("-c", "--cluster", type=str, help="path to the json file that contains clustering information")
   parser.add_argument("-d", "--dir", type=str, required=True, help="directory to store similarity results")
+  parser.add_argument("-k", "--ker", type=str, required=True, help="directory where the kernel files are stored")
   args = parser.parse_args()
 
   common.mkdir(args.dir)
 
   for project in project_list:
     result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
-    check_similarity(project, result_file, args.cluster)
+    kernel_file = os.path.join(common.WORKING_DIR, args.ker, project+"_kernel.txt")
+    check_similarity(project, result_file, kernel_file, args.cluster)
     
 if __name__ == '__main__':
   main()

@@ -59,13 +59,16 @@ class GraphKernel(object):
 		"""
 		Relabel the graph using a label-to-label map.
 		"""
+                count = 0
 		for n in self.g.nodes():
 			if 'label' in self.g.node[n]: # some node may not have any label!				
-				if self.g.node[n]['label'][1:-1] in label_map:
+				if self.g.node[n]['label'] in label_map:
 					#print "{0} in relabel map".format(self.g.node[n]['label']) 
-					if len(label_map[self.g.node[n]['label'][1:-1]]) > 0: # may have 0 label
-						print('Relabeled {0} to {1} in {2}.'.format(self.g.node[n]['label'][1:-1], label_map[self.g.node[n]['label'][1:-1]][0], self.name))
-						self.g.node[n]['label'] = label_map[self.g.node[n]['label'][1:-1]][0] # one-to-many map
+					if len(label_map[self.g.node[n]['label']]) > 0: # may have 0 label
+						print('Relabeled {0} to {1} in {2}.'.format(self.g.node[n]['label'], label_map[self.g.node[n]['label']][0], self.name))
+                                                count += 1
+						self.g.node[n]['label'] = label_map[self.g.node[n]['label']][0] # one-to-many map
+                return count
 					
 
 	def edge_contract(self, u, v, self_loop=False):
