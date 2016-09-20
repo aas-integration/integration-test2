@@ -24,7 +24,7 @@ def parse_result_file(result_file):
 		for line in fi:
 			line = line.rstrip('\n')
 			linarr = line.split(" , ")
-			if linarr[0][:-3]=="dot":
+			if linarr[0][-3:]=="dot":
 				count += 1
 				score += float(linarr[1])
 				if count==5:
@@ -43,8 +43,8 @@ def plot_hist(x, xlabel, y, ylabel):
 def main():
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-r1", "--result1", required=true, type=str, help="path to the first result file")
-	parser.add_argument("-r2", "--result2", required=true, type=str, help="path to the second result file")
+	parser.add_argument("-r1", "--result1", required=True, type=str, help="path to the first result file")
+	parser.add_argument("-r2", "--result2", required=True, type=str, help="path to the second result file")
 	args = parser.parse_args()
 
 	score1 = parse_result_file(args.result1)
