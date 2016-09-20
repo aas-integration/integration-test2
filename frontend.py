@@ -11,11 +11,7 @@ import argparse
 sys.path.insert(0, 'simprog')
 from similarity import Similarity
 
-<<<<<<< HEAD
-def main(corpus, result_file, ck_file="corpus_kernel", cluster_json=None):
-=======
 def check_similarity(project, result_file, cluster_json=None):
->>>>>>> f3e5112efbd8f47a3330292b44dad697ec9154e4
   """ SUMMARY: use case of the user-driven functionality of PASCALI.
   """
   dot_to_method_map = {}
@@ -65,16 +61,4 @@ def main():
     check_similarity(project, result_file, args.cluster)
     
 if __name__ == '__main__':
-<<<<<<< HEAD
-  #corpus = common.get_project_list()
-  #corpus = ["dyn4j", "jreactphysics3d", "react", "jbox2d", "jmonkeyengine"]
-  corpus = sys.argv[1]
-  result_file = sys.argv[2]
-  ck_file = sys.argv[3]
-  cluster_json = None
-  if len(sys.argv)==5:
-    cluster_json = sys.argv[4]
-  main(corpus, result_file, ck_file, cluster_json)
-=======
   main()
->>>>>>> f3e5112efbd8f47a3330292b44dad697ec9154e4

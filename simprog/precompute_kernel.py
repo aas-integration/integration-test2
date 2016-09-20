@@ -18,14 +18,10 @@ for r, ds, fs in os.walk(repo_dir):
 		gk.read_dot_graph(os.path.join(r, f))
 		if len(sys.argv) == 4:			
 			label_map = gk.read_cluster_info(sys.argv[3])
-<<<<<<< HEAD
-			gk.relabel_graph(label_map)
-=======
 			relabel_count = gk.relabel_graph(label_map)
 			total_node_count += gk.g.number_of_nodes()
 			total_relabel_count += relabel_count
 			print("Relabeled {0} out of {1} nodes in {2}.".format(relabel_count, gk.g.number_of_nodes(), gk.name))
->>>>>>> f3e5112efbd8f47a3330292b44dad697ec9154e4
 		gk.init_wl_kernel()
 		wls = gk.compute_wl_kernel(num_iter)
 		wl_str = "###".join([";;;".join([",,,".join([str(x), str(y)]) for (x,y) in wl]) for wl in wls])
