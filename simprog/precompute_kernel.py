@@ -28,4 +28,4 @@ for r, ds, fs in os.walk(repo_dir):
 		fo.write(os.path.join(os.path.abspath(os.path.join(r, f)) +'\t' + wl_str + '\t' + str(gk.g.number_of_nodes()) + '\n'))
 fo.close()
 
-print("\n\nIn total, relabeled {0} nodes out of {1} nodes.\n".format(total_relabel_count, total_node_count))
+print("\n\nIn total, relabeled {0} nodes out of {1} nodes in {2}.\n".format(total_relabel_count, total_node_count, repo_dir))

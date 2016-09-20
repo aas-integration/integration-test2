@@ -123,7 +123,7 @@ class Similarity(object):
 
 	def compute_similarity_using_stored_vectors(self, wl, num_iter):
 		"""data parallelism"""
-                """
+                
 		pool = mp.Pool(mp.cpu_count())
 		partial_f = functools.partial(compute_similarity_between_vectors, wl1=wl, num_iter=num_iter)
 		similarity_vector = pool.map(partial_f, [self.wl_vectors[x] for x in self.graphs])
@@ -134,6 +134,7 @@ class Similarity(object):
 		similarity_vector = [0 for x in range(graph_num)]
 		for i in range(graph_num):
 			similarity_vector[i] = self.compute_similarity_between_vectors(wl, self.wl_vectors[self.graphs[i]], num_iter)
+                """
 		return similarity_vector
 
 	def compute_test_kernel(self, test_wls, num_iter):
