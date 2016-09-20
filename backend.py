@@ -61,9 +61,8 @@ def main():
 
   parser = argparse.ArgumentParser()
   parser.add_argument("-c", "--cluster", type=str, help="path to the json file that contains clustering information")
-  parser.add_argument("-g", "--graph", action="store_true", help="regenerate graphs from the programs")
+  parser.add_argument("-g", "--graph", action="store_true", help="set to regenerate graphs from the programs")
   parser.add_argument("-d", "--dir", type=str, required=True, help="directory to store precomputed kernels")
-
   args = parser.parse_args()
 
   common.mkdir(args.dir)
@@ -77,7 +76,6 @@ def main():
   for project in project_list:
     pl = list(project_list) # create a copy
     pl.remove(project)
-    kernel_name = "kernel"
     gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project, "_", "kernel.txt"))
 
 if __name__ == '__main__':
