@@ -22,6 +22,7 @@ def gather_kernels(projects, corpus_kernel_file):
   corpus_kernel_file_handle = open(corpus_kernel_file, "w")
   for project in projects:
     project_dir = common.get_project_dir(project)
+    out_dir = common.DOT_DIR[project]
     project_kernel_file_path = common.get_kernel_path(project, out_dir)
     with open(project_kernel_file_path, "r") as fi: corpus_kernel_file_handle.write(fi.read())
   corpus_kernel_file_handle.close()
@@ -30,7 +31,6 @@ def generate_project_kernel(project, cluster_json=None):
   """ run graph kernel computation """
   
   project_dir = common.get_project_dir(project)
-
   out_dir = common.DOT_DIR[project]
   kernel_file_path = common.get_kernel_path(project, out_dir)
   
