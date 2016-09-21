@@ -154,6 +154,7 @@ def run_dljc(project, tools, options=[]):
   with cd(project_dir):
     build_command = project_info(project)['build'].strip().split()
     dljc_command = [DLJC_BINARY,
+                    '-l', LIBS_DIR,
                     '-o', DLJC_OUTPUT_DIR,
                     '-t', ','.join(tools)]
     dljc_command.extend(options)

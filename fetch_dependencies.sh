@@ -16,7 +16,7 @@ JARS=(
     "https://www.dropbox.com/s/i1iqgf9w7jk1x3x/prog2dfg.jar"
     "https://github.com/junit-team/junit/releases/download/r4.12/junit-4.12.jar"
     "http://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
-    "https://github.com/petablox-project/petablox/releases/download/v1.0/petablox.zip"
+    # "https://github.com/petablox-project/petablox/releases/download/v1.0/petablox.zip"
 )
 
 for jar in "${JARS[@]}"
@@ -34,8 +34,8 @@ done
 # Rename randoop's release-specific-name to just randoop.jar
 
 # Unpack petablox
-unzip -o petablox.zip
-rm petablox.zip
+# unzip -o petablox.zip
+# rm petablox.zip
 
 popd &> /dev/null # Exit libs
 
@@ -52,23 +52,24 @@ pushd tools &> /dev/null
 if [ ! -d do-like-javac ]; then
     git clone https://github.com/SRI-CSL/do-like-javac.git
     pushd do-like-javac &> /dev/null
-    git checkout checker
+    git checkout split-dyntrace
     popd &> /dev/null # Exit do-like-javac
 else
     pushd do-like-javac &> /dev/null
+    git checkout split-dyntrace
     git pull
     popd &> /dev/null # Exit do-like-javac
 fi
 
-if [ ! -d "generic-type-inference-solver" ]; then
-    git clone https://github.com/pascaliUWat/generic-type-inference-solver.git
-fi
+# if [ ! -d "generic-type-inference-solver" ]; then
+#     git clone https://github.com/pascaliUWat/generic-type-inference-solver.git
+# fi
 
-pushd generic-type-inference-solver &> /dev/null
-git pull
-export TRAVIS_BUILD_DIR=`pwd`
-./.travis-build-without-test.sh
-popd &> /dev/null # Exit generic-type-inference-solver
+# pushd generic-type-inference-solver &> /dev/null
+# git pull
+# export TRAVIS_BUILD_DIR=`pwd`
+# ./.travis-build-without-test.sh
+# popd &> /dev/null # Exit generic-type-inference-solver
 
 popd &> /dev/null # Exit tools
 
