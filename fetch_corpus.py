@@ -1,5 +1,5 @@
 import os
-from common import run_cmd, cd, CORPUS_DIR, get_corpus_info
+from common import mkdir, run_cmd, cd, CORPUS_DIR, get_corpus_info
 
 def git_update(project):
   if project['git-ref'] not in run_cmd(['git', 'rev-parse', 'HEAD']):
@@ -46,6 +46,7 @@ def update_project(project):
       svn_update(project)
 
 def main():
+  mkdir(CORPUS_DIR)
   with cd(CORPUS_DIR):
     for project in get_corpus_info()['projects'].values():
       download_project(project)
