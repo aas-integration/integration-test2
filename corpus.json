@@ -24,8 +24,8 @@
             "name" : "imgscalr",
             "git-url": "https://github.com/thebuzzmedia/imgscalr.git",
             "git-ref": "e1e1da77c12570f5c21d2f6ef42f0ce80c3fa092",
-            "build": "ant jar",
-            "clean": "ant clean"
+            "build": "mvn compile",
+            "clean": "mvn clean"
         },
 
         "dyn4j":
