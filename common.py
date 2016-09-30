@@ -148,6 +148,7 @@ def clean_project(project):
   with cd(project_dir):
     clean_command = project_info(project)['clean'].strip().split()
     run_cmd(clean_command)
+    run_cmd(['rm', '-r', 'dljc-out'])
 
 def run_dljc(project, tools, options=[]):
   project_dir = get_project_dir(project)
