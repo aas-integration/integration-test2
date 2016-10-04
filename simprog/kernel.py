@@ -62,12 +62,13 @@ class GraphKernel(object):
                 count = 0
 		for n in self.g.nodes():
 			if 'label' in self.g.node[n]: # some node may not have any label!				
-				if self.g.node[n]['label'] in label_map:
+				quote_free = self.g.node[n]['label'].replace("\"", "")
+				if quote_free in label_map:
 					#print "{0} in relabel map".format(self.g.node[n]['label']) 
-					if len(label_map[self.g.node[n]['label']]) > 0: # may have 0 label
-						print('Relabeled {0} to {1} in {2}.'.format(self.g.node[n]['label'], label_map[self.g.node[n]['label']][0], self.name))
+					if len(label_map[quote_free]) > 0: # may have 0 label
+						print('Relabeled {0} to {1} in {2}.'.format(quote_free, label_map[quote_free][0], self.name))
                                                 count += 1
-						self.g.node[n]['label'] = label_map[self.g.node[n]['label']][0] # one-to-many map
+						self.g.node[n]['label'] = label_map[quote_free][0] # one-to-many map
                 return count
 					
 
