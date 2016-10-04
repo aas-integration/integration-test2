@@ -43,6 +43,7 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None):
     for (dot, score) in result_program_list_with_score:
       line += dot+ " , " + str(score) + "\n"      
     line += "\n"
+    fo.write(line)
   fo.close()
 
 def main():
