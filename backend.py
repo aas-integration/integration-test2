@@ -42,7 +42,7 @@ def generate_project_kernel(project, cluster_json=None):
                         kernel_file_path,
                         cluster_json
                         ]
-    output = common.run_cmd(graph_kernel_cmd)
+    output = common.run_cmd(graph_kernel_cmd, True)
     print(output)
   else:
     graph_kernel_cmd = ['python',
@@ -50,7 +50,7 @@ def generate_project_kernel(project, cluster_json=None):
                         project_dir,
                         kernel_file_path
                         ]
-    output = common.run_cmd(graph_kernel_cmd)
+    output = common.run_cmd(graph_kernel_cmd, True)
     print output
     
   print("Generated kernel file for {0} in {1}.".format(project, kernel_file_path))
