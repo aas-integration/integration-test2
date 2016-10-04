@@ -42,16 +42,14 @@ def generate_project_kernel(project, cluster_json=None):
                         kernel_file_path,
                         cluster_json
                         ]
-    output = common.run_cmd(graph_kernel_cmd, True)
-    print(output)
+    common.run_cmd(graph_kernel_cmd, True)
   else:
     graph_kernel_cmd = ['python',
                         common.get_simprog('precompute_kernel.py'),
                         project_dir,
                         kernel_file_path
                         ]
-    output = common.run_cmd(graph_kernel_cmd, True)
-    print output
+    common.run_cmd(graph_kernel_cmd, True)
     
   print("Generated kernel file for {0} in {1}.".format(project, kernel_file_path))
 
