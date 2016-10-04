@@ -21,7 +21,7 @@ for r, ds, fs in os.walk(repo_dir):
 			relabel_count = gk.relabel_graph(label_map)
 			total_node_count += gk.g.number_of_nodes()
 			total_relabel_count += relabel_count
-			print("Relabeled {0} out of {1} nodes in {2}.".format(relabel_count, gk.g.number_of_nodes(), gk.name))
+			print("Relabeled {0} out of {1} nodes in {2}.".format(relabel_count, gk.g.number_of_nodes(), gk.dot_file))
 		gk.init_wl_kernel()
 		wls = gk.compute_wl_kernel(num_iter)
 		wl_str = "###".join([";;;".join([",,,".join([str(x), str(y)]) for (x,y) in wl]) for wl in wls])

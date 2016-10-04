@@ -66,7 +66,7 @@ class GraphKernel(object):
 				if quote_free in label_map:
 					#print "{0} in relabel map".format(self.g.node[n]['label']) 
 					if len(label_map[quote_free]) > 0: # may have 0 label
-						print('Relabeled {0} to {1} in {2}.'.format(quote_free, label_map[quote_free][0], self.name))
+						print('Relabeled {0} to {1} in {2}.'.format(quote_free, label_map[quote_free][0], self.dot_file))
                                                 count += 1
 						self.g.node[n]['label'] = label_map[quote_free][0] # one-to-many map
                 return count
