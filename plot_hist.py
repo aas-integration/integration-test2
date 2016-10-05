@@ -35,8 +35,10 @@ def parse_result_file(result_file):
 
 def plot_hist(x, xlabel, y, ylabel):
 	bins = numpy.linspace(0.0, 1.0, 100)
-	pyplot.hist(x, bins, alpha=0.5, label=xlabel)
-	pyplot.hist(y, bins, alpha=0.5, label=ylabel)
+	#pyplot.hist(x, bins, alpha=0.5, label=xlabel)
+	#pyplot.hist(y, bins, alpha=0.5, label=ylabel)
+	data = numpy.vstack([x, y]).T
+	pyplot.hist(data, bins, alpha=0.7, label=[xlabel, ylabel])
 	pyplot.legend(loc="upper right")
 	pyplot.show()
 
