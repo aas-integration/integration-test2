@@ -1,0 +1,27 @@
+To generate the program graphs and compute the Weisfeiler-Lehmen kernel feature vector for each graph:
+> python backend.py -c CLUSTER -d DIR -g
+
+CLUSTER is the name of the json file that contains a mapping of node labels to cluster labels. If this option is not used, then the kernel computation will run without any relabeling on the program graphs.
+DIR is the name of the output directory for saving the computed feature vector results.
+Program graphs should only be generated once using -g. 
+For a detailed description of the command-line options, do
+> python backend.py -h
+
+For each method in a project, we can find the top 5 most similar methods in the OTHER projects by doing
+> python frontend.py -c CLUSTER -d DIR -k KER
+
+CLUSTER should be the same file used when running backend.py. If this option is not used, then the similarity search will use kernels computed without any relabeling on the program graphs.
+DIR is the name of the output directory for saving the program similarity results.
+KER should be the same directory where the kernel feature vectors are saved when running backend.py.
+For a detailed description of the command-line options, do
+> python frontend.py -h
+
+To generate a histogram comparing the similarity results between using relabeling and not using relabeling, do
+> python plot_hist.py -r1 RESULT1 -r2 RESULT2
+
+RESULT1 is the path to the first result file (saved in DIR when running frontend.py). 
+RESULT2 is the path to the first result file (saved in DIR when running frontend.py). 
+One of them should be the result of using CLUSTER and the other should be without using CLUSTER.
+Both of them should be results for the same project.
+For a detailed description of the command-line options, do
+> python plot_hist.py -h
