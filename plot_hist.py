@@ -1,5 +1,6 @@
 import numpy
 from matplotlib import pyplot
+from matplotlib.backends.backend_pdf import PdfPages
 import os, sys
 import argparse
 
@@ -33,26 +34,30 @@ def parse_result_file(result_file):
 					score = 0.0
 	return avg_score_vector
 
-def plot_hist(x, xlabel, y, ylabel):
-	bins = numpy.linspace(0.0, 1.0, 100)
+def plot_hist(x, xlabel, y, ylabel, fig_file):
+	bins = numpy.linspace(0.0, 2.0, 100)
 	#pyplot.hist(x, bins, alpha=0.5, label=xlabel)
 	#pyplot.hist(y, bins, alpha=0.5, label=ylabel)
 	data = numpy.vstack([x, y]).T
 	pyplot.hist(data, bins, alpha=0.7, label=[xlabel, ylabel])
 	pyplot.legend(loc="upper right")
-	pyplot.show()
+	#pyplot.show()
+	pp = PdfPages(fig_file+".pdf")
+	pyplot.savefig(pp, format='pdf')
+	pp.close()
 
 def main():
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-r1", "--result1", required=True, type=str, help="path to the first result file")
-	parser.add_argument("-r2", "--result2", required=True, type=str, help="path to the second result file")
+	parser.add_argument("-nc", "--nocluster", required=True, type=str, help="path to the result file without relabeling")
+	parser.add_argument("-c", "--cluster", required=True, type=str, help="path to the result file with relabeling")
+	parser.add_argument("-f", "--file", required=True, type=str, help="name of the pdf figure (without the .pdf extension")
 	args = parser.parse_args()
 
-	score1 = parse_result_file(args.result1)
-	score2 = parse_result_file(args.result2)
+	score1 = parse_result_file(args.nocluster)
+	score2 = parse_result_file(args.cluster)
 
-	plot_hist(score1, "no_cluster", score2, "cluster")
+	plot_hist(score1, "no cluster", score2, "cluster", args.file)
 
 if __name__ == "__main__":
 	main()
