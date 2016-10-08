@@ -40,7 +40,7 @@ class Similarity(object):
 					kernel = self.read_kernel_vector_str(kernel_str)
 				self.graphs.append(prog)
 				self.ylabels.append(yl)
-				assert prog not in wl_vectors, "{0} has already been recorded.".format(prog)
+				assert prog not in self.wl_vectors, "{0} has already been recorded.".format(prog)
 				self.wl_vectors[prog] = kernel
 				count += 1
 		return count
