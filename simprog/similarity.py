@@ -19,7 +19,8 @@ class Similarity(object):
 		# need to maintain the wl vectors in the training phase
 		self.wl_vectors = {}
 
-	def read_graph_kernels(self, repo_kernel_file):
+	def read_graph_kernels(self, repo_kernel_file, yl=0):
+		count = 0 #number of progs
 		with open(repo_kernel_file, 'r') as fi:
 			for line in fi:
 				newline = line.rstrip()
@@ -38,8 +39,11 @@ class Similarity(object):
 				else:
 					kernel = self.read_kernel_vector_str(kernel_str)
 				self.graphs.append(prog)
-				self.ylabels.append(0) # just give it the same label; doesn't matter now
+				self.ylabels.append(yl)
+				assert prog not in wl_vectors, "{0} has already been recorded.".format(prog)
 				self.wl_vectors[prog] = kernel
+				count += 1
+		return count
 
 	def read_kernel_vector_str(self, kernel_vector_str):
 		# return a list of list of tuples: [[(123, 2),(164153, 1)],[...]]
@@ -53,17 +57,6 @@ class Similarity(object):
 				wl.append((tup_arr[0], int(tup_arr[1])))
 			result.append(wl)
 		return result
-
-	def read_graph_kernels_old(self, repo_kernel_file):
-		with open(repo_kernel_file, 'r') as fi:
-			for line in fi:
-				newline = line.rstrip()
-				line_array = newline.split('\t')
-				prog = line_array[0]
-				kernel = ast.literal_eval(line_array[1])
-				self.graphs.append(prog)
-				self.ylabels.append(0) # just give it the same label; doesn't matter now
-				self.wl_vectors[prog] = kernel
 
 	def record_graph_feature_using_wl(self, dot_file, name, class_label, num_iter=3, ignore_edge_label=True):
 		gk = GraphKernel(name)
@@ -79,11 +72,14 @@ class Similarity(object):
 		The kernel matrix is a symmetric matrix containing all pair-wise similarity measures between the graphs.
 		"""
 		graph_num = len(self.graphs)
-		self.kernel_matrix = [[0 for x in range(graph_num)] for x in range(graph_num)]
+		kernel_matrix = [[0 for x in range(graph_num)] for x in range(graph_num)]
 		for (x,y) in itertools.product(range(graph_num), range(graph_num)):
-			if x <= y: # only need upper-triangular portion since the kernel matrix is symmetric
-				self.kernel_matrix[x][y] = self.compute_wl_kernel_scalar_product(self.wl_vectors[self.graphs[x]], self.wl_vectors[self.graphs[y]], num_iter)
-				self.kernel_matrix[y][x] = self.kernel_matrix[x][y]
+			if x < y: # only need upper-triangular portion since the kernel matrix is symmetric
+				kernel_matrix[x][y] = self.compute_wl_kernel_scalar_product(self.wl_vectors[self.graphs[x]], self.wl_vectors[self.graphs[y]], num_iter)
+				kernel_matrix[y][x] = kernel_matrix[x][y]
+			elif x == y:
+				kernel_matrix[x][y] = 1.0
+		return kernel_matrix
 
 	def compute_similarity_between_vectors_old(self, wl1, gs1, wl2, gs2, num_iter, sym=True):
 		similarity_score = 0.0
