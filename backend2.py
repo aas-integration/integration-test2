@@ -56,16 +56,23 @@ def compute_all_pairs_similarity(result_dir):
     out_dir = common.DOT_DIR[project]
     project_kernel_file_path = common.get_kernel_path(project, out_dir)
     prog_count = sim.read_graph_kernels(project_kernel_file_path, yl)
+    print "current counter: {0}\n".format(counter)
+    print "read in {0} progs".format(prog_count)
+    print "total number of progs after reading: {0}".format(len(sim.graphs))
     with open(ind_file, "w") as indf: 
         for i in range(counter, counter+prog_count):
-          indf.write(sim.graphs[i] + " " + str(i) + "\n")
-    counter += counter + prog_count
+          try:
+            indf.write(sim.graphs[i] + " " + str(i) + "\n")
+          except IndexError as err:
+            print i, counter
+            sys.exit(0)
+    counter += prog_count
   # pair-wise similarity matrix
   kernel_matrix = sim.compute_wl_kernel_matrix()
   score_file = os.path.join(result_dir, "score.txt")
   with open(score_file, "w") as scrf:
     for i in range(len(sim.graphs)):
-      scrf.write(" ".join(kernel_matrix[i]))
+      scrf.write(" ".join([str(x) for x in kernel_matrix[i]]))
       scrf.write("\n")
 
 def main():
