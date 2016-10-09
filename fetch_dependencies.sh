@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Prevents the Checker frameworks building process from crashing.
-export TRAVIS_REPO_SLUG="typetools/checker-framework-inference"
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 pushd ${DIR} &> /dev/null
 
