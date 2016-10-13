@@ -38,7 +38,7 @@ def show_improvement(avg_score_vector_nc, avg_score_vector_c):
 	total = 0.0
 	assert len(avg_score_vector_nc)==len(avg_score_vector_c), "Should have the same number of methods with or without clustering."
 	for i in range(len(avg_score_vector_nc)):
-		assert avg_score_vector_nc[i]<=avg_score_vector_c[i], "Clustering cannot degrade the performance of similar program identification."
+		#assert avg_score_vector_nc[i]<=avg_score_vector_c[i], "Clustering cannot degrade the performance of similar program identification."
 		total += avg_score_vector_c[i] - avg_score_vector_nc[i]
 	print("Total similarity score improvement: {0}.".format(total))
 	print("Average similarity score improvement per method: {0}.".format(total/len(avg_score_vector_c)))
