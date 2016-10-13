@@ -57,7 +57,7 @@ def compute_all_pairs_similarity(result_dir):
     project_kernel_file_path = common.get_kernel_path(project, out_dir)
     prog_count = sim.read_graph_kernels(project_kernel_file_path, yl)
     with open(ind_file, "w") as indf: 
-        for i in range(counter, counter+prog_count):
+        for i in range(counter, counter+prog_count):          
           indf.write(sim.graphs[i] + " " + str(i) + "\n")
     counter += counter + prog_count
   # pair-wise similarity matrix
