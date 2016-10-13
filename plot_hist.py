@@ -92,18 +92,18 @@ def main():
 	parser.add_argument("-f", "--fig", required=True, type=str, help="path to the figure folder")
 	args = parser.parse_args()
 
-    proj_lst = common.LIMITED_PROJECT_LIST
-    common.mkdir(args.fig)
+        proj_lst = common.LIMITED_PROJECT_LIST
+        common.mkdir(args.fig)
 
-    dot_method_map = get_dot_method_map(proj_lst)
+        dot_method_map = get_dot_method_map(proj_lst)
 
-    for proj in proj_lst:
-    	proj_result_file_name = proj + "_result.txt"
-        (dot_lst1, score1) = parse_result_file(os.path.join(args.nocluster, proj_result_file_name))
-       	(dot_lst2, score2) = parse_result_file(os.path.join(args.cluster, proj_result_file_name))
-        plot_hist(score1, "no cluster", score2, "cluster", os.path.join(args.fig, proj))
-        show_improvement(score1, score2, dot_lst1, dot_method_map)
-        print()
+        for proj in proj_lst:
+            proj_result_file_name = proj + "_result.txt"
+            (dot_lst1, score1) = parse_result_file(os.path.join(args.nocluster, proj_result_file_name))
+            (dot_lst2, score2) = parse_result_file(os.path.join(args.cluster, proj_result_file_name))
+            plot_hist(score1, "no cluster", score2, "cluster", os.path.join(args.fig, proj))
+            show_improvement(score1, score2, dot_lst1, dot_method_map)
+            print()
 
 if __name__ == "__main__":
 	main()
