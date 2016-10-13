@@ -85,8 +85,9 @@ def main():
                 (dot_lst1, score1) = parse_result_file(os.path.join(args.nocluster, proj_result_file_name))
                 (dot_lst2, score2) = parse_result_file(os.path.join(args.cluster, proj_result_file_name))
                 plot_hist(score1, "no cluster", score2, "cluster", os.path.join(args.fig, proj))
+                print("Project: "+proj)
                 show_improvement(score1, score2, dot_lst1)
-                print()
+                print("\n")
 
 if __name__ == "__main__":
 	main()
