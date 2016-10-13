@@ -41,7 +41,7 @@ def parse_result_file(result_file):
                                                 score = 0.0
 	return (dot_lst, avg_score_lst)
 
-def show_improvement(avg_score_lst_nc, avg_score_lst_c, dot_lst, topk=10):
+def show_improvement(avg_score_lst_nc, avg_score_lst_c, dot_lst, dot_method_map, topk=10):
 	total = 0.0
         impr_lst = []
 	assert len(avg_score_lst_nc)==len(avg_score_lst_c), "Should have the same number of methods with or without clustering."
@@ -55,7 +55,7 @@ def show_improvement(avg_score_lst_nc, avg_score_lst_c, dot_lst, topk=10):
 	print("Average similarity score improvement per method: {0}.".format(total/len(avg_score_lst_c)))
         print("The top {0} most improved methods are:".format(topk))
         for i in range(topk):
-                print(impr_pairs[i][0]+" improved by " + str(impr_pairs[i][1]))
+                print(dot_method_map[impr_pairs[i][0]]+" : score improved by " + str(impr_pairs[i][1]))
 
 def plot_hist(x, xlabel, y, ylabel, fig_file):
 	bins = numpy.linspace(0.0, 2.0, 100)
@@ -69,6 +69,21 @@ def plot_hist(x, xlabel, y, ylabel, fig_file):
 	pyplot.savefig(pp, format='pdf')
 	pp.close()
 
+def get_dot_method_map(proj_lst):
+	dot_method_map = {}
+	for proj in proj_lst:
+		output_dir = comon.DOT_DIR[proj]
+		method_file = common.get_method_path(proj, output_dir)
+		with open(method_file, "r") as mf:
+			for line in mf:
+				line = line.rstrip()
+				items = line.split("\t")
+				method_name = items[0]
+				method_dot = items[1]
+				method_dot_path = common.get_dot_path(proj, output_dir, method_dot)
+				dot_method_map[method_dot_path] = method_name
+	return dot_method_map
+
 def main():
 
 	parser = argparse.ArgumentParser()
@@ -77,16 +92,18 @@ def main():
 	parser.add_argument("-f", "--fig", required=True, type=str, help="path to the figure folder")
 	args = parser.parse_args()
 
-        proj_lst = common.LIMITED_PROJECT_LIST
-        common.mkdir(args.fig)
+    proj_lst = common.LIMITED_PROJECT_LIST
+    common.mkdir(args.fig)
 
-        for proj in proj_lst:
-                proj_result_file_name = proj + "_result.txt"
-                (dot_lst1, score1) = parse_result_file(os.path.join(args.nocluster, proj_result_file_name))
-                (dot_lst2, score2) = parse_result_file(os.path.join(args.cluster, proj_result_file_name))
-                plot_hist(score1, "no cluster", score2, "cluster", os.path.join(args.fig, proj))
-                show_improvement(score1, score2, dot_lst1)
-                print()
+    dot_method_map = get_dot_method_map(proj_lst)
+
+    for proj in proj_lst:
+    	proj_result_file_name = proj + "_result.txt"
+        (dot_lst1, score1) = parse_result_file(os.path.join(args.nocluster, proj_result_file_name))
+       	(dot_lst2, score2) = parse_result_file(os.path.join(args.cluster, proj_result_file_name))
+        plot_hist(score1, "no cluster", score2, "cluster", os.path.join(args.fig, proj))
+        show_improvement(score1, score2, dot_lst1, dot_method_map)
+        print()
 
 if __name__ == "__main__":
 	main()
