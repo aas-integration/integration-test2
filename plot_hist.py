@@ -124,7 +124,7 @@ def main():
 	    score_lst_nc = [x[1] for x in dot_lst_nc]
 	    score_lst_c = [x[1] for x in dot_lst_c]
 	    plot_hist(score_lst_nc, "no cluster", score_lst_c, "cluster", os.path.join(args.fig, proj))
-	    show_improvement(proj, dot_lst_nc, dot_st_c, dot_res_nc, dot_res_c, dot_method_map, topk)
+	    show_improvement(proj, dot_lst_nc, dot_lst_c, dot_res_nc, dot_res_c, dot_method_map, topk)
 	    print()
 
 if __name__ == "__main__":
