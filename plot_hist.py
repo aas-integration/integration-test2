@@ -18,44 +18,59 @@ def parse_result_file(result_file):
 	path_to_dotB:
 	...
 	"""
-	avg_score_lst = []
-        dot_lst = []
+	dot_score_lst = []
+	dot_sim_result = {}
 
 	count = 0
 	score = 0.0
-        dot_name = None
+	current_dot = None
 	with open(result_file, "r") as fi:
 		for line in fi:
 			line = line.rstrip('\n')
-                        if len(line)>0 and line[-1]==":":
-                                dot_name = line[:-1]
-                        else:
-                                linarr = line.split(" , ")
-                                if linarr[0][-3:]=="dot":
-                                        count += 1
-                                        score += float(linarr[1])
-                                        if count==5:
-                                                avg_score_lst.append(score/count)
-                                                dot_lst.append(dot_name)
-                                                count = 0
-                                                score = 0.0
-	return (dot_lst, avg_score_lst)
+                if len(line)>0 and line[-1]==":":
+                	current_dot = line[:-1]
+                	dot_sim_result[current_dot] = []
+                else:
+                    linarr = line.split(" , ")
+                    if linarr[0][-3:]=="dot":
+                        count += 1
+                        score += float(linarr[1])
+                        dot_sim_result[current_dot].append((linarr[0],linarr[1]))
+                        if count==5:
+                            dot_score_lst.append((current_dot, score/count))
+                            count = 0
+                            score = 0.0
+	return (dot_score_lst, dot_sim_result)
 
-def show_improvement(avg_score_lst_nc, avg_score_lst_c, dot_lst, dot_method_map, topk=10):
+def show_improvement(proj, dot_score_lst_nc, dot_score_lst_c, dot_sim_res_nc, dot_sim_res_c, dot_method_map, topk):
 	total = 0.0
-        impr_lst = []
-	assert len(avg_score_lst_nc)==len(avg_score_lst_c), "Should have the same number of methods with or without clustering."
-	for i in range(len(avg_score_lst_nc)):
-		#assert avg_score_lst_nc[i]<=avg_score_lst_c[i], "Clustering cannot degrade the performance of similar program identification."
-                impr_lst.append(avg_score_lst_c[i] - avg_score_lst_nc[i])
-		total += avg_score_lst_c[i] - avg_score_lst_nc[i]
-        impr_pairs = list(zip(dot_lst, impr_lst))
-        impr_pairs.sort(key=lambda x: x[1], reverse=True)
+	impr_lst = []
+	assert len(dot_score_lst_nc)==len(dot_score_lst_c), "Should have the same number of methods with or without clustering."
+	for i in range(len(dot_score_lst_nc)):
+		assert dot_score_lst_nc[i][0]==dot_score_lst_c[i][0], "Should be comparing the same dot."
+		impr_score = dot_score_lst_c[i][1] - dot_score_lst_nc[i][0]
+		assert impr_score+0.00001>=0.0, "Clustering should not degrade the performance of similar program identification."
+		impr_lst.append((dot_score_lst_nc[i][0], impr_score))
+		total += impr_score
+        impr_lst.sort(key=lambda x: x[1], reverse=True)
+	print("\n***************************\n")
+	print("{0}:\n".format(proj))
 	print("Total similarity score improvement: {0}.".format(total))
-	print("Average similarity score improvement per method: {0}.".format(total/len(avg_score_lst_c)))
-        print("The top {0} most improved methods are:".format(topk))
-        for i in range(topk):
-                print(dot_method_map[impr_pairs[i][0]]+" : score improved by " + str(impr_pairs[i][1]))
+	print("Average similarity score improvement per method: {0}.".format(total/len(dot_score_lst_nc)))
+	print("The top {0} most improved methods are:\n".format(topk))
+	for i in range(topk):
+   		dot_name = impr_lst[i][0]
+    	print(dot_method_map[dot_name]+" : score improved by " + str(impr_lst[i][1]))
+    	print("Before clustering:")
+    	nc_lst = dot_sim_res_nc[dot_name]
+    	for j in range(len(nc_lst)):
+    		print(dot_method_map[nc_lst[j][0]]+" , "+nc_lst[j][1])
+    	print("After clustering:")
+    	c_lst = dot_sim_res_c[dot_name]
+    	for j in range(len(c_lst)):
+    		print(dot_method_map[c_lst[j][0]]+" , "+c_lst[j][1])
+	print("\n***************************\n")
+
 
 def plot_hist(x, xlabel, y, ylabel, fig_file):
 	bins = numpy.linspace(0.0, 2.0, 100)
@@ -90,20 +105,27 @@ def main():
 	parser.add_argument("-nc", "--nocluster", required=True, type=str, help="path to the result folder without relabeling")
 	parser.add_argument("-c", "--cluster", required=True, type=str, help="path to the result folder with relabeling")
 	parser.add_argument("-f", "--fig", required=True, type=str, help="path to the figure folder")
+	parser.add_argument("-k", "--topk", type=int, help="top k most improved methods")
 	args = parser.parse_args()
 
-        proj_lst = common.LIMITED_PROJECT_LIST
-        common.mkdir(args.fig)
+	proj_lst = common.LIMITED_PROJECT_LIST
+	common.mkdir(args.fig)
 
-        dot_method_map = get_dot_method_map(proj_lst)
+	dot_method_map = get_dot_method_map(proj_lst)
 
-        for proj in proj_lst:
-            proj_result_file_name = proj + "_result.txt"
-            (dot_lst1, score1) = parse_result_file(os.path.join(args.nocluster, proj_result_file_name))
-            (dot_lst2, score2) = parse_result_file(os.path.join(args.cluster, proj_result_file_name))
-            plot_hist(score1, "no cluster", score2, "cluster", os.path.join(args.fig, proj))
-            show_improvement(score1, score2, dot_lst1, dot_method_map)
-            print()
+	topk = 10
+	if args.topk:
+		topk = args.topk
+
+	for proj in proj_lst:
+	    proj_result_file_name = proj + "_result.txt"
+	    (dot_lst_nc, dot_res_nc) = parse_result_file(os.path.join(args.nocluster, proj_result_file_name))
+	    (dot_lst_c, dot_res_c) = parse_result_file(os.path.join(args.cluster, proj_result_file_name))
+	    score_lst_nc = [x[1] for x in dot_lst_nc]
+	    score_lst_c = [x[1] for x in dot_lst_c]
+	    plot_hist(score_lst_nc, "no cluster", score_lst_c, "cluster", os.path.join(args.fig, proj))
+	    show_improvement(proj, dot_lst_nc, dot_st_c, dot_res_nc, dot_res_c, dot_method_map, topk)
+	    print()
 
 if __name__ == "__main__":
 	main()
