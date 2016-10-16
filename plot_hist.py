@@ -25,22 +25,22 @@ def parse_result_file(result_file):
 	score = 0.0
 	current_dot = None
 	with open(result_file, "r") as fi:
-		for line in fi:
+		for line in fi:                        
 			line = line.rstrip('\n')
-                if len(line)>0 and line[-1]==":":
-                	current_dot = line[:-1]
-                	dot_sim_result[current_dot] = []
-                else:
-                    linarr = line.split(" , ")
-                    if linarr[0][-3:]=="dot":
-                        count += 1
-                        score += float(linarr[1])
-                        dot_sim_result[current_dot].append((linarr[0],linarr[1]))
-                        if count==5:
-                            dot_score_lst.append((current_dot, score/count))
-                            count = 0
-                            score = 0.0
-	return (dot_score_lst, dot_sim_result)
+                        if len(line)>0 and line[-1]==":":
+                                current_dot = line[:-1]
+                                dot_sim_result[current_dot] = []
+                        else:                        
+                                linarr = line.split(" , ")
+                                if linarr[0][-3:]=="dot":
+                                        count += 1
+                                        score += float(linarr[1])
+                                        dot_sim_result[current_dot].append((linarr[0],linarr[1]))
+                                        if count==5:                                
+                                                dot_score_lst.append((current_dot, score/count))
+                                                count = 0
+                                                score = 0.0
+        return (dot_score_lst, dot_sim_result)
 
 def show_improvement(proj, dot_score_lst_nc, dot_score_lst_c, dot_sim_res_nc, dot_sim_res_c, dot_method_map, topk):
 	total = 0.0
@@ -48,13 +48,13 @@ def show_improvement(proj, dot_score_lst_nc, dot_score_lst_c, dot_sim_res_nc, do
 	assert len(dot_score_lst_nc)==len(dot_score_lst_c), "Should have the same number of methods with or without clustering."
 	for i in range(len(dot_score_lst_nc)):
 		assert dot_score_lst_nc[i][0]==dot_score_lst_c[i][0], "Should be comparing the same dot."
-		impr_score = dot_score_lst_c[i][1] - dot_score_lst_nc[i][0]
-		assert impr_score+0.00001>=0.0, "Clustering should not degrade the performance of similar program identification."
+		impr_score = dot_score_lst_c[i][1] - dot_score_lst_nc[i][1]
+		#assert impr_score+0.00001>=0.0, "Clustering should not degrade the performance of similar program identification."
 		impr_lst.append((dot_score_lst_nc[i][0], impr_score))
 		total += impr_score
         impr_lst.sort(key=lambda x: x[1], reverse=True)
 	print("\n***************************\n")
-	print("{0}:\n".format(proj))
+	print("{0}:\n".format(proj))        
 	print("Total similarity score improvement: {0}.".format(total))
 	print("Average similarity score improvement per method: {0}.".format(total/len(dot_score_lst_nc)))
 	print("The top {0} most improved methods are:\n".format(topk))
