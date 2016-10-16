@@ -87,16 +87,17 @@ def plot_hist(x, xlabel, y, ylabel, fig_file):
 def get_dot_method_map(proj_lst):
 	dot_method_map = {}
 	for proj in proj_lst:
-		output_dir = common.DOT_DIR[proj]
-		method_file = common.get_method_path(proj, output_dir)
-		with open(method_file, "r") as mf:
-			for line in mf:
-				line = line.rstrip()
-				items = line.split("\t")
-				method_name = items[0]
-				method_dot = items[1]
-				method_dot_path = common.get_dot_path(proj, output_dir, method_dot)
-				dot_method_map[method_dot_path] = method_name
+		output_dir_lst = common.ALL_DOT_DIR[proj]
+		for output_dir in output_dir_lst:
+			method_file = common.get_method_path(proj, output_dir)
+			with open(method_file, "r") as mf:
+				for line in mf:
+					line = line.rstrip()
+					items = line.split("\t")
+					method_name = items[0]
+					method_dot = items[1]
+					method_dot_path = common.get_dot_path(proj, output_dir, method_dot)
+					dot_method_map[method_dot_path] = method_name
 	return dot_method_map
 
 def main():

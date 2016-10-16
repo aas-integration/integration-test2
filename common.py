@@ -15,11 +15,22 @@ LIMITED_PROJECT_LIST = ["dyn4j", "jreactphysics3d", "jbox2d", "react", "jmonkeye
 
 DOT_DIR = {}
 DOT_DIR["jreactphysics3d"] = "_target_classes"
-#DOT_DIR["dyn4j"] = ["_bin", "_output_examples", "_output_junit", "_output_sandbox"]
 DOT_DIR["dyn4j"] = "_bin"
 DOT_DIR["react"] = "_build_classes_main"
 DOT_DIR["jmonkeyengine"] = "_jme3-core_build_classes_main"
 DOT_DIR["jbox2d"] = "_jbox2d-testbed_target_classes"
+
+ALL_DOT_DIR = {}
+ALL_DOT_DIR["jreactphysics3d"] = ["_target_classes"]
+ALL_DOT_DIR["dyn4j"] = ["_bin", "_output_examples", "_output_junit", "_output_sandbox"]
+ALL_DOT_DIR["react"] = ["_build_classes_main"]
+ALL_DOT_DIR["jmonkeyengine"] = ["_jme3-jogg_build_classes_main", "_jme3-android_build_classes_main", \
+"_jme3-jogl_build_classes_main", "_jme3-blender_build_classes_main", "_jme3-lwjgl3_build_classes_main", \
+"_jme3-bullet_build_classes_main",  "_jme3-lwjgl_build_classes_main", "_jme3-core_build_classes_main", \
+"_jme3-networking_build_classes_main", "_jme3-desktop_build_classes_main", "_jme3-niftygui_build_classes_main", \
+"_jme3-effects_build_classes_main", "_jme3-plugins_build_classes_main", "_jme3-ios_build_classes_main", \
+"_jme3-terrain_build_classes_main", "_jme3-jbullet_build_classes_main"]
+ALL_DOT_DIR["jbox2d"] = ["_jbox2d-serialization_target_classes", "_jbox2d-library_target_classes", "_jbox2d-testbed_target_classes"]
 
 SIMPROG_DIR = os.path.join(WORKING_DIR, "simprog")
 
