@@ -56,19 +56,20 @@ def show_improvement(proj, dot_score_lst_nc, dot_score_lst_c, dot_sim_res_nc, do
 	print("\n***************************\n")
 	print("{0}:\n".format(proj))        
 	print("Total similarity score improvement: {0}.".format(total))
-	print("Average similarity score improvement per method: {0}.".format(total/len(dot_score_lst_nc)))
+	print("Average similarity score improvement per method: {0}.\n".format(total/len(dot_score_lst_nc)))
 	print("The top {0} most improved methods are:\n".format(topk))
 	for i in range(topk):
    		dot_name = impr_lst[i][0]
-    	print(dot_method_map[dot_name]+" : score improved by " + str(impr_lst[i][1]))
-    	print("Before clustering:")
-    	nc_lst = dot_sim_res_nc[dot_name]
-    	for j in range(len(nc_lst)):
-    		print(dot_method_map[nc_lst[j][0]]+" , "+nc_lst[j][1])
-    	print("After clustering:")
-    	c_lst = dot_sim_res_c[dot_name]
-    	for j in range(len(c_lst)):
-    		print(dot_method_map[c_lst[j][0]]+" , "+c_lst[j][1])
+                print(dot_method_map[dot_name]+" : average similarity score improved by " + str(impr_lst[i][1]))
+                print("Before clustering:")
+                nc_lst = dot_sim_res_nc[dot_name]
+                for j in range(len(nc_lst)):
+                        print(dot_method_map[nc_lst[j][0]]+" , "+nc_lst[j][1])
+                print("After clustering:")
+                c_lst = dot_sim_res_c[dot_name]
+                for j in range(len(c_lst)):
+                        print(dot_method_map[c_lst[j][0]]+" , "+c_lst[j][1])
+                print("\n")
 	print("\n***************************\n")
 
 
@@ -125,8 +126,7 @@ def main():
 	    score_lst_nc = [x[1] for x in dot_lst_nc]
 	    score_lst_c = [x[1] for x in dot_lst_c]
 	    plot_hist(score_lst_nc, "no cluster", score_lst_c, "cluster", os.path.join(args.fig, proj))
-	    show_improvement(proj, dot_lst_nc, dot_lst_c, dot_res_nc, dot_res_c, dot_method_map, topk)
-	    print()
+	    show_improvement(proj, dot_lst_nc, dot_lst_c, dot_res_nc, dot_res_c, dot_method_map, topk)	    
 
 if __name__ == "__main__":
 	main()
