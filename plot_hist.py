@@ -8,9 +8,11 @@ from nltk.stem.port import *
 
 """Read the program similarity result files and plot histograms"""
 
-def compute_method_text_similarity(m1_full_str, m2_full_str):
-	matches = re.finditer('.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)', identifier)
-    return [m.group(0) for m in matches]
+def compute_method_text_similarity(m1_full_str, m2_full_str, re_prog):	
+    return 
+
+def compile_camel_case_re_pattern():
+	return re.compile(r".+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)")
 
 def compile_method_re_pattern():
 	return re.compile(r"<[\w\d_$\.]+\s*:\s+[\w\d_$]+\s+([\w\d_$]+)\([\w\d_$\.\s]*\)>\s")
