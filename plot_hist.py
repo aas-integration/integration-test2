@@ -147,7 +147,7 @@ def main():
 		topk = args.topk
 
 	all_score_lst_nc = []
-	alll_score_lst_c = []
+	all_score_lst_c = []
 
 	for proj in proj_lst:
 	    proj_result_file_name = proj + "_result.txt"
