@@ -1,11 +1,35 @@
 import numpy
 from matplotlib import pyplot
 from matplotlib.backends.backend_pdf import PdfPages
-import os, sys
+import os, sys, re
 import argparse
 import common
+from nltk.stem.port import *
 
 """Read the program similarity result files and plot histograms"""
+
+def compute_method_text_similarity(m1_full_str, m2_full_str):
+	matches = re.finditer('.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)', identifier)
+    return [m.group(0) for m in matches]
+
+def compile_method_re_pattern():
+	return re.compile(r"<[\w\d_$\.]+\s*:\s+[\w\d_$]+\s+([\w\d_$]+)\([\w\d_$\.\s]*\)>\s")
+
+def get_method_name_only(method_full_str, re_prog):
+	#Example: <org.dyn4j.dynamics.joint.RevoluteJoint: void setMotorEnabled(boolean)>
+	m = re_prog.match(method_full_str)
+	if m:
+		return m.group(1)
+	else:
+		print("Should always find a method name. The fully qualitified method name was:")
+		print(method_full_str)
+		sys.exit(0)
+
+def create_stemmer():
+	return SnowballStemmer('english')
+
+def stem_word_lst(stemmer, word_lst):
+	return [stemmer.stem(w) for w in word_lst]
 
 def parse_result_file(result_file):
 	"""
@@ -107,6 +131,7 @@ def main():
 	parser.add_argument("-c", "--cluster", required=True, type=str, help="path to the result folder with relabeling")
 	parser.add_argument("-f", "--fig", required=True, type=str, help="path to the figure folder")
 	parser.add_argument("-k", "--topk", type=int, help="top k most improved methods")
+	parser.add_argument("-a", "--all", action="store_true", help="set to merge results from all benchmark projects in a single histogram")
 	args = parser.parse_args()
 
 	proj_lst = common.LIMITED_PROJECT_LIST
@@ -118,15 +143,24 @@ def main():
 	if args.topk:
 		topk = args.topk
 
+	all_score_lst_nc = []
+	alll_score_lst_c = []
+
 	for proj in proj_lst:
 	    proj_result_file_name = proj + "_result.txt"
 	    (dot_lst_nc, dot_res_nc) = parse_result_file(os.path.join(args.nocluster, proj_result_file_name))
 	    (dot_lst_c, dot_res_c) = parse_result_file(os.path.join(args.cluster, proj_result_file_name))
 	    score_lst_nc = [x[1] for x in dot_lst_nc]
 	    score_lst_c = [x[1] for x in dot_lst_c]
-	    plot_hist(score_lst_nc, "no cluster", score_lst_c, "cluster", os.path.join(args.fig, proj))
-	    show_improvement(proj, dot_lst_nc, dot_lst_c, dot_res_nc, dot_res_c, dot_method_map, topk)
-	    print()
+	    if args.all:
+	    	all_score_lst_nc.append(score_lst_nc)
+	    	all_score_lst_c.append(score_lst_c)
+	    else:
+		    plot_hist(score_lst_nc, "no cluster", score_lst_c, "cluster", os.path.join(args.fig, proj))
+		    show_improvement(proj, dot_lst_nc, dot_lst_c, dot_res_nc, dot_res_c, dot_method_map, topk)
+	    	print("\n")
+	if args.all:
+		plot_hist(all_score_lst_nc, "no cluster", all_score_lst_c, "cluster", os.path.join(args.fig, "all")		
 
 if __name__ == "__main__":
 	main()
