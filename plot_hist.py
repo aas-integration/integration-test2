@@ -99,12 +99,12 @@ def show_improvement(proj, dot_score_lst_nc, dot_score_lst_c, dot_sim_res_nc, do
 	print("\n***************************\n")
 
 
-def plot_hist(x, xlabel, y, ylabel, fig_file):
+def plot_hist(x, xlabel, y, ylabel, fig_file, perf_stat_lst):
 	bins = numpy.linspace(0.0, 2.0, 100)
 	#pyplot.hist(x, bins, alpha=0.5, label=xlabel)
 	#pyplot.hist(y, bins, alpha=0.5, label=ylabel)
 	data = numpy.vstack([x, y]).T
-	pyplot.hist(data, bins, alpha=0.7, label=[xlabel, ylabel])
+	pyplot.hist(data, bins, alpha=0.7, label=[xlabel, ylabel]+perf_stat_lst)
 	pyplot.legend(loc="upper right")
 	#pyplot.show()
 	pp = PdfPages(fig_file+".pdf")
@@ -133,6 +133,7 @@ def main():
 	parser.add_argument("-nc", "--nocluster", required=True, type=str, help="path to the result folder without relabeling")
 	parser.add_argument("-c", "--cluster", required=True, type=str, help="path to the result folder with relabeling")
 	parser.add_argument("-f", "--fig", required=True, type=str, help="path to the figure folder")
+	parser.add_argument("-s", "-strategy", required=True, type=str, help="name of the strategy")
 	parser.add_argument("-k", "--topk", type=int, help="top k most improved methods")
 	parser.add_argument("-a", "--all", action="store_true", help="set to merge results from all benchmark projects in a single histogram")
 	args = parser.parse_args()
@@ -159,11 +160,11 @@ def main():
 	    	all_score_lst_nc.append(score_lst_nc)
 	    	all_score_lst_c.append(score_lst_c)
 	    else:
-                plot_hist(score_lst_nc, "no cluster", score_lst_c, "cluster", os.path.join(args.fig, proj))
+                plot_hist(score_lst_nc, "w/o clustering", score_lst_c, args.strategy, os.path.join(args.fig, proj))
                 show_improvement(proj, dot_lst_nc, dot_lst_c, dot_res_nc, dot_res_c, dot_method_map, topk)
                 print("\n")
         if args.all:
-            plot_hist(all_score_lst_nc, "no cluster", all_score_lst_c, "cluster", os.path.join(args.fig, "all"))		
+            plot_hist(all_score_lst_nc, "w/o clustering", all_score_lst_c, args.strategy, os.path.join(args.fig, "all"))		
 
 if __name__ == "__main__":
     main()
