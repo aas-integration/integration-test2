@@ -156,8 +156,8 @@ def main():
 	    score_lst_nc = [x[1] for x in dot_lst_nc]
 	    score_lst_c = [x[1] for x in dot_lst_c]
 	    if args.all:
-	    	all_score_lst_nc.append(score_lst_nc)
-	    	all_score_lst_c.append(score_lst_c)
+	    	all_score_lst_nc += score_lst_nc
+	    	all_score_lst_c += score_lst_c
 	    else:
                 plot_hist(score_lst_nc, "no cluster", score_lst_c, "cluster", os.path.join(args.fig, proj))
                 show_improvement(proj, dot_lst_nc, dot_lst_c, dot_res_nc, dot_res_c, dot_method_map, topk)
