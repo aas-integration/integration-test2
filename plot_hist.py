@@ -69,20 +69,27 @@ def parse_result_file(result_file):
         return (dot_score_lst, dot_sim_result)
 
 def show_improvement(proj, dot_score_lst_nc, dot_score_lst_c, dot_sim_res_nc, dot_sim_res_c, dot_method_map, topk):
-	total = 0.0
+	nc_total = 0.0
+	c_total = 0.0
+	largest_impr = 0.0
 	impr_lst = []
 	assert len(dot_score_lst_nc)==len(dot_score_lst_c), "Should have the same number of methods with or without clustering."
 	for i in range(len(dot_score_lst_nc)):
 		assert dot_score_lst_nc[i][0]==dot_score_lst_c[i][0], "Should be comparing the same dot."
-		impr_score = dot_score_lst_c[i][1] - dot_score_lst_nc[i][1]
+		nc_total += dot_score_lst_nc[i][1]
+		c_total += dot_score_lst_c[i][1]
+		impr = dot_score_lst_c[i][1] - ot_score_lst_nc[i][1]
+		if impr > largest_impr:
+			largest_impr = impr
 		#assert impr_score+0.00001>=0.0, "Clustering should not degrade the performance of similar program identification."
 		impr_lst.append((dot_score_lst_nc[i][0], impr_score))
-		total += impr_score
         impr_lst.sort(key=lambda x: x[1], reverse=True)
+    total_impr = c_total - nc_total
 	print("\n***************************\n")
 	print("{0}:\n".format(proj))        
-	print("Total similarity score improvement: {0}.".format(total))
-	print("Average similarity score improvement per method: {0}.\n".format(total/len(dot_score_lst_nc)))
+	print("Average similarity score improvement per method: {0}.\n".format(total_impr/len(dot_score_lst_nc)))
+	print("Percentage score improvement: {0}.\n".format(total_impr/nc_total))
+	print("Largest score improvement for a single method: {0}.\n".format(largest_impr))
 	print("The top {0} most improved methods are:\n".format(topk))
 	for i in range(topk):
    		dot_name = impr_lst[i][0]
@@ -97,16 +104,19 @@ def show_improvement(proj, dot_score_lst_nc, dot_score_lst_c, dot_sim_res_nc, do
                         print(dot_method_map[c_lst[j][0]]+" , "+c_lst[j][1])
                 print("\n")
 	print("\n***************************\n")
+	# output some stats
+	return (avg_impr, percent_impr, largest_impr)
 
-
-def plot_hist(x, xlabel, y, ylabel, fig_file, perf_stat_lst):
+def plot_hist(x, xlabel, y, ylabel, fig_file, avg_impr, percent_impr, largest_impr):
+	perf_labels = ["Avg score improvement: ".format(avg_impr), "\% score improvement: ".format(percent_impr*100), "Largest single improvement: ".format(largest_impr)]
 	bins = numpy.linspace(0.0, 2.0, 100)
 	#pyplot.hist(x, bins, alpha=0.5, label=xlabel)
 	#pyplot.hist(y, bins, alpha=0.5, label=ylabel)
 	data = numpy.vstack([x, y]).T
-	pyplot.hist(data, bins, alpha=0.7, label=[xlabel, ylabel]+perf_stat_lst)
+	pyplot.hist(data, bins, alpha=0.7, label=[xlabel, ylabel]+perf_labels)
 	pyplot.legend(loc="upper right")
 	#pyplot.show()
+	pyplot.xlim(0.0, 1.0)
 	pp = PdfPages(fig_file+".pdf")
 	pyplot.savefig(pp, format='pdf')
 	pp.close()
@@ -160,11 +170,11 @@ def main():
 	    	all_score_lst_nc += score_lst_nc
 	    	all_score_lst_c += score_lst_c
 	    else:
-                plot_hist(score_lst_nc, "w/o clustering", score_lst_c, args.strategy, os.path.join(args.fig, proj))
-                show_improvement(proj, dot_lst_nc, dot_lst_c, dot_res_nc, dot_res_c, dot_method_map, topk)
-                print("\n")
-        if args.all:
-            plot_hist(all_score_lst_nc, "w/o clustering", all_score_lst_c, args.strategy, os.path.join(args.fig, "all"))		
+			show_improvement(proj, dot_lst_nc, dot_lst_c, dot_res_nc, dot_res_c, dot_method_map, topk)
+			plot_hist(score_lst_nc, "w/o clustering", score_lst_c, args.strategy, os.path.join(args.fig, proj))
+			print("\n")
+	if args.all:
+		plot_hist(all_score_lst_nc, "w/o clustering", all_score_lst_c, args.strategy, os.path.join(args.fig, "all"))		
 
 if __name__ == "__main__":
     main()
