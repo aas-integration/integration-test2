@@ -61,12 +61,17 @@ def compile_camel_case_re_pattern():
     return re.compile(r".+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)")
 
 def compile_method_re_pattern():
-    return re.compile(r"<[\w\d_$\.]+\s*:\s+[\w\d_$]+\s+<*([\w\d_$]+)>*\([\w\d_$\,\s]*\)>")
+    return re.compile(r"<[\w\d_$\.]+\s*:\s+[\w\d_$.\[\]]+\s+<*([\w\d_$\']+)>*\([\[\].\w\d_$\,\s]*\)>")
 
 def get_method_name_only(method_full_str, re_prog):
     #Example1: <org.dyn4j.dynamics.joint.RevoluteJoint: void setMotorEnabled(boolean)>
     #Example2: <com.flowpowered.react.math.Quaternion: float lengthSquare()>
     #Example3: <com.flowpowered.react.math.Quaternion: void <init>(float,float,float,float)>
+    #Example4: <org.dyn4j.dynamics.joint.MotorJoint: java.lang.String toString()>
+    #Example5: <org.dyn4j.dynamics.Body: java.util.List removeFixtures(org.dyn4j.geometry.Vector2)>
+    #Example6: <com.jme3.material.plugins.ShaderNodeLoaderDelegate: com.jme3.shader.VariableMapping parseMapping(com.jme3.util.blockparser.Statement,boolean[])>
+    #Example7: <org.dyn4j.geometry.Polygon: org.dyn4j.geometry.Vector2[] getAxes(org.dyn4j.geometry.Vector2[],org.dyn4j.geometry.Transform)>
+    #Example8: <org.dyn4j.geometry.Vector3: org.dyn4j.geometry.Vector3 'to'(double,double,double)>
     m = re_prog.match(method_full_str)
     if m:
         return m.group(1)
@@ -115,6 +120,7 @@ def parse_result_file(result_file, dot_method_map):
     name_re = compile_method_re_pattern()
     camel_re = compile_camel_case_re_pattern()
 
+    count = 0
     current_dot = None
     with open(result_file, "r") as fi:
         for line in fi:                        
@@ -130,19 +136,21 @@ def parse_result_file(result_file, dot_method_map):
                         similar_method = dot_method_map[linarr[0]]
                         # compute word based similarity
                         prog_score = float(linarr[1])
-                        text_score = compute_method_text_similarity(m1_full_str, m2_full_str, name_re, camel_re, stemmer)
+                        text_score = compute_method_text_similarity(current_method, similar_method, name_re, camel_re, stemmer)
                         method_dict[current_method] = [similar_method, prog_score, text_score]
                     count += 1
                     if count == 5:
                         count = 0
         return method_dict
 
-def plot_scatter(x, x_axis_label, y, y_axis_label, fig_file title=""):
+def plot_scatter(x, x_axis_label, y, y_axis_label, fig_file, title=""):
     pyplot.figure()
     pyplot.scatter(x, y)
     pyplot.title(title)
     pyplot.xlabel(x_axis_label)
     pyplot.ylabel(y_axis_label)
+    pyplot.xlim(-0.05, 1.05)
+    pyplot.ylim(-0.05, 1.05)
     pp = PdfPages(fig_file+".pdf")
     pyplot.savefig(pp, format="pdf")
     pp.close()
@@ -168,13 +176,17 @@ def main():
 
     for proj in proj_lst:
         proj_result_file_name = proj + "_result.txt"
-        method_dict = parse_result_file(os.path.join(args.nocluster, proj_result_file_name), dot_method_map)
+        method_dict = parse_result_file(os.path.join(args.cluster, proj_result_file_name), dot_method_map)
         xs = []
         ys = []
         for m in method_dict.keys():
-            xs = method_dict[m][1]
-            ys = method_dict[m][2]
-        plot_scatter(xs, "program similarity", ys, "word similarity", os.path.join(fig_dir, proj))
+            xs.append(method_dict[m][1])
+            ys.append(method_dict[m][2])
+        plot_scatter(xs, "program similarity", ys, "word similarity", os.path.join(fig_dir, proj), proj+" : "+args.strategy)
+        # correlation:
+        print(proj+":")
+        print(numpy.corrcoef(xs,ys))
+        print("\n")
 
 if __name__ == "__main__":
     main()
