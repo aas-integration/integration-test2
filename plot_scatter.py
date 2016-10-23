@@ -9,28 +9,53 @@ from nltk.stem.snowball import *
 
 """Read the program similarity result files and plot text similarity vs. program similarity"""
 
-def compute_method_text_similarity(m1_full_str, m2_full_str, name_re, camel_re):
+def compute_method_text_similarity(m1_full_str, m2_full_str, name_re, camel_re, stemmer):
     # (0) get just the name of the method
     # (1) remove all non-letter characters in the name
     # (2) split using camel case 
     # (3) stem all words
     # (4) count the number of matched stemmed words (including duplicates)
     # (5) score = len(all matched words)/len(all stemmed words)
+
     # (0):
     m1_method_name = get_method_name_only(m1_full_str, name_re)
     m2_method_name = get_method_name_only(m2_full_str, name_re)
     # (1):
     m1_method_clean = re.sub("[\d$_]", "", m1_method_name)
     m2_method_clean = re.sub("[\d$_]", "", m2_method_name)
-    m1_remove_len = len(m1_method_name) - len(m1_method_clean)
-    m2_remove_len = len(m2_method_name) - len(m2_method_clean)
+    #m1_remove_len = len(m1_method_name) - len(m1_method_clean)
+    #m2_remove_len = len(m2_method_name) - len(m2_method_clean)
     # (2):
     m1_word_lst = get_method_word_list(m1_method_clean, camel_re)
     m2_word_lst = get_method_word_list(m2_method_clean, camel_re)
-    return #TODO
+    # (3):
+    #m1_word_lst = [w.lower() for w in m1_word_lst]
+    #m2_word_lst = [w.lower() for w in m2_word_lst]
+    # (3):
+    m1_stemmed_word_lst = [stemmer.stem(w) for w in m1_word_lst]
+    m2_stemmed_word_lst = [stemmer.stem(w) for w in m2_word_lst]
+    #m1_stem_len = sum([len(w) for w in m1_word_lst]) - sum([len(w) for w in m1_stemmed_word_lst])
+    #m2_stem_len = sum([len(w) for w in m2_word_lst]) - sum([len(w) for w in m2_stemmed_word_lst])
+    # (4):
+    m1_word_dict = defaultdict(int)
+    m2_word_dict = defaultdict(int)
+    for w1 in m1_stemmed_word_lst:
+        m1_word_dict[w1]+=1
+    for w2 in m2_stemmed_word_lst:
+        m2_word_dict[w2]+=1
+    common_word_set = set(m1_stemmed_word_lst) & set(m2_stemmed_word_lst)
+    common_word_len = 0
+    for wd in common_word_set:
+        common_word_len += len(wd)*2*min(m1_word_dict[wd], m2_word_dict[wd])
+    # (5):
+    score = float(common_word_len)/(sum([len(w) for w in m1_stemmed_word_lst]) + sum([len(w) for w in m2_stemmed_word_lst]))
+    return score
 
 def get_method_word_list(method_str, camel_re):
-    return #TODO
+    word_lst = []
+    for match in camel_re.finditer(method_str):
+        word_lst.append(match.group(0))
+    return word_lst
 
 def compile_camel_case_re_pattern():
     return re.compile(r".+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)")
@@ -86,8 +111,9 @@ def parse_result_file(result_file, dot_method_map):
 
     method_dict = {} # method_dict[method] = [similar_method, prog_score, text_score]
 
-    method_re_prog = compile_method_re_pattern()
-    camel_case_re_prog = compile_camel_case_re_pattern()
+    stemmer = create_stemmer()
+    name_re = compile_method_re_pattern()
+    camel_re = compile_camel_case_re_pattern()
 
     current_dot = None
     with open(result_file, "r") as fi:
@@ -96,25 +122,35 @@ def parse_result_file(result_file, dot_method_map):
             if len(line)>0 and line[-1]==":":
                 current_dot = line[:-1]
                 current_method = dot_method_map[current_dot]
-                method_dict[current_method] = []
             else:                        
                 linarr = line.split(" , ")
                 if linarr[0][-3:]=="dot":
                     # consider most similar method only
                     if count == 0:
                         similar_method = dot_method_map[linarr[0]]
-                        method_dict[current_method].append(similar_method)
-                        
+                        # compute word based similarity
+                        prog_score = float(linarr[1])
+                        text_score = compute_method_text_similarity(m1_full_str, m2_full_str, name_re, camel_re, stemmer)
+                        method_dict[current_method] = [similar_method, prog_score, text_score]
                     count += 1
-                    elif count == 5:
+                    if count == 5:
                         count = 0
-        return (dot_score_lst, dot_sim_result, match_count)
+        return method_dict
 
+def plot_scatter(x, x_axis_label, y, y_axis_label, fig_file title=""):
+    pyplot.figure()
+    pyplot.scatter(x, y)
+    pyplot.title(title)
+    pyplot.xlabel(x_axis_label)
+    pyplot.ylabel(y_axis_label)
+    pp = PdfPages(fig_file+".pdf")
+    pyplot.savefig(pp, format="pdf")
+    pp.close()
 
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-nc", "--nocluster", required=True, type=str, help="path to the result folder without relabeling")
+    #parser.add_argument("-nc", "--nocluster", required=True, type=str, help="path to the result folder without relabeling")
     parser.add_argument("-c", "--cluster", required=True, type=str, help="path to the result folder with relabeling")
     parser.add_argument("-f", "--fig", type=str, help="path to the figure folder")
     parser.add_argument("-s", "--strategy", required=True, type=str, help="name of the strategy")
@@ -127,7 +163,18 @@ def main():
     if args.fig:
         fig_dir = args.fig
     common.mkdir(fig_dir)
+    
+    dot_method_map = get_dot_method_map(proj_lst)
 
+    for proj in proj_lst:
+        proj_result_file_name = proj + "_result.txt"
+        method_dict = parse_result_file(os.path.join(args.nocluster, proj_result_file_name), dot_method_map)
+        xs = []
+        ys = []
+        for m in method_dict.keys():
+            xs = method_dict[m][1]
+            ys = method_dict[m][2]
+        plot_scatter(xs, "program similarity", ys, "word similarity", os.path.join(fig_dir, proj))
 
 if __name__ == "__main__":
     main()
