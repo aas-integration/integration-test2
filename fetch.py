@@ -3,7 +3,7 @@ import fetch_corpus
 
 def main():
   print "Fetching corpus."
-  fetch_corpus.main()
+  fetch_corpus.fetch_corpus()
 
   print "Fetching dependencies"
   common.run_cmd(['bash', 'fetch_dependencies.sh'])

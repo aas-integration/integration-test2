@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Prevents the Checker frameworks building process from crashing.
-export TRAVIS_REPO_SLUG="typetools/checker-framework-inference"
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 pushd ${DIR} &> /dev/null
 
@@ -62,15 +59,15 @@ else
     popd &> /dev/null # Exit do-like-javac
 fi
 
-if [ ! -d "generic-type-inference-solver" ]; then
-    git clone https://github.com/pascaliUWat/generic-type-inference-solver.git
+if [ ! -d "ontology" ]; then
+    git clone https://github.com/pascaliUWat/ontology.git
 fi
 
-pushd generic-type-inference-solver &> /dev/null
+pushd ontology &> /dev/null
 git pull
 export TRAVIS_BUILD_DIR=`pwd`
-./.travis-build-without-test.sh
-popd &> /dev/null # Exit generic-type-inference-solver
+./pascali-setup.sh
+popd &> /dev/null # Exit ontology
 
 popd &> /dev/null # Exit tools
 

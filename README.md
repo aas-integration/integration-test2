@@ -6,13 +6,9 @@ Our new story is:
 
 How to run:
 
-    ./fetch_dependencies.sh
+    python fetch.py
 
-This downloads all the jars, compiles stuff, etc. Only needs to be run once.
-
-    python fetch_corpus.py
-
-This fetches all of the projects in the corpus, specified in corpus.json.
+This downloads all the jars, compiles stuff, and downloads the corpus. Only needs to be run once unless you need to update tools or the corpus.
 
     python backend.py
 
