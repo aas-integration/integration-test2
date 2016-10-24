@@ -144,8 +144,17 @@ def parse_result_file(result_file, dot_method_map):
         return method_dict
 
 def plot_scatter(x, x_axis_label, y, y_axis_label, fig_file, title=""):
+    """
+    heatmap, xedges, yedges = numpy.histogram2d(x, y, bins=50)
+    extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
     pyplot.figure()
-    pyplot.scatter(x, y)
+    pyplot.imshow(heatmap, extent=extent)
+    pyplot.title(title)
+    pyplot.xlabel(x_axis_label)
+    pyplot.ylabel(y_axis_label)
+    """
+    pyplot.figure()
+    pyplot.scatter(x, y, marker='x', alpha=0.5)
     pyplot.title(title)
     pyplot.xlabel(x_axis_label)
     pyplot.ylabel(y_axis_label)
@@ -175,16 +184,29 @@ def main():
     dot_method_map = get_dot_method_map(proj_lst)
 
     for proj in proj_lst:
+        print(proj+":")
         proj_result_file_name = proj + "_result.txt"
         method_dict = parse_result_file(os.path.join(args.cluster, proj_result_file_name), dot_method_map)
         xs = []
         ys = []
+        
+        count11 = 0
         for m in method_dict.keys():
-            xs.append(method_dict[m][1])
-            ys.append(method_dict[m][2])
-        plot_scatter(xs, "program similarity", ys, "word similarity", os.path.join(fig_dir, proj), proj+" : "+args.strategy)
+            x_v = method_dict[m][1]
+            y_v = method_dict[m][2]
+            xs.append(x_v)
+            ys.append(y_v)
+            if abs((1.0 - x_v)) < 0.0005 and abs((1.0 - y_v)) < 0.0005:
+                #print(m + "\t" + method_dict[m][0])
+                count11 += 1
+        print("(1,1): {0}".format(count11))
+        # save xs and ys
+        with open(os.path.join(fig_dir, proj+"_data.txt"), "w") as df:
+            df.write(",".join([str(x) for x in xs]))
+            df.write("\n")
+            df.write(",".join([str(y) for y in ys]))
+        plot_scatter(xs, "semantic similarity", ys, "name similarity", os.path.join(fig_dir, proj), proj+" : "+args.strategy)
         # correlation:
-        print(proj+":")
         print(numpy.corrcoef(xs,ys))
         print("\n")
 
