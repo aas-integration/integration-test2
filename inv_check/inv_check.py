@@ -18,7 +18,7 @@ def run_daikon_on_dtrace_file(dtrace_file, classpath=daikon_jar, checked_invaria
   if checked_invariant:    
     cmd += ["--disable-all-invariants", "--user-defined-invariant", checked_invariant]
     cmd += ["--config_option", "daikon.Daikon.undo_opts=true"]
-  return common.run_cmd(cmd, print_output=True)
+  return common.run_cmd(cmd, print_output=True)['output']
 
 
 def find_ppts_that_establish_inv_in_daikon_output(daikon_output, inv_substring):

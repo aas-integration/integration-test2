@@ -1,20 +1,20 @@
 import os
-from common import run_cmd, cd, CORPUS_DIR, get_corpus_info
+from common import mkdir, run_cmd, cd, CORPUS_DIR, get_corpus_info
 
 def git_update(project):
-  if project['git-ref'] not in run_cmd(['git', 'rev-parse', 'HEAD']):
+  if project['git-ref'] not in run_cmd(['git', 'rev-parse', 'HEAD'])['output']:
     print "Checking out git ref %s." % project['git-ref']
     run_cmd(['git', 'fetch'])
     run_cmd(['git', 'reset' '--hard'])
     run_cmd(['git', 'checkout', project['git-ref']])
 
 def hg_update(project):
-  if run_cmd(['hg' 'parent']) != project['hg-rev']:
+  if project['hg-rev'] not in run_cmd(['hg' 'parent'])['output']:
     print "Checking out hg rev %s." % project['hg-rev']
     run_cmd(['hg', 'update', '-r', project['hg-rev'], '-C'])
 
 def svn_update(project):
-  if run_cmd(['svnversion']) != project['svn-rev']:
+  if project['svn-rev'] not in run_cmd(['svnversion'])['output']:
     print "Checking out svn rev %s." % project['svn-rev']
     run_cmd(['svn', 'update', '-r', project['svn-rev']])
 
@@ -45,11 +45,12 @@ def update_project(project):
     elif 'svn-url' in project:
       svn_update(project)
 
-def main():
+def fetch_corpus():
+  mkdir(CORPUS_DIR)
   with cd(CORPUS_DIR):
     for project in get_corpus_info()['projects'].values():
       download_project(project)
       update_project(project)
 
 if __name__ == "__main__":
-  main()
+  fetch_corpus()

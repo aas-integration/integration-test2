@@ -1,5 +1,6 @@
 import os, traceback, sys, json
 import subprocess32 as subprocess
+from threading import Timer
 from contextlib import contextmanager
 
 WORKING_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -34,19 +35,38 @@ ALL_DOT_DIR["jbox2d"] = ["_jbox2d-serialization_target_classes", "_jbox2d-librar
 
 SIMPROG_DIR = os.path.join(WORKING_DIR, "simprog")
 
-def run_cmd(cmd, print_output=False):
+def run_cmd(cmd, print_output=False, timeout=None):
+  def kill_proc(proc, stats):
+    stats['timed_out'] = True
+    proc.kill()
+
+  stats = {'timed_out': False,
+           'output': ''}
+  timer = None
+
   if print_output:
     print ("Running %s" % ' '.join(cmd))
   try:
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    for line in iter(process.stdout.readline, b''):      
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    if timeout:
+      timer = Timer(timeout, kill_proc, [process, stats])
+      timer.start()
+
+    for line in iter(process.stdout.readline, b''):
+      stats['output'] = stats['output'] + line
       if print_output:
         sys.stdout.write(line)
         sys.stdout.flush()
     process.stdout.close()
     process.wait()
+    stats['return_code'] = process.returncode
+    if timer:
+      timer.cancel()
+
   except:
     print ('calling {cmd} failed\n{trace}'.format(cmd=' '.join(cmd),trace=traceback.format_exc()))
+  return stats
 
 @contextmanager
 def cd(newdir):
@@ -159,18 +179,20 @@ def clean_project(project):
   with cd(project_dir):
     clean_command = project_info(project)['clean'].strip().split()
     run_cmd(clean_command)
+    run_cmd(['rm', '-r', 'dljc-out'])
 
-def run_dljc(project, tools, options=[]):
+def run_dljc(project, tools, options=[], timelimit=1800.0):
   project_dir = get_project_dir(project)
   with cd(project_dir):
     build_command = project_info(project)['build'].strip().split()
     dljc_command = [DLJC_BINARY,
+                    '-l', LIBS_DIR,
                     '-o', DLJC_OUTPUT_DIR,
                     '-t', ','.join(tools)]
     dljc_command.extend(options)
     dljc_command.append('--')
     dljc_command.extend(build_command)
-    run_cmd(dljc_command, print_output=True)
+    run_cmd(dljc_command, print_output=True, timeout=timelimit)
 
 
 CHECKER_ENV_SETUP = False
