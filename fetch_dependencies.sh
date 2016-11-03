@@ -8,7 +8,7 @@ mkdir -p libs
 pushd libs &> /dev/null
 
 JARS=(
-    "http://www.csl.sri.com/users/schaef/jars/daikon.jar"
+    "http://plse.cs.washington.edu/daikon/download/daikon.jar"
     "https://github.com/randoop/randoop/releases/download/v3.0.3/randoop-all-3.0.3.jar"
     "https://github.com/aas-integration/prog2dfg/releases/download/v0.1/prog2dfg.jar"
     "https://github.com/junit-team/junit/releases/download/r4.12/junit-4.12.jar"
