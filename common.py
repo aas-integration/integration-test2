@@ -181,6 +181,27 @@ def clean_project(project):
     run_cmd(clean_command)
     run_cmd(['rm', '-r', 'dljc-out'])
 
+def get_class_dirs(project):
+  classdirs = []
+
+  dljc_output = os.path.join(get_project_dir(project),
+                             'dljc-out',
+                             'javac.json')
+
+  if not os.path.exists(dljc_output):
+    print 'Tried to get classdirs from project where DLJC has not been run.'
+    return None
+
+  with open(dljc_output, 'r') as f:
+    javac_commands = json.loads(f.read())
+    for command in javac_commands:
+      classdir = command['javac_switches'].get('d')
+      if classdir:
+        classdirs.append(classdir)
+
+  return classdirs
+
+
 def run_dljc(project, tools, options=[], timelimit=1800.0):
   project_dir = get_project_dir(project)
   with cd(project_dir):
