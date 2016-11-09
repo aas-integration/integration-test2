@@ -73,7 +73,25 @@
             "git-ref": "3746b69de71d3d23818cd4367b884c020c194981",
             "build": "mvn compile -pl !jbox2d-testbed-jogl,!jbox2d-testbed-javafx",
             "clean": "mvn clean"
-        }
+        },
 
+        "Sort07":
+        {
+            "name": "Sort07",
+            "build": "ant",
+            "clean": "ant clean"
+        },
+        "Sort09":
+        {
+            "name": "Sort09",
+            "build": "ant",
+            "clean": "ant clean"
+        },
+        "Sort10":
+        {
+            "name": "Sort10",
+            "build": "ant",
+            "clean": "ant clean"
+        }
     }
 }
