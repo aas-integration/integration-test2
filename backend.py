@@ -53,7 +53,6 @@ def generate_project_kernel(project, cluster_json=None):
     
   print("Generated kernel file for {0} in {1}.".format(project, kernel_file_path))
 
-
 def compute_clusters_for_classes(project_list, out_file_name):
   class_dirs = list()
   for project in project_list:
@@ -76,19 +75,7 @@ def compute_clusters_for_classes(project_list, out_file_name):
 
   common.run_cmd(clusterer_cmd, True) 
 
-
-def main():
-  
-  project_list = common.LIMITED_PROJECT_LIST
-
-  parser = argparse.ArgumentParser()
-  parser.add_argument("-g", "--graph", action="store_true", help="set to regenerate graphs from the programs")
-  parser.add_argument("-rc", "--recompute_clusters", action="store_true", help="force recomputation of the clusters")
-  parser.add_argument("-d", "--dir", type=str, required=True, help="directory to store precomputed kernels")  
-  args = parser.parse_args()
-
-  common.mkdir(args.dir)
-  
+def run(project_list, args):
   if os.path.isfile(common.CLUSTER_FILE) and not args.recompute_clusters:
     print ("Using clusters from: {0}".format(common.CLUSTER_FILE))
   else:
@@ -100,19 +87,13 @@ def main():
     # now run clusterer.jar to get the json file containing the clusters.
     compute_clusters_for_classes(project_list, common.CLUSTER_FILE)
 
-
   for project in project_list:
     if args.graph:
       generate_graphs(project)
     generate_project_kernel(project, common.CLUSTER_FILE)
-
 
   # gather kernels for one-against-all comparisons
   for project in project_list:
     pl = list(project_list) # create a copy
     pl.remove(project)
     #gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt"))
-
-if __name__ == '__main__':
-  main()
-  os._exit(0)

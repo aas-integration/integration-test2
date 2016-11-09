@@ -46,22 +46,8 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None):
     fo.write(line)
   fo.close()
 
-def main():
-
-  project_list = common.LIMITED_PROJECT_LIST
-
-  parser = argparse.ArgumentParser()
-  parser.add_argument("-c", "--cluster", type=str, help="path to the json file that contains clustering information")
-  parser.add_argument("-d", "--dir", type=str, required=True, help="directory to store similarity results")
-  parser.add_argument("-k", "--ker", type=str, required=True, help="directory where the kernel files are stored")
-  args = parser.parse_args()
-
-  common.mkdir(args.dir)
-
+def run(project_list, args):
   for project in project_list:
     result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
     kernel_file = os.path.join(common.WORKING_DIR, args.ker, project+"_kernel.txt")
     check_similarity(project, result_file, kernel_file, args.cluster)
-    
-if __name__ == '__main__':
-  main()
