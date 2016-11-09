@@ -53,22 +53,51 @@ def generate_project_kernel(project, cluster_json=None):
     
   print("Generated kernel file for {0} in {1}.".format(project, kernel_file_path))
 
+
+def compute_clusters_for_classes(project_list, out_file_name):
+  class_dirs = list()
+  for project in project_list:
+    class_dirs.extend(common.get_class_dirs(project))
+  if len(class_dirs)<1:
+    print("No class dirs found to cluster. Make sure you run dljc first.")
+    return
+
+  clusterer_cmd = ['java', '-jar', common.get_jar('clusterer.jar'),
+                   '-cs', '3',
+                   '-out', out_file_name,
+                   '-dirs', " ".join(class_dirs)
+                  ]
+
+  common.run_cmd(clusterer_cmd, True) 
+
+
 def main():
   
   project_list = common.LIMITED_PROJECT_LIST
 
   parser = argparse.ArgumentParser()
-  parser.add_argument("-c", "--cluster", type=str, help="path to the json file that contains clustering information")
   parser.add_argument("-g", "--graph", action="store_true", help="set to regenerate graphs from the programs")
   parser.add_argument("-d", "--dir", type=str, required=True, help="directory to store precomputed kernels")
   args = parser.parse_args()
 
   common.mkdir(args.dir)
+  
+  if os.path.isfile(common.CLUSTER_FILE):
+    print ("Using clusters from: {0}".format(common.CLUSTER_FILE))
+  else:
+    #compute clusters. 
+    # first compile everything using dljc to get the class dirs.
+    for project in project_list:
+      common.run_dljc(project, [], [])
+    # now run clusterer.jar to get the json file containing the clusters.
+    compute_clusters_for_classes(project_list, common.CLUSTER_FILE)
+
 
   for project in project_list:
     if args.graph:
       generate_graphs(project)
-    generate_project_kernel(project, args.cluster)
+    generate_project_kernel(project, common.CLUSTER_FILE)
+
 
   # gather kernels for one-against-all comparisons
   for project in project_list:

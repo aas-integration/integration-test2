@@ -9,6 +9,8 @@ CORPUS_DIR = os.path.join(WORKING_DIR, "corpus")
 CORPUS_INFO = None
 TOOLS_DIR = os.path.join(WORKING_DIR, "tools")
 
+CLUSTER_FILE = os.path.join(WORKING_DIR, "clusters.json")
+
 DLJC_BINARY = os.path.join(TOOLS_DIR, "do-like-javac", "dljc")
 DLJC_OUTPUT_DIR = "dljc-out"
 
