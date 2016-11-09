@@ -38,7 +38,7 @@ def generate_project_kernel(project, cluster_json=None):
     print("Using clustering output for node relabeling:")
     graph_kernel_cmd = ['python',
                         common.get_simprog('precompute_kernel.py'),
-                        out_dir,
+                        project_dir,
                         kernel_file_path,
                         cluster_json
                         ]
@@ -46,7 +46,7 @@ def generate_project_kernel(project, cluster_json=None):
   else:
     graph_kernel_cmd = ['python',
                         common.get_simprog('precompute_kernel.py'),
-                        out_dir,
+                        project_dir,
                         kernel_file_path
                         ]
     common.run_cmd(graph_kernel_cmd, True)
@@ -103,7 +103,7 @@ def main():
   for project in project_list:
     pl = list(project_list) # create a copy
     pl.remove(project)
-    gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt"))
+    #gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt"))
 
 if __name__ == '__main__':
   main()
