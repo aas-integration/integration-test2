@@ -6,7 +6,7 @@ WORKING_DIR = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, os.path.abspath(os.path.join(WORKING_DIR, '..')))
 import common
 
-SOLVER_SRC_DIR = os.path.join(common.TOOLS_DIR, 'generic-type-inference-solver', 'src', 'ontology')
+SOLVER_SRC_DIR = os.path.join(common.TOOLS_DIR, 'ontology', 'src', 'ontology')
 
 def revert_checker_source():
   with common.cd(SOLVER_SRC_DIR):
