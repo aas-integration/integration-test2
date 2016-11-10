@@ -15,7 +15,13 @@ def generate_graphs(project):
   print("Generating graphs for {0}".format(project))
   common.run_dljc(project,
                   ['graphtool'],
-                  ['--graph-jar', common.get_jar('prog2dfg.jar')])
+                  ['--graph-jar', common.get_jar('prog2dfg.jar'),
+                   '--cache'])
+
+def generate_dtrace(project):
+  common.run_dljc(project,
+                  ['dyntrace'], ['--cache'])  
+
 
 def gather_kernels(projects, corpus_kernel_file):
   print("Gathering kernels from projects {0}".format(" and ".join(projects)))
@@ -105,7 +111,7 @@ def run(project_list, args, kernel_dir):
     if args.graph:
       #TODO: If you don't clean stuff before, nothing
       #happens here.
-      common.clean_project(project)
+      #common.clean_project(project)
       generate_graphs(project)
     generate_project_kernel(project, common.CLUSTER_FILE)
 
@@ -115,3 +121,7 @@ def run(project_list, args, kernel_dir):
     pl.remove(project)
     gather_kernels(pl, os.path.join(common.WORKING_DIR, kernel_dir, project+"_kernel.txt"))
 
+  for project in project_list:
+    print ("Generate dtrace for {0}".format(project))
+    #common.clean_project(project)
+    generate_dtrace(project)
