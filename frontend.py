@@ -21,6 +21,10 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None):
   # fetch various method information from each project in the list
   output_dir = common.DOT_DIR[project]
   method_file = common.get_method_path(project, output_dir)
+
+  if not os.path.isfile(method_file):
+    pass
+
   with open(method_file, "r") as mf:
     content = mf.readlines()
     for line in content:
@@ -46,8 +50,8 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None):
     fo.write(line)
   fo.close()
 
-def run(project_list, args):
+def run(project_list, args, kernel_dir):
   for project in project_list:
     result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
-    kernel_file = os.path.join(common.WORKING_DIR, args.ker, project+"_kernel.txt")
+    kernel_file = os.path.join(common.WORKING_DIR, kernel_dir, project+"_kernel.txt")
     check_similarity(project, result_file, kernel_file, args.cluster)

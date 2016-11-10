@@ -19,19 +19,31 @@ def generate_graphs(project):
 
 def gather_kernels(projects, corpus_kernel_file):
   print("Gathering kernels from projects {0}".format(" and ".join(projects)))
-  corpus_kernel_file_handle = open(corpus_kernel_file, "w")
-  for project in projects:
-    project_dir = common.get_project_dir(project)
-    out_dir = common.DOT_DIR[project]
-    project_kernel_file_path = common.get_kernel_path(project, out_dir)
-    with open(project_kernel_file_path, "r") as fi: corpus_kernel_file_handle.write(fi.read())
-  corpus_kernel_file_handle.close()
+  with open(corpus_kernel_file, "w") as corpus_kernel_file_handle:
+    for project in projects:
+      project_dir = common.get_project_dir(project)
+      out_dir = common.DOT_DIR[project]
+      project_kernel_file_path = common.get_kernel_path(project, out_dir)
+      
+      if os.path.isfile(project_kernel_file_path):
+        with open(project_kernel_file_path, "r") as fi: 
+            corpus_kernel_file_handle.write(fi.read())
+      else:
+        print ("No kernel file find for project {0}.\n   {1} is not a file.".format(
+          project,
+          project_kernel_file_path
+          ))
+
 
 def generate_project_kernel(project, cluster_json=None):
   """ run graph kernel computation """
   
   project_dir = common.get_project_dir(project)
+
+  if not (project in common.DOT_DIR):
+    common.DOT_DIR[project] = "_classes"
   out_dir = common.DOT_DIR[project]
+  
   kernel_file_path = common.get_kernel_path(project, out_dir)
   
   if cluster_json:
@@ -75,13 +87,15 @@ def compute_clusters_for_classes(project_list, out_file_name):
 
   common.run_cmd(clusterer_cmd, True) 
 
-def run(project_list, args):
+def run(project_list, args, kernel_dir):
   if os.path.isfile(common.CLUSTER_FILE) and not args.recompute_clusters:
     print ("Using clusters from: {0}".format(common.CLUSTER_FILE))
   else:
     #compute clusters. 
     # first compile everything using dljc to get the class dirs.
     for project in project_list:
+      #TODO: If you don't clean stuff before, nothing
+      #happens here. 
       common.clean_project(project)
       common.run_dljc(project, [], [])
     # now run clusterer.jar to get the json file containing the clusters.
@@ -89,6 +103,9 @@ def run(project_list, args):
 
   for project in project_list:
     if args.graph:
+      #TODO: If you don't clean stuff before, nothing
+      #happens here.
+      common.clean_project(project)
       generate_graphs(project)
     generate_project_kernel(project, common.CLUSTER_FILE)
 
@@ -96,4 +113,5 @@ def run(project_list, args):
   for project in project_list:
     pl = list(project_list) # create a copy
     pl.remove(project)
-    #gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt"))
+    gather_kernels(pl, os.path.join(common.WORKING_DIR, kernel_dir, project+"_kernel.txt"))
+
