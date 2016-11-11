@@ -2,12 +2,12 @@ import shutil, os
 import pa2checker
 import common
 
-def run_pa2checker(annotations):
+def run_pa2checker(ontology_values):
   pa2checker.revert_checker_source()
 
-  for annotation, classes in annotations.iteritems():
-    pa2checker.create_type_annotation(annotation)
-    pa2checker.update_ontology_utils(annotation, classes)
+  for ontology_value, classes in ontology_values.iteritems():
+    pa2checker.insert_ontology_value(ontology_value)
+    pa2checker.update_ontology_utils(ontology_value, classes)
   pa2checker.recompile_checker_framework()
 
 def run_inference(project):
@@ -37,9 +37,9 @@ def run_inference(project):
 
 
 def run(project_list):
-  annotations = { "Sequence": ['java.util.List', 'java.util.LinkedHashSet'] }
+  ontology_values = { "Sequence": ['java.util.List', 'java.util.LinkedHashSet'] }
 
-  run_pa2checker(annotations)
+  run_pa2checker(ontology_values)
 
   for project in project_list:
     common.clean_project(project)

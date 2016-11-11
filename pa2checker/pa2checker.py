@@ -13,27 +13,41 @@ def revert_checker_source():
     common.run_cmd(['git', 'clean', '-f', '.'])
     common.run_cmd(['git', 'checkout', '.'])
 
-def create_type_annotation(annotation_name, super_type_names=['OntologyTop']):
-  annotation_file_dir = os.path.join(SOLVER_SRC_DIR, 'qual')
-  annotation_file_name = os.path.join(annotation_file_dir, '{}.java'.format(annotation_name))
+def insert_ontology_value(value_name):
+  """ insert ontology value to the file
+  tools/ontology/src/ontology/qual/OntologyValue.java
+  which is the enum class manages all the ontology values, annotaion would be gnereated
+  in the form of @Ontology(values="{OntologyValue.ontology_value_name}")
+  """
+  ontology_qual_dir = os.path.join(SOLVER_SRC_DIR, 'qual')
+  ontology_value_file = os.path.join(ontology_qual_dir, 'OntologyValue.java')
 
-  print ("Writing annotation {} to file {}".format(annotation_name, annotation_file_name))
-  #first generate the definition of the annotation
-  with open(annotation_file_name, 'w') as out_file:
-    with open(os.path.join(WORKING_DIR, "annotation.java.prototype"), 'r') as proto_file:
+  capitial_value_name = value_name.upper()
+
+  insert_enum = "    {}(\"{}\"),\n".format(capitial_value_name, value_name.lower())
+  botttom_enum = "BOTTOM(\"BOTTOM\");"
+
+  with tempfile.NamedTemporaryFile(mode='w', suffix='.java') as out_file:
+    with open(ontology_value_file, 'r') as proto_file:
+
+      already_existed = False
+
       for line in proto_file.readlines():
-        if "$ANNOTATION_NAME$" in line:
-          line = line.replace("$ANNOTATION_NAME$", annotation_name)
-        if "$SUPERTYPE_NAMES$" in line:
-          snames = []
-          for super_type_name in super_type_names:
-            snames+=["{}.class".format(super_type_name)]
-          line = line.replace("$SUPERTYPE_NAMES$", ','.join(snames))
+        if insert_enum in line:
+          already_existed = True;
+
+        if botttom_enum in line:
+          if not already_existed:
+            out_file.write(insert_enum)
+
         out_file.write(line)
 
-def update_ontology_utils(annotation_name, java_type_names):
+      out_file.flush()
+      shutil.copyfile(out_file.name, ontology_value_file)
+
+def update_ontology_utils(value_name, java_type_names):
   """ updates the file
-  tools/generic-type-inference-solver/src/ontology/util/OntologyUtils.java
+  tools/ontology/src/ontology/util/OntologyUtils.java
   which decides which java types get annotated with which annotation.
   """
 
@@ -43,26 +57,14 @@ def update_ontology_utils(annotation_name, java_type_names):
 
   ontology_util_dir = os.path.join(SOLVER_SRC_DIR, 'util')
   ontology_util_file = os.path.join(ontology_util_dir, 'OntologyUtils.java')
-  qualified_annotation_name = 'ontology.qual.{}'.format(annotation_name)
+  upper_value_name = value_name.upper()
 
   with tempfile.NamedTemporaryFile(mode='w', suffix='.java') as out_file:
     with open(ontology_util_file, 'r') as proto_file:
-      reading_imports = False
-      already_imported = False
       for line in proto_file.readlines():
-        if line.startswith("import "):
-          reading_imports = True
-          if qualified_annotation_name in line:
-            already_imported = True
+        out_file.write(line)
 
-        if reading_imports==True:
-          if not line.startswith("import ") and len(line.strip())>0:
-            reading_imports = False
-            if already_imported==False:
-              # Import the type annotation that we want to use.
-              out_file.write("import {};\n".format(qualified_annotation_name))
-
-        if "return null;" in line:
+        if "public static OntologyValue determineOntologyValue(TypeMirror type) {" in line:
           # This is where we add the new mapping
           out_file.write("        if (")
           conds = []
@@ -74,27 +76,36 @@ def update_ontology_utils(annotation_name, java_type_names):
               conds+=["TypesUtils.isDeclaredOfName(type, \"{}\")".format(java_type)]
           out_file.write(" || ".join(conds))
           out_file.write("){\n")
-          out_file.write("            AnnotationMirror SEQ = AnnotationUtils.fromClass(elements, {}.class);\n".format(annotation_name))
-          out_file.write("            return SEQ;\n")
+          out_file.write("            return OntologyValue.{};\n".format(upper_value_name))
           out_file.write("         }\n")
 
-        out_file.write(line)
         out_file.flush()
         shutil.copyfile(out_file.name, ontology_util_file)
 
 def recompile_checker_framework():
+  """ recompile checker framework stuffs
+      include:
+      - checker-framework-inference
+      - ontology
+  """
   if not os.environ.get('JAVA_HOME'):
     print "ERROR in pa2checker.recompile_checker_framework(): Gradle will fail if your JAVA_HOME environment variable is unset. Please set it and try again."
     sys.exit(0)
-  type_infer_tool_dir = os.path.join(common.TOOLS_DIR, "checker-framework-inference")
-  with common.cd(type_infer_tool_dir):
+  checker_framework_inference_dir = os.path.join(common.TOOLS_DIR, "checker-framework-inference")
+  ontology_dir = os.path.join(common.TOOLS_DIR, "ontology")
+
+  with common.cd(checker_framework_inference_dir):
     common.setup_checker_framework_env()
     common.run_cmd(["gradle", "dist", "-i"], print_output=True)
+
+  with common.cd(ontology_dir):
+    common.setup_checker_framework_env()
+    common.run_cmd(["gradle", "build", "-i"], print_output=True)
 
 
 def main():
   annotation = "Disco"
-  create_type_annotation(annotation)
+  insert_ontology_value(annotation)
   update_ontology_utils(annotation, ["java.util.Collection", "java.util.LinkedList"])
   recompile_checker_framework()
 
