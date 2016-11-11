@@ -14,6 +14,7 @@ def run_inference(project):
   common.setup_checker_framework_env()
 
   classpath = os.path.join(os.environ['JSR308'], 'generic-type-inference-solver', 'bin')
+  classpath += ':' + os.path.join(os.environ['JSR308'], 'ontology', 'bin')
   if os.environ.get('CLASSPATH'):
     os.environ['CLASSPATH'] += ':' + classpath
   else:
@@ -29,7 +30,7 @@ def run_inference(project):
                   ['inference'],
                   ['--solverArgs=backEndType=maxsatbackend.MaxSat',
                    '--checker', 'ontology.OntologyChecker',
-                   '--solver', 'constraintsolver.ConstraintSolver',
+                   '--solver', 'ontology.solvers.backend.OntologyConstraintSolver',
                    '-m', 'ROUNDTRIP',
                    '--cache',
                    '-afud', annotation_dir])
