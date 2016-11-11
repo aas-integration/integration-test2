@@ -18,7 +18,7 @@ def create_daikon_invariant(ontology_invariant_file, invariant_name):
 
   pattern_java_file_name = "./"+invariant_name+".java"
 
-  operator = "<="
+  operator = "<=" #fallback option
   with open(ontology_invariant_file, 'r') as in_file:
     #TODO: do something meaningful here.
     for line in in_file.readlines():

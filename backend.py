@@ -19,6 +19,7 @@ def generate_graphs(project):
                    '--cache'])
 
 def generate_dtrace(project):
+  #TODO: set the out file to common.get_dtrace_file_for_project(project)
   common.run_dljc(project,
                   ['dyntrace'], ['--cache'])  
 
