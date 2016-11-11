@@ -89,7 +89,7 @@ def recompile_checker_framework():
       - ontology
   """
   if not os.environ.get('JAVA_HOME'):
-    print "ERROR in pa2checker.recompile_checker_framework_inference(): Gradle will fail if your JAVA_HOME environment variable is unset. Please set it and try again."
+    print "ERROR in pa2checker.recompile_checker_framework(): Gradle will fail if your JAVA_HOME environment variable is unset. Please set it and try again."
     sys.exit(0)
   checker_framework_inference_dir = os.path.join(common.TOOLS_DIR, "checker-framework-inference")
   ontology_dir = os.path.join(common.TOOLS_DIR, "ontology")
