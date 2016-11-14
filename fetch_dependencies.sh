@@ -60,12 +60,12 @@ else
     popd &> /dev/null # Exit do-like-javac
 fi
 
-if [ ! -d "ontology" ]; then
-    git clone https://github.com/pascaliUWat/ontology.git
+if [ -d "ontology" ]; then
+    rm -rf ontology
 fi
+git clone https://github.com/pascaliUWat/ontology.git
 
 pushd ontology &> /dev/null
-git pull
 export TRAVIS_BUILD_DIR=`pwd`
 ./pascali-setup.sh
 popd &> /dev/null # Exit ontology
