@@ -1,5 +1,14 @@
-import os
+import os, tempfile, urllib, zipfile, shutil
 from common import mkdir, run_cmd, cd, CORPUS_DIR, get_corpus_info
+
+def download_zip(project):
+  tdir = tempfile.mkdtemp()
+  with cd(tdir):
+    zipname = project['name'] + '.zip'
+    urllib.urlretrieve(project['zip-url'], zipname)
+    zip = zipfile.ZipFile(zipname)
+    zip.extractall(os.path.join(CORPUS_DIR, project['name']))
+  shutil.rmtree(tdir)
 
 def git_update(project):
   if project['git-ref'] not in run_cmd(['git', 'rev-parse', 'HEAD'])['output']:
@@ -33,6 +42,9 @@ def download_project(project):
       run_cmd(['svn', 'checkout',
                 '{}@{}'.format(project['svn-url'], project['svn-rev']),
                 project['name']])
+    elif 'zip-url' in project:
+      download_zip(project)
+
   else:
     print "Already downloaded %s." % (project['name'])
 

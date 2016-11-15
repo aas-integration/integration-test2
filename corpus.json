@@ -75,6 +75,33 @@
             "clean": "mvn clean"
         },
 
+        "imagej":
+        {
+            "name": "imagej",
+            "zip-url": "https://imagej.nih.gov/ij/download/src/ij151h-src.zip",
+            "build-dir": "source",
+            "build": "ant build",
+            "clean": "ant clean"
+        },
+
+        "imglib2":
+        {
+            "name": "imglib2",
+            "git-url": "https://github.com/imglib/imglib2.git",
+            "git-ref": "16af41a9beec79642ce0728ed198defa46c6e0dd",
+            "build": "mvn compile",
+            "clean": "mvn clean"
+        },
+
+        "thumbnailinator":
+        {
+            "name": "thumbnailinator",
+            "git-url": "https://github.com/coobird/thumbnailator.git",
+            "git-ref": "270851897110ec21b5b6fa8b9ba031abb98b9749",
+            "build": "mvn compile",
+            "clean": "mvn clean"
+        },
+
         "Sort07":
         {
             "name": "Sort07",
