@@ -12,7 +12,7 @@ sys.path.insert(0, 'simprog')
 from similarity import Similarity
 
 
-def compute_daikon_invariants(project_list):
+def get_daikon_patterns():
   ordering_operator = "<="
 
   ontology_invariant_file = "TODO_from_Howie.txt"
@@ -23,17 +23,6 @@ def compute_daikon_invariants(project_list):
 
   daikon_pattern_java_file = ontology_to_daikon.create_daikon_invariant(ontology_invariant_file, invariant_name)
 
-  """ Search for methods that have a return type annotated with Sequence
-  and for which we can establish a sortedness invariant (may done by LB).
-  INPUT: dtrace file of project
-         daikon_pattern_java_file that we want to check on the dtrace file.
-  OUTPUT: list of ppt names that establish the invariant. Here a ppt
-  is a Daikon program point, s.a. test01.TestClass01.sort(int[]):::EXIT
-  Note: this step translate the type_invariant into a Daikon
-  template (which is a Java file).
-  """
-
-  pattern_class_name = invariant_name
   pattern_class_dir = os.path.join(common.WORKING_DIR, "invClass")
   if os.path.isdir(pattern_class_dir):
     shutil.rmtree(pattern_class_dir)
@@ -43,10 +32,18 @@ def compute_daikon_invariants(project_list):
          daikon_pattern_java_file, "-d", pattern_class_dir]
   common.run_cmd(cmd)
 
+  return pattern_class_dir
+
+
+def compute_daikon_invariants(project_list, pattern_class_dir=None):
+
   list_of_methods = []
   for project in project_list:
 
     dljc_dir = common.get_dljc_dir_for_project(project)
+    if (not dljc_dir) or (not os.path.isdir(dljc_dir)):
+      print ("Project {0} was not built".format(project))
+      continue
     i=0
     while True:
       i+=1
@@ -56,15 +53,16 @@ def compute_daikon_invariants(project_list):
         print ("No dtrace file found at {0}".format(dtrace_file))
         break
     
-      ppt_names = inv_check.find_ppts_that_establish_inv(dtrace_file, pattern_class_dir, pattern_class_name)
+      ppt_names = inv_check.find_ppts_that_establish_inv(dtrace_file, pattern_class_dir, "TODO_sorted_sequence")
       methods = set()
       for ppt in ppt_names:
+        print ("BINGO !!!!!!!!!!! {0}".format(ppt))
         method_name = ppt[:ppt.find(':::EXIT')]
         methods.add(method_name)
       list_of_methods +=[(project, methods)]
 
   print ("\n   ************")
-  print ("The following corpus methods return a sequence sorted by {}:".format(ordering_operator))
+  print ("The following corpus methods return a sequence sorted by <=")
   for project, methods in list_of_methods:
     if len(methods)>0:
       print (project)
@@ -119,7 +117,7 @@ def run(project_list, args, kernel_dir):
   for project in project_list:
     result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
     kernel_file = os.path.join(common.WORKING_DIR, kernel_dir, project+"_kernel.txt")
-    check_similarity(project, result_file, kernel_file, args.cluster)
+    #check_similarity(project, result_file, kernel_file, args.cluster)
 
-    compute_daikon_invariants(project_list)
+    compute_daikon_invariants(project_list, get_daikon_patterns())
 

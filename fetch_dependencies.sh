@@ -14,7 +14,7 @@ JARS=(
     "https://github.com/junit-team/junit/releases/download/r4.12/junit-4.12.jar"
     "http://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
     "https://github.com/petablox-project/petablox/releases/download/v1.0/petablox.zip"
-    "https://github.com/aas-integration/clusterer/releases/download/v0.1/clusterer.jar"
+    "https://github.com/aas-integration/clusterer/releases/download/v0.5/clusterer.jar"
 )
 
 for jar in "${JARS[@]}"

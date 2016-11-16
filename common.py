@@ -11,6 +11,8 @@ TOOLS_DIR = os.path.join(WORKING_DIR, "tools")
 
 CLUSTER_FILE = os.path.join(WORKING_DIR, "clusters.json")
 
+CLASS2FIELDS_FILE = os.path.join(WORKING_DIR, "c2f.json")
+
 DLJC_BINARY = os.path.join(TOOLS_DIR, "do-like-javac", "dljc")
 DLJC_OUTPUT_DIR = "dljc-out"
 
