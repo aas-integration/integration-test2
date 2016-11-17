@@ -5,7 +5,7 @@
             "name" : "boofcv",
             "git-url": "https://github.com/lessthanoptimal/BoofCV.git",
             "git-ref": "16fff968dbbe07af4a9cb14395a89cde18ffb72e",
-            "build": "gradle jar",
+            "build": "gradle compileJava",
             "clean": "gradle clean"
         },
 

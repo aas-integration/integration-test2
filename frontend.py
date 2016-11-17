@@ -70,7 +70,8 @@ def compute_daikon_invariants(project_list, pattern_class_dir=None):
         print("\t{}".format(m))
   print ("\n   ************")
 
-  shutil.rmtree(pattern_class_dir)
+  if pattern_class_dir:
+    shutil.rmtree(pattern_class_dir)
 
 
 
@@ -117,7 +118,8 @@ def run(project_list, args, kernel_dir):
   for project in project_list:
     result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
     kernel_file = os.path.join(common.WORKING_DIR, kernel_dir, project+"_kernel.txt")
-    #check_similarity(project, result_file, kernel_file, args.cluster)
+    check_similarity(project, result_file, kernel_file, args.cluster)
 
-    compute_daikon_invariants(project_list, get_daikon_patterns())
+    #compute_daikon_invariants(project_list, get_daikon_patterns())
+    compute_daikon_invariants(project_list)
 
