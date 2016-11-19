@@ -50,7 +50,11 @@ def find_ppts_that_establish_inv(dtrace_file, pattern_class_dir, pattern_class_n
          pattern_class_name - qualified name of the pattern class
   OUTPUT: set of daikon program points (ppts) that establish the given invariant. 
   """
-  daikon_output = run_daikon_on_dtrace_file(dtrace_file, daikon_jar+":"+pattern_class_dir, pattern_class_name)
+
+  cp = daikon_jar
+  if pattern_class_dir:
+    cp = daikon_jar+":"+pattern_class_dir
+  daikon_output = run_daikon_on_dtrace_file(dtrace_file, cp, pattern_class_name)
   ppts = find_ppts_that_establish_inv_in_daikon_output(daikon_output, pattern_class_name)
   return ppts
 
