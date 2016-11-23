@@ -87,7 +87,8 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None):
   method_file = common.get_method_path(project, output_dir)
 
   if not os.path.isfile(method_file):
-    pass
+    print ("Cannot find method file for project {0} at {1}".format(project, method_file))
+    return
 
   with open(method_file, "r") as mf:
     content = mf.readlines()
@@ -104,7 +105,7 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None):
   sim.read_graph_kernels(kernel_file)
   top_k = 5 # top k most similar methods
   iter_num = 3 # number of iteration of the WL-Kernel method
-  fo = open(result_file, 'w')
+  with open(result_file, 'w') as fo:
   for dot_file in corpus_dot_to_method_map.keys():
     result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num, cluster_json)
     line = dot_file+":\n"
@@ -112,7 +113,7 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None):
       line += dot+ " , " + str(score) + "\n"      
     line += "\n"
     fo.write(line)
-  fo.close()
+  
 
 def run(project_list, args, kernel_dir):
   for project in project_list:
