@@ -106,13 +106,13 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None):
   top_k = 5 # top k most similar methods
   iter_num = 3 # number of iteration of the WL-Kernel method
   with open(result_file, 'w') as fo:
-  for dot_file in corpus_dot_to_method_map.keys():
-    result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num, cluster_json)
-    line = dot_file+":\n"
-    for (dot, score) in result_program_list_with_score:
-      line += dot+ " , " + str(score) + "\n"      
-    line += "\n"
-    fo.write(line)
+    for dot_file in corpus_dot_to_method_map.keys():
+      result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num, cluster_json)
+      line = dot_file+":\n"
+      for (dot, score) in result_program_list_with_score:
+        line += dot+ " , " + str(score) + "\n"      
+      line += "\n"
+      fo.write(line)
   
 
 def run(project_list, args, kernel_dir):
