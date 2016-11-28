@@ -75,7 +75,7 @@ def compute_daikon_invariants(project_list, pattern_class_dir=None):
 
 
 
-def check_similarity(project, result_file, kernel_file, cluster_json=None):
+def check_similarity(project, result_file, kernel_file, cluster_json=None, top_k=5):
   """ SUMMARY: use case of the user-driven functionality of PASCALI.
   """
   dot_to_method_map = {}
@@ -103,7 +103,6 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None):
   # check similarity
   sim = Similarity()
   sim.read_graph_kernels(kernel_file)
-  top_k = 5 # top k most similar methods
   iter_num = 3 # number of iteration of the WL-Kernel method
   with open(result_file, 'w') as fo:
     for dot_file in corpus_dot_to_method_map.keys():
@@ -119,7 +118,7 @@ def run(project_list, args, kernel_dir):
   for project in project_list:
     result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
     kernel_file = os.path.join(common.WORKING_DIR, kernel_dir, project+"_kernel.txt")
-    check_similarity(project, result_file, kernel_file, args.cluster)
+    check_similarity(project, result_file, kernel_file, args.cluster, min(5,len(project_list)))
 
     #compute_daikon_invariants(project_list, get_daikon_patterns())
     compute_daikon_invariants(project_list)
