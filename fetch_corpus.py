@@ -29,20 +29,23 @@ def svn_update(project):
 
 def download_project(project):
   if not os.path.isdir(project['name']):
-    print "Downloading %s" % project['name']
     if 'git-url' in project:
+      print "Downloading %s" % project['name']
       run_cmd(['git', 'clone',
                 project['git-url'],
                 project['name']])
     elif 'hg-url' in project:
+      print "Downloading %s" % project['name']
       run_cmd(['hg', 'clone',
                 project['hg-url'],
                 project['name']])
     elif 'svn-url' in project:
+      print "Downloading %s" % project['name']
       run_cmd(['svn', 'checkout',
                 '{}@{}'.format(project['svn-url'], project['svn-rev']),
                 project['name']])
     elif 'zip-url' in project:
+      print "Downloading %s" % project['name']
       download_zip(project)
 
   else:
@@ -62,7 +65,11 @@ def fetch_corpus():
   with cd(CORPUS_DIR):
     for project in get_corpus_info()['projects'].values():
       download_project(project)
-      update_project(project)
+
+      if os.path.isdir(project['name']):
+        update_project(project)
+      else:
+        print "{} not available.".format(project['name'])
 
 if __name__ == "__main__":
   fetch_corpus()
