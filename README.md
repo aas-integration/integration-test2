@@ -29,4 +29,4 @@ Results of all tools running can be found on Travis:
 ---
 
 - pip dependencies
-script `map2annoAndAfu.py` needs an additional depencies named `glob2`. This one could be installed by `pip install glob2`.
+script `map2annoAndAfu.py` needs an additional dependency named `glob2`. This one could be installed by `pip install glob2`.
