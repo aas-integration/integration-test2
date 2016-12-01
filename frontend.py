@@ -8,8 +8,7 @@ import pa2checker
 import backend
 import common
 import argparse
-sys.path.insert(0, 'simprog')
-from similarity import Similarity
+from simprog import Similarity
 
 
 def get_daikon_patterns():

@@ -1,8 +1,7 @@
 import os, sys
 import common
 import argparse
-sys.path.insert(0, 'simprog')
-from similarity import Similarity
+from simprog import Similarity
 
 def generate_graphs(project):
   #print "STARTED CLEANING PROJECT"
