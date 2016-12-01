@@ -50,12 +50,12 @@ pushd tools &> /dev/null
 if [ ! -d do-like-javac ]; then
     git clone https://github.com/SRI-CSL/do-like-javac.git
     pushd do-like-javac &> /dev/null
-    git checkout split-dyntrace
+    git checkout dot-dirs
     popd &> /dev/null # Exit do-like-javac
 else
     pushd do-like-javac &> /dev/null
     git fetch
-    git checkout split-dyntrace
+    git checkout dot-dirs
     git pull
     popd &> /dev/null # Exit do-like-javac
 fi

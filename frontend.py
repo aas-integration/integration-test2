@@ -7,6 +7,7 @@ import pa2checker
 
 import backend
 import common
+import dot
 import argparse
 from simprog import Similarity
 
@@ -73,17 +74,14 @@ def compute_daikon_invariants(project_list, pattern_class_dir=None):
     shutil.rmtree(pattern_class_dir)
 
 
-
 def check_similarity(project, result_file, kernel_file, cluster_json=None, top_k=5):
   """ SUMMARY: use case of the user-driven functionality of PASCALI.
   """
-  dot_to_method_map = {}
   corpus_dot_to_method_map = {}
-  corpora = common.LIMITED_PROJECT_LIST
 
   # fetch various method information from each project in the list
-  output_dir = common.DOT_DIR[project]
-  method_file = common.get_method_path(project, output_dir)
+  output_dir = dot.dot_dirs(project)[0]
+  method_file = dot.get_method_path(project, output_dir)
 
   if not os.path.isfile(method_file):
     print ("Cannot find method file for project {0} at {1}".format(project, method_file))
@@ -96,7 +94,7 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None, top_k
       items = line.split('\t')
       method_name = items[0]
       method_dot = items[1]
-      method_dot_path = common.get_dot_path(project, output_dir, method_dot)
+      method_dot_path = dot.get_dot_path(project, output_dir, method_dot)
       corpus_dot_to_method_map[method_dot_path] = method_name
 
   # check similarity
@@ -107,8 +105,8 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None, top_k
     for dot_file in corpus_dot_to_method_map.keys():
       result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num, cluster_json)
       line = dot_file+":\n"
-      for (dot, score) in result_program_list_with_score:
-        line += dot+ " , " + str(score) + "\n"      
+      for (dt, score) in result_program_list_with_score:
+        line += dt+ " , " + str(score) + "\n"      
       line += "\n"
       fo.write(line)
   
