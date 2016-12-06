@@ -1,4 +1,4 @@
-import os, traceback, sys, json
+import os, traceback, sys, json, shutil
 import subprocess32 as subprocess
 from threading import Timer
 from contextlib import contextmanager
@@ -15,6 +15,8 @@ CLASS2FIELDS_FILE = os.path.join(WORKING_DIR, "c2f.json")
 
 DLJC_BINARY = os.path.join(TOOLS_DIR, "do-like-javac", "dljc")
 DLJC_OUTPUT_DIR = "dljc-out"
+
+DYNTRACE_ADDONS_DIR = os.path.join(WORKING_DIR, "dyntrace")
 
 LIMITED_PROJECT_LIST = ["dyn4j", "jreactphysics3d", "jbox2d", "react", "jmonkeyengine"]
 
@@ -102,24 +104,25 @@ def project_info(project_name):
 def get_simprog(py_file):
   return os.path.join(SIMPROG_DIR, py_file)
 
-def get_dljc_dir_for_project(project):
-  dtrace_path = os.path.join(CORPUS_DIR, project, DLJC_OUTPUT_DIR)
+def get_dljc_dir_for_project(project_name):
+  dtrace_path = os.path.join(get_project_dir(project_name), DLJC_OUTPUT_DIR)
   if os.path.exists(dtrace_path):
     return dtrace_path
   else:
     return None
 
-def clean_project(project):
-  project_dir = get_project_dir(project)
+def clean_project(project_name):
+  print "Cleaning {}".format(project_name)
+  project_dir = get_project_dir(project_name)
   with cd(project_dir):
-    clean_command = project_info(project)['clean'].strip().split()
+    clean_command = project_info(project_name)['clean'].strip().split()
     run_cmd(clean_command)
-    run_cmd(['rm', '-r', 'dljc-out'])
+    run_cmd(['rm', '-r', DLJC_OUTPUT_DIR])
 
-def get_class_dirs(project):
+def get_class_dirs(project_name):
   classdirs = []
 
-  dljc_output = os.path.join(get_project_dir(project),
+  dljc_output = os.path.join(get_project_dir(project_name),
                              DLJC_OUTPUT_DIR,
                              'javac.json')
 
@@ -136,10 +139,23 @@ def get_class_dirs(project):
 
   return classdirs
 
-def run_dljc(project, tools, options=[], timelimit=1800.0):
-  project_dir = get_project_dir(project)
+def copy_dyntrace_files(project_name):
+  project_dir = get_project_dir(project_name)
+  out_dir = os.path.join(project_dir, DLJC_OUTPUT_DIR)
+  mkdir(out_dir)
+  addons = [f for f in os.listdir(DYNTRACE_ADDONS_DIR) \
+            if f.startswith(project_info(project_name)['name']+".")]
+
+  for addon in addons:
+    addon_type = addon.rsplit('.', 1)[-1]
+    shutil.copyfile(os.path.join(DYNTRACE_ADDONS_DIR, addon),
+                    os.path.join(out_dir, addon_type))
+
+def run_dljc(project_name, tools, options=[], timelimit=1800.0):
+  copy_dyntrace_files(project_name)
+  project_dir = get_project_dir(project_name)
   with cd(project_dir):
-    build_command = project_info(project)['build'].strip().split()
+    build_command = project_info(project_name)['build'].strip().split()
     dljc_command = [DLJC_BINARY,
                     '-l', LIBS_DIR,
                     '-o', DLJC_OUTPUT_DIR,
@@ -148,7 +164,6 @@ def run_dljc(project, tools, options=[], timelimit=1800.0):
     dljc_command.append('--')
     dljc_command.extend(build_command)
     run_cmd(dljc_command, print_output=True, timeout=timelimit)
-
 
 CHECKER_ENV_SETUP = False
 def setup_checker_framework_env():
