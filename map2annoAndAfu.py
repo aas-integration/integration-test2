@@ -33,15 +33,6 @@ def main(json_file):
     for project in project_list:
         frontend_pa_inference.run_inference(project)
 
-## comment out this method if choosing using per project based jaif file to insert annotation
-# def runInsertAnnoToProject(project):
-#     """ Insert annotation info in default jaif file to ${project}  .
-#         default jaif file location would under ${project_dir} and named "${project}.jaif"
-#     """
-#     project_dir = common.get_project_dir(project)
-#     default_jaif_file = os.path.join(project_dir, "{}.jaif".format(project))
-#     runInsertAnnoToProject(project, default_jaif_file)
-
 def runInsertAnnoToProject(project, jaif_file):
     """ Insert annotation info in the ${jaif_file} to ${project}.
     """
@@ -116,4 +107,4 @@ def convertToOntologyValue(ontology_set):
 
 if __name__ == '__main__':
     json_file = "<path-to>/test.json"
-    main()
+    main(json_file)
