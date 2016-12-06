@@ -7,9 +7,10 @@ import pa2checker
 
 import backend
 import common
+import dot
 import argparse
 from simprog import Similarity
-
+import json
 
 def get_daikon_patterns():
   ordering_operator = "<="
@@ -73,17 +74,14 @@ def compute_daikon_invariants(project_list, pattern_class_dir=None):
     shutil.rmtree(pattern_class_dir)
 
 
-
 def check_similarity(project, result_file, kernel_file, cluster_json=None, top_k=5):
   """ SUMMARY: use case of the user-driven functionality of PASCALI.
   """
-  dot_to_method_map = {}
   corpus_dot_to_method_map = {}
-  corpora = common.LIMITED_PROJECT_LIST
 
   # fetch various method information from each project in the list
-  output_dir = common.DOT_DIR[project]
-  method_file = common.get_method_path(project, output_dir)
+  output_dir = dot.dot_dirs(project)[0]
+  method_file = dot.get_method_path(project, output_dir)
 
   if not os.path.isfile(method_file):
     print ("Cannot find method file for project {0} at {1}".format(project, method_file))
@@ -96,7 +94,7 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None, top_k
       items = line.split('\t')
       method_name = items[0]
       method_dot = items[1]
-      method_dot_path = common.get_dot_path(project, output_dir, method_dot)
+      method_dot_path = dot.get_dot_path(project, output_dir, method_dot)
       corpus_dot_to_method_map[method_dot_path] = method_name
 
   # check similarity
@@ -104,25 +102,27 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None, top_k
   sim = Similarity()
   sim.read_graph_kernels(kernel_file)
   iter_num = 3 # number of iteration of the WL-Kernel method
-  with open(result_file, 'w') as fo:
+  with open(result_file, "w") as fo:
     for dot_file in corpus_dot_to_method_map.keys():
+      dot_method = corpus_dot_to_method_map[dot_file]
+      json_result[dot_method] = []
       result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num, cluster_json)
       line = dot_file+":\n"
       dot_method = corpus_dot_to_method_map[dot_file]
       result_dict[dot_method] = []
       for (dt, score) in result_program_list_with_score:
-        line += dt+ " , " + str(score) + "\n"      
-        result_dict[dot_method].append((orpus_dot_to_method_map[dt], score))
+        line += "{} , {}\n".format(dt, score)
+        result_dict[dot_method].append((corpus_dot_to_method_map[dt], score))
       line += "\n"
       fo.write(line)
   with open('howie_json', 'w') as jo:
     json.dump(result_dict, jo)
-  
 
 def run(project_list, args, kernel_dir):
   for project in project_list:
     result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
     kernel_file = os.path.join(common.WORKING_DIR, kernel_dir, project+"_kernel.txt")
+    print project_list
     check_similarity(project, result_file, kernel_file, args.cluster, min(5,len(project_list)))
 
     #compute_daikon_invariants(project_list, get_daikon_patterns())

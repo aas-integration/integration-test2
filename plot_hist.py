@@ -4,7 +4,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 import os, sys, re
 from collections import defaultdict
 import argparse
-import common
+import common, dot
 from nltk.stem.porter import *
 
 """Read the program similarity result files and plot histograms"""
@@ -110,16 +110,16 @@ def plot_hist(x, xlabel, y, ylabel, fig_file, title=""):
 def get_dot_method_map(proj_lst):
 	dot_method_map = {}
 	for proj in proj_lst:
-            output_dir_lst = common.ALL_DOT_DIR[proj]
+            output_dir_lst = dot.dot_dirs(proj)
             for output_dir in output_dir_lst:
-                method_file = common.get_method_path(proj, output_dir)
+                method_file = dot.get_method_path(proj, output_dir)
                 with open(method_file, "r") as mf:
                     for line in mf:
                         line = line.rstrip()
                         items = line.split("\t")
                         method_name = items[0]
                         method_dot = items[1]
-                        method_dot_path = common.get_dot_path(proj, output_dir, method_dot)
+                        method_dot_path = dot.get_dot_path(proj, output_dir, method_dot)
                         dot_method_map[method_dot_path] = method_name
 	return dot_method_map
 

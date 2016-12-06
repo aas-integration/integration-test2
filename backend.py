@@ -1,5 +1,6 @@
 import os, sys
 import common
+import dot
 import argparse
 
 def generate_graphs(project):
@@ -29,8 +30,8 @@ def gather_kernels(projects, corpus_kernel_file):
   with open(corpus_kernel_file, "w") as corpus_kernel_file_handle:
     for project in projects:
       project_dir = common.get_project_dir(project)
-      out_dir = common.DOT_DIR[project]
-      project_kernel_file_path = common.get_kernel_path(project, out_dir)
+      out_dir = dot.dot_dirs(project)[0]
+      project_kernel_file_path = dot.get_kernel_path(project, out_dir)
       
       if os.path.isfile(project_kernel_file_path):
         with open(project_kernel_file_path, "r") as fi: 
@@ -47,11 +48,9 @@ def generate_project_kernel(project, cluster_json=None):
   
   project_dir = common.get_project_dir(project)
 
-  if not (project in common.DOT_DIR):
-    common.DOT_DIR[project] = "_classes"
-  out_dir = common.DOT_DIR[project]
+  out_dir = dot.dot_dirs(project)[0]
   
-  kernel_file_path = common.get_kernel_path(project, out_dir)
+  kernel_file_path = dot.get_kernel_path(project, out_dir)
   
   if cluster_json:
     print("Using clustering output for node relabeling:")

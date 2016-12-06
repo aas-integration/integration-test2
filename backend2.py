@@ -1,5 +1,6 @@
 import os, sys
 import common
+import dot
 import argparse
 from simprog import Similarity
 
@@ -22,8 +23,8 @@ def generate_project_kernel(project, cluster_json=None):
   """ run graph kernel computation """
   
   project_dir = common.get_project_dir(project)
-  out_dir = common.DOT_DIR[project]
-  kernel_file_path = common.get_kernel_path(project, out_dir)
+  out_dir = dot.dot_dirs(project)[0]
+  kernel_file_path = dot.get_kernel_path(project, out_dir)
   
   if cluster_json:
     print("Using clustering output for node relabeling:")
@@ -52,8 +53,8 @@ def compute_all_pairs_similarity(result_dir):
   for (yl,project) in enumerate(common.LIMITED_PROJECT_LIST):
     ind_file = os.path.join(result_dir, project+".txt")
     project_dir = common.get_project_dir(project)
-    out_dir = common.DOT_DIR[project]
-    project_kernel_file_path = common.get_kernel_path(project, out_dir)
+    out_dir = dot.dot_dirs(project)[0]
+    project_kernel_file_path = dot.get_kernel_path(project, out_dir)
     prog_count = sim.read_graph_kernels(project_kernel_file_path, yl)
     with open(ind_file, "w") as indf: 
         for i in range(counter, counter+prog_count):          

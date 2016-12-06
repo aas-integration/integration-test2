@@ -1,0 +1,1 @@
+    for (java.awt.Window w: java.awt.Window.getWindows()) {w.dispose();}
