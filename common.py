@@ -51,7 +51,7 @@ def run_cmd(cmd, print_output=False, timeout=None):
   if print_output:
     print ("Running %s" % ' '.join(cmd))
   try:
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     if timeout:
       timer = Timer(timeout, kill_proc, [process, stats])
@@ -63,11 +63,6 @@ def run_cmd(cmd, print_output=False, timeout=None):
         sys.stdout.write(line)
         sys.stdout.flush()
     process.stdout.close()
-    for line in iter(process.stderr.readline, b''):
-      if print_output:
-        sys.stderr.write(line)
-        sys.stderr.flush()
-    process.stderr.close()
 
     process.wait()
     stats['return_code'] = process.returncode
