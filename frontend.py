@@ -115,8 +115,8 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None, top_k
         result_dict[dot_method].append((orpus_dot_to_method_map[dt], score))
       line += "\n"
       fo.write(line)
-  with open(result_json, 'w') as jo:
-    json.dump(result_dict)
+  with open('howie_json', 'w') as jo:
+    json.dump(result_dict, jo)
   
 
 def run(project_list, args, kernel_dir):
