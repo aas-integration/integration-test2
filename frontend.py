@@ -100,6 +100,7 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None, top_k
       corpus_dot_to_method_map[method_dot_path] = method_name
 
   # check similarity
+  result_dict = {}
   sim = Similarity()
   sim.read_graph_kernels(kernel_file)
   iter_num = 3 # number of iteration of the WL-Kernel method
@@ -107,10 +108,15 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None, top_k
     for dot_file in corpus_dot_to_method_map.keys():
       result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num, cluster_json)
       line = dot_file+":\n"
-      for (dot, score) in result_program_list_with_score:
-        line += dot+ " , " + str(score) + "\n"      
+      dot_method = corpus_dot_to_method_map[dot_file]
+      result_dict[dot_method] = []
+      for (dt, score) in result_program_list_with_score:
+        line += dt+ " , " + str(score) + "\n"      
+        result_dict[dot_method].append((orpus_dot_to_method_map[dt], score))
       line += "\n"
       fo.write(line)
+  with open(result_json, 'w') as jo:
+    json.dump(result_dict)
   
 
 def run(project_list, args, kernel_dir):
