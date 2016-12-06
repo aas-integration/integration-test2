@@ -32,7 +32,7 @@ def run_cmd(cmd, print_output=False, timeout=None):
   if print_output:
     print ("Running %s" % ' '.join(cmd))
   try:
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     if timeout:
       timer = Timer(timeout, kill_proc, [process, stats])
