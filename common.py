@@ -63,7 +63,6 @@ def run_cmd(cmd, print_output=False, timeout=None):
         sys.stdout.write(line)
         sys.stdout.flush()
     process.stdout.close()
-
     process.wait()
     stats['return_code'] = process.returncode
     if timer:
