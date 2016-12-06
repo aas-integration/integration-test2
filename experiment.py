@@ -23,6 +23,7 @@ def main():
   common.mkdir(kernel_dir)
 
   backend.run(project_list, args, kernel_dir)
+  print("\n********* END OF BACKEND **********\n")
   frontend.run(project_list, args, kernel_dir)
 
 if __name__ == '__main__':
