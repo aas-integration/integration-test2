@@ -28,3 +28,9 @@ corpus/**/logs/
 TODO_*.*
 **/*.inv.gz
 invClass/
+
+c2f.json
+clusters.json
+kernel_directory/
+mini/
+results/
