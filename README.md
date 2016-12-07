@@ -25,3 +25,8 @@ runs the main loop over the corpus, or the subset of corpus programs specified i
 
 Results of all tools running can be found on Travis:
 [![Click here to see the Results of the experiments on TravisCI](https://travis-ci.org/aas-integration/integration-test.svg?branch=master)](https://travis-ci.org/aas-integration/integration-test)
+
+---
+
+- pip dependencies
+script `map2annoAndAfu.py` needs an additional dependency named `glob2`. This one could be installed by `pip install glob2`.

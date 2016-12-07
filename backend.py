@@ -4,10 +4,6 @@ import dot
 import argparse
 
 def generate_graphs(project):
-  #print "STARTED CLEANING PROJECT"
-  #common.clean_project(project)
-  #print "FINISHED CLEANING PROJECT"
-
   """Run dljc
   Compile test sources
   Generate program graphs using prog2dfg
@@ -71,7 +67,7 @@ def generate_project_kernel(project, cluster_json=None):
     
   print("Generated kernel file for {0} in {1}.".format(project, kernel_file_path))
 
-def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name="./class_field_map.json"):
+def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name="./class_field_map.json", wf_map_file_name="./word_based_field_clusters.json"):
   class_dirs = list()
   for project in project_list:
     print common.get_class_dirs(project)
@@ -86,6 +82,7 @@ def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name="
                    '-cs', '3',
                    '-out', out_file_name,
                    '-cfm', cf_map_file_name,
+                   '-wfm', wf_map_file_name,
                    '-dirs'
                   ]
   clusterer_cmd.extend(class_dirs)
