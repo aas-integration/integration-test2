@@ -25,7 +25,7 @@ def main(json_file):
 
     convertToOntologyValue(ontology_set)
 
-    corpus_jaif_file = createSingleJairFile4Corpus(mappings)
+    corpus_jaif_file = createSingleJaifFile4Corpus(mappings)
 
     for project in project_list:
         runInsertAnnoToProject(project, corpus_jaif_file)
@@ -45,7 +45,7 @@ def runInsertAnnoToProject(project, jaif_file):
         insert_cmd.extend(java_files)
         common.run_cmd(insert_cmd, print_output=True)
 
-def createSingleJairFile4Corpus(mappings):
+def createSingleJaifFile4Corpus(mappings):
     return createJaifFile("corpus", mappings)
 
 def createJaifFile(project, mappings):
@@ -88,8 +88,8 @@ def createJaifFile(project, mappings):
                     out_file.write("    @Ontology(values={{{value_name}}})\n".format(value_name=', '.join(value_set)))
     return jaif_file
 
-def parseField(field):
-    """ given a ${field} which describes a full qualified path to a class field with value like
+def parseField(qualified_field):
+    """ given a ${qualified_field} which describes a full qualified path to a class field with value like
         "xxx.xxx.xxx.Class.field", parse it to a tuple of package path, class name, and field name as
         (xxx.xxx.xxx, Class, field)
     """
