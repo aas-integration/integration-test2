@@ -111,7 +111,11 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None, top_k
       result_dict[dot_method] = []
       for (dt, score) in result_program_list_with_score:
         line += "{} , {}\n".format(dt, score)
-        result_dict[dot_method].append((corpus_dot_to_method_map[dt], score))
+        if dt in corpus_dot_to_method_map:          
+          result_dict[dot_method].append((corpus_dot_to_method_map[dt], score))
+        else:
+          #TODO: @wenchao - bug
+          pass
       line += "\n"
       fo.write(line)
   with open('howie_json', 'w') as jo:
@@ -125,5 +129,5 @@ def run(project_list, args, kernel_dir):
     check_similarity(project, result_file, kernel_file, args.cluster, min(5,len(project_list)))
 
     #compute_daikon_invariants(project_list, get_daikon_patterns())
-    compute_daikon_invariants(project_list)
+    #compute_daikon_invariants(project_list)
 

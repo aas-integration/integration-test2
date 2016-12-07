@@ -23,6 +23,7 @@ def dot_dirs(project_name):
   if os.path.exists(dd):
     return os.listdir(dd)
   else:
+    print dd
     return None
 
 def get_dot_path(project_name, output_dir, dot_name):
