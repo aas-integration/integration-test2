@@ -27,11 +27,11 @@ def main(json_file):
 
     corpus_jaif_file = createSingleJaifFile4Corpus(mappings)
 
-    for project in project_list:
-        runInsertAnnoToProject(project, corpus_jaif_file)
+    # for project in project_list:
+    #     runInsertAnnoToProject(project, corpus_jaif_file)
 
-    for project in project_list:
-        frontend_pa_inference.run_inference(project)
+    # for project in project_list:
+    #     frontend_pa_inference.run_inference(project)
 
 def runInsertAnnoToProject(project, jaif_file):
     """ Insert annotation info in the ${jaif_file} to ${project}.
