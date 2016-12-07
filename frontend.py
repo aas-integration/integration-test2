@@ -105,7 +105,6 @@ def check_similarity(project, result_file, kernel_file, cluster_json=None, top_k
   with open(result_file, "w") as fo:
     for dot_file in corpus_dot_to_method_map.keys():
       dot_method = corpus_dot_to_method_map[dot_file]
-      json_result[dot_method] = []
       result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num, cluster_json)
       line = dot_file+":\n"
       dot_method = corpus_dot_to_method_map[dot_file]
