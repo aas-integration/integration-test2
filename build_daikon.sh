@@ -12,9 +12,6 @@ pushd $DAIKON_PARENT_DIR
     pushd daikon-src
         export DAIKONDIR=`pwd`
         source scripts/daikon.bashrc
-        rm daikon.jar
-        make -C java compile
-        make daikon.jar
         make -C java dcomp_rt.jar
     popd
 popd
