@@ -70,6 +70,12 @@ export TRAVIS_BUILD_DIR=`pwd`
 ./pascali-setup.sh
 popd &> /dev/null # Exit ontology
 
+if [ ! -d daikon-src ]; then
+    curl -L -o daikon-src.tgz http://plse.cs.washington.edu/daikon/download/daikon-5.4.4.tar.gz
+    bash ../build_daikon.sh `pwd`/daikon-src.tgz
+    cp daikon-src/daikon.jar ../libs/daikon.jar
+fi
+
 popd &> /dev/null # Exit tools
 
 popd &> /dev/null # Exit integration-test
