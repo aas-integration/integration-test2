@@ -153,6 +153,7 @@ def copy_dyntrace_files(project_name):
 
 def run_dljc(project_name, tools, options=[], timelimit=1800.0):
   copy_dyntrace_files(project_name)
+  os.environ['DAIKONDIR'] = os.path.join(TOOLS_DIR, 'daikon-src')
   project_dir = get_project_dir(project_name)
   with cd(project_dir):
     build_command = project_info(project_name)['build'].strip().split()
