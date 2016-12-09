@@ -3,6 +3,8 @@ import common
 import dot
 import argparse
 
+import map2annoAndAfu
+
 def generate_graphs(project):
   """Run dljc
   Compile test sources
@@ -87,9 +89,11 @@ def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name="
                   ]
   clusterer_cmd.extend(class_dirs)
 
-  print (clusterer_cmd)
-
   common.run_cmd(clusterer_cmd, True) 
+
+  if wf_map_file_name:
+    print ("Generate jaif file")
+    map2annoAndAfu.main(wf_map_file_name)
 
 def run(project_list, args, kernel_dir):
   if os.path.isfile(common.CLUSTER_FILE) and not args.recompute_clusters:
@@ -101,8 +105,11 @@ def run(project_list, args, kernel_dir):
       #TODO: If you don't clean stuff before, nothing
       #happens here. 
       common.clean_project(project)
-      common.run_dljc(project, [], [])
+      common.run_dljc(project,
+                      ['bixie'], [ ])
+      #common.run_dljc(project, [], [])
     # now run clusterer.jar to get the json file containing the clusters.
+
     compute_clusters_for_classes(project_list, common.CLUSTER_FILE, common.CLASS2FIELDS_FILE)
 
   for project in project_list:
