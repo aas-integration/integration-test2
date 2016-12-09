@@ -1,18 +1,19 @@
 import sys, os
-import subprocess32 as subprocess
 import json
+import argparse
 import glob2 as glob
-# assume pa2checker is under the same dir of this script
-import common, pa2checker, frontend_pa_inference
 
 MAP_WORKING_DIR = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, os.path.abspath(os.path.join(MAP_WORKING_DIR, '..')))
+
+import common, pa2checker, frontend_pa_inference
 
 JAIF_FILE_ONTOLOGY_HEADER ="\
 package ontology.qual:\n\
   annotation @Ontology:\n\
     enum ontology.qual.OntologyValue[] values\n"
 
-def main(json_file):
+def field_mappings_to_annotation(json_file):
     with open(json_file) as data_file:
         data = json.load(data_file)
 
@@ -23,17 +24,29 @@ def main(json_file):
     for mapping in mappings:
         ontology_set.add(mapping['label'][0])
 
-    convertToOntologyValue(ontology_set)
+    convert_2_ontology_value(ontology_set)
 
-    corpus_jaif_file = createSingleJaifFile4Corpus(mappings)
+    corpus_jaif_file = create_corpus_jaif(mappings)
 
     # for project in project_list:
-    #     runInsertAnnoToProject(project, corpus_jaif_file)
+    #     insert_anno_to_project(project, corpus_jaif_file)
 
     # for project in project_list:
     #     frontend_pa_inference.run_inference(project)
 
-def runInsertAnnoToProject(project, jaif_file):
+def type_mappings_to_rules(json_file):
+    with open(json_file) as data_file:
+        data = json.load(data_file)
+
+    for mapping in data["type_mappings"]:
+        ontology_value = mapping["ontology_value"]
+        java_types = mapping["java_types"]
+        pa2checker.insert_ontology_value(ontology_value)
+        pa2checker.update_ontology_utils(ontology_value, java_types)
+
+    pa2checker.recompile_checker_framework()
+
+def insert_anno_to_project(project, jaif_file):
     """ Insert annotation info in the ${jaif_file} to ${project}.
     """
     project_dir = common.get_project_dir(project)
@@ -45,10 +58,10 @@ def runInsertAnnoToProject(project, jaif_file):
         insert_cmd.extend(java_files)
         common.run_cmd(insert_cmd, print_output=True)
 
-def createSingleJaifFile4Corpus(mappings):
-    return createJaifFile("corpus", mappings)
+def create_corpus_jaif(mappings):
+    return create_jaif_file("corpus", mappings)
 
-def createJaifFile(project, mappings):
+def create_jaif_file(project, mappings):
     """ create a {project_name}.jaif file under project_dir
         this jair file contains the insertted annotations info for this project
         Note: if ${project} value is "corpus", then it will create a "corpus.jaif" under corpus dir
@@ -68,7 +81,7 @@ def createJaifFile(project, mappings):
         jaif_dict = dict()
         for mapping in mappings:
             for qualified_field in mapping['fields']:
-                (package, clazz, field) = parseField(qualified_field)
+                (package, clazz, field) = parse_field(qualified_field)
                 if not package in jaif_dict:
                     jaif_dict[package] = dict()
                 if not clazz in jaif_dict[package]:
@@ -88,14 +101,14 @@ def createJaifFile(project, mappings):
                     out_file.write("    @Ontology(values={{{value_name}}})\n".format(value_name=', '.join(value_set)))
     return jaif_file
 
-def parseField(qualified_field):
+def parse_field(qualified_field):
     """ given a ${qualified_field} which describes a full qualified path to a class field with value like
         "xxx.xxx.xxx.Class.field", parse it to a tuple of package path, class name, and field name as
         (xxx.xxx.xxx, Class, field)
     """
-    return tuple(field.rsplit('.', 2))
+    return tuple(qualified_field.rsplit('.', 2))
 
-def convertToOntologyValue(ontology_set):
+def convert_2_ontology_value(ontology_set):
     """ 1. clean up the ontology source code back to unchanged git version
         2. takes the ontology_set, and insert elements into ontology source as new ontologies
         3. re-compile ontology to make sure the insertions doesn't break the compilation
@@ -105,6 +118,22 @@ def convertToOntologyValue(ontology_set):
         pa2checker.insert_ontology_value(new_ontology)
     pa2checker.recompile_checker_framework()
 
+def main():
+    parser = argparse.ArgumentParser(description='command line interface for map2annotation')
+    parser.add_argument('--type-mapping',dest='type_mapping_file')
+    parser.add_argument('--field-mapping', dest='field_mapping_file')
+    args = parser.parse_args()
+    if args.type_mapping_file is None and args.field_mapping_file is None:
+        print "error, required at least one mapping file to be indicated."
+        parser.print_help()
+
+    pa2checker.revert_checker_source()
+    
+    if not args.type_mapping_file is None:
+        type_mappings_to_rules(args.type_mapping_file)
+
+    if not args.field_mapping_file is None:
+        field_mappings_to_annotation(args.field_mapping_file)
+
 if __name__ == '__main__':
-    json_file = "<path-to>/test.json"
-    main(json_file)
+    main()

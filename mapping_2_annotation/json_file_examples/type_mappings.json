@@ -1,0 +1,11 @@
+{
+    "type_mappings" : [
+        {
+            "ontology_value" : "Sequence",
+            "java_types" : [
+                "java.util.List", 
+                "java.util.LinkedHashSet"
+                ]
+        }
+    ]
+}

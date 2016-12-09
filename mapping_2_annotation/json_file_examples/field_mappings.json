@@ -1,0 +1,513 @@
+{
+	"mappings": [
+		{
+		 "fields":[
+			"ij.plugin.filter.ParticleAnalyzer.redirectImp",
+			"ij.plugin.filter.Analyzer.redirectImage"
+		 ],
+		 "label":[
+			"redirect"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.plugin.frame.RoiManager.mmResults",
+			"ij.plugin.filter.ParticleAnalyzer.staticResultsTable"
+		 ],
+		 "label":[
+			"result"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.plugin.filter.Calibrator.curveFitter",
+			"ij.macro.Functions.fitter"
+		 ],
+		 "label":[
+			"fitter"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Math.Functions.Gabor$Config.SquaredMagnitude",
+			"Catalano.Math.Functions.Gabor$Config.Magnitude"
+		 ],
+		 "label":[
+			"magnitude"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.ActiveContour.Ovuscule.OvusculeSnake2DScale.bestAttemptColor",
+			"Catalano.Imaging.FastGraphics.color",
+			"Catalano.Imaging.ActiveContour.Ovuscule.OvusculeSnake2DScale.currentAttemptColor"
+		 ],
+		 "label":[
+			"color"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.ImagePlus.globalCalibration",
+			"ij.plugin.filter.ParticleAnalyzer.calibration"
+		 ],
+		 "label":[
+			"calibration"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.gui.StackWindow.tSelector",
+			"ij.gui.StackWindow.zSelector",
+			"ij.gui.StackWindow.cSelector",
+			"ij.gui.StackWindow.animationSelector"
+		 ],
+		 "label":[
+			"selector"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.DistanceTransform$Distance.SquaredEuclidean",
+			"Catalano.Imaging.Filters.DistanceTransform$Distance.Euclidean"
+		 ],
+		 "label":[
+			"euclidean"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Tools.BlobDetection$Algorithm.EightWay",
+			"Catalano.Imaging.Tools.BlobDetection$Algorithm.FourWay"
+		 ],
+		 "label":[
+			"way"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.HSLFiltering.luminance",
+			"Catalano.Imaging.Filters.HSLLinear.outLuminance",
+			"Catalano.Imaging.Filters.HSLLinear.inLuminance"
+		 ],
+		 "label":[
+			"luminance"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.HSLFiltering.saturation",
+			"Catalano.Imaging.Filters.HSLLinear.inSaturation",
+			"Catalano.Imaging.Filters.HSLLinear.outSaturation"
+		 ],
+		 "label":[
+			"saturation"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.HomomorphicFilter.range",
+			"Catalano.Imaging.Filters.YCbCrFiltering.cbRange",
+			"Catalano.Imaging.Filters.YCbCrFiltering.crRange",
+			"Catalano.Imaging.Filters.YCbCrFiltering.yRange"
+		 ],
+		 "label":[
+			"range"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.plugin.filter.ParticleAnalyzer.staticRoiManager",
+			"ij.plugin.filter.ParticleAnalyzer.roiManager"
+		 ],
+		 "label":[
+			"manager"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.process.AutoThresholder$Method.MaxEntropy",
+			"ij.process.AutoThresholder$Method.RenyiEntropy"
+		 ],
+		 "label":[
+			"entropy"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.process.StackProcessor.stack",
+			"ij.plugin.Projector.stack2",
+			"ij.plugin.Orthogonal_Views.imageStack",
+			"ij.plugin.filter.EDM.outStack"
+		 ],
+		 "label":[
+			"stack"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.Mean$Arithmetic.Harmonic",
+			"Catalano.Imaging.Filters.Mean$Arithmetic.ContraHarmonic"
+		 ],
+		 "label":[
+			"harmonic"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.macro.Interpreter.arrayWindow",
+			"ij.plugin.frame.Editor.debugWindow"
+		 ],
+		 "label":[
+			"window"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.plugin.frame.ThresholdAdjuster.instance",
+			"ij.macro.Interpreter.previousInstance"
+		 ],
+		 "label":[
+			"instance"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.Artistic.Blend$Algorithm.ColorDodge",
+			"Catalano.Imaging.Filters.Artistic.Blend$Algorithm.ColorBurn"
+		 ],
+		 "label":[
+			"color"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.Artistic.Blend$Algorithm.PinLight",
+			"Catalano.Imaging.Filters.Artistic.Blend$Algorithm.VividLight",
+			"Catalano.Imaging.Filters.Artistic.Blend$Algorithm.SoftLight",
+			"Catalano.Imaging.Filters.Artistic.Blend$Algorithm.HardLight",
+			"Catalano.Imaging.Filters.Artistic.Blend$Algorithm.LinearLight"
+		 ],
+		 "label":[
+			"light"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"net.imglib2.view.composite.CompositeView$CompositeRandomAccess.sourceAccess",
+			"net.imglib2.view.TransformRandomAccess.source"
+		 ],
+		 "label":[
+			"source"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.process.ImageProcessor.overlay",
+			"ij.plugin.tool.BrushTool.overlayImage"
+		 ],
+		 "label":[
+			"overlay"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.FastGraphics.fastBitmap",
+			"Catalano.Imaging.Tools.GradientImage.horizontalBitmap",
+			"Catalano.Imaging.Tools.GradientImage.verticalBitmap"
+		 ],
+		 "label":[
+			"bitmap"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.ReplaceColor.oldGreenRange",
+			"Catalano.Imaging.Tools.ImageStatistics.green",
+			"Catalano.Imaging.Filters.LevelsLinear.outGreen",
+			"Catalano.Imaging.Filters.LevelsLinear.inGreen"
+		 ],
+		 "label":[
+			"green"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.LevelsLinear.inBlue",
+			"Catalano.Imaging.Filters.ReplaceColor.oldBlueRange",
+			"Catalano.Imaging.Tools.ImageStatistics.blue",
+			"Catalano.Imaging.Filters.LevelsLinear.outBlue"
+		 ],
+		 "label":[
+			"blue"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.ReplaceColor.oldGreenRange",
+			"Catalano.Imaging.Filters.ReplaceColor.oldBlueRange",
+			"Catalano.Imaging.Filters.ReplaceColor.oldRedRange"
+		 ],
+		 "label":[
+			"old"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.ReplaceColor.oldGreenRange",
+			"Catalano.Imaging.Filters.ReplaceColor.oldBlueRange",
+			"Catalano.Imaging.Filters.HomomorphicFilter.range",
+			"Catalano.Imaging.Filters.ReplaceColor.oldRedRange"
+		 ],
+		 "label":[
+			"range"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"net.imglib2.img.AbstractNativeImg.linkedType",
+			"net.imglib2.outofbounds.OutOfBoundsMirrorExpWindowing.type"
+		 ],
+		 "label":[
+			"type"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"net.imglib2.interpolation.randomaccess.LanczosInterpolator.interpolatedValue",
+			"net.imglib2.outofbounds.OutOfBoundsConstantValueFactory.value"
+		 ],
+		 "label":[
+			"value"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.Grayscale$Algorithm.MinimumDecomposition",
+			"Catalano.Imaging.Filters.Grayscale$Algorithm.MaximumDecomposition"
+		 ],
+		 "label":[
+			"decomposition"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.plugin.tool.PixelInspector.canvas",
+			"ij.ImagePlus.flatteningCanvas"
+		 ],
+		 "label":[
+			"canva"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.macro.Functions.offscreenOverlay",
+			"ij.process.ImageProcessor.overlay",
+			"ij.plugin.OverlayLabels.defaultOverlay",
+			"ij.gui.Roi.prototypeOverlay",
+			"ij.plugin.filter.PlugInFilterRunner.originalOverlay",
+			"ij.gui.ImageCanvas.showAllOverlay",
+			"ij.plugin.filter.StackLabeler.baseOverlay",
+			"ij.macro.Functions.overlayClipboard"
+		 ],
+		 "label":[
+			"overlay"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.FloodFill.startPoint",
+			"Catalano.Math.Geometry.ConvexityDefect.point"
+		 ],
+		 "label":[
+			"point"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.process.ImageProcessor.dotMask",
+			"ij.gui.Roi.cachedMask",
+			"ij.process.ImageProcessor.mask"
+		 ],
+		 "label":[
+			"mask"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.Mean$Arithmetic.Harmonic",
+			"Catalano.Imaging.Filters.Mean$Arithmetic.ContraHarmonic"
+		 ],
+		 "label":[
+			"harmonic"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"net.imglib2.view.RandomAccessiblePair.sourceA",
+			"net.imglib2.view.TransformRandomAccess.source",
+			"net.imglib2.view.RandomAccessiblePair.sourceB"
+		 ],
+		 "label":[
+			"source"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Texture.BinaryPattern.LocalTernaryPattern.lowerHistogram",
+			"Catalano.Imaging.Texture.BinaryPattern.LocalTernaryPattern.upperHistogram"
+		 ],
+		 "label":[
+			"histogram"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.StereoAnaglyph$Algorithm.ColorAnaglyph",
+			"Catalano.Imaging.Filters.StereoAnaglyph$Algorithm.HalfColorAnaglyph"
+		 ],
+		 "label":[
+			"color"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.StereoAnaglyph$Algorithm.TrueAnaglyph",
+			"Catalano.Imaging.Filters.StereoAnaglyph$Algorithm.ColorAnaglyph",
+			"Catalano.Imaging.Filters.StereoAnaglyph$Algorithm.OptimizedAnaglyph",
+			"Catalano.Imaging.Filters.StereoAnaglyph$Algorithm.GrayAnaglyph",
+			"Catalano.Imaging.Filters.StereoAnaglyph$Algorithm.HalfColorAnaglyph"
+		 ],
+		 "label":[
+			"anaglyph"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.plugin.frame.ColorThresholder.plot",
+			"ij.gui.PlotWindow.staticPlot"
+		 ],
+		 "label":[
+			"plot"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Filters.Grayscale$Algorithm.MinimumDecomposition",
+			"Catalano.Imaging.Filters.Grayscale$Algorithm.MaximumDecomposition"
+		 ],
+		 "label":[
+			"decomposition"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.plugin.frame.SyncWindows.ijInstance",
+			"ij.plugin.tool.PixelInspector.ij"
+		 ],
+		 "label":[
+			"ij"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"Catalano.Imaging.Tools.BlobDetection$Algorithm.EightWay",
+			"Catalano.Imaging.Tools.BlobDetection$Algorithm.FourWay"
+		 ],
+		 "label":[
+			"way"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"ij.IJ.logPanel",
+			"ij.text.TextWindow.textPanel"
+		 ],
+		 "label":[
+			"panel"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"net.imglib2.view.RandomAccessibleIntervalCursor.randomAccess",
+			"net.imglib2.outofbounds.OutOfBoundsPeriodic.outOfBoundsRandomAccess",
+			"net.imglib2.img.cell.CellRandomAccess.randomAccessOnCells",
+			"net.imglib2.view.SubsampleView$SubsampleRandomAccess.sourceRandomAccess"
+		 ],
+		 "label":[
+			"random"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"net.imglib2.view.RandomAccessibleIntervalCursor.randomAccess",
+			"net.imglib2.outofbounds.OutOfBoundsPeriodic.outOfBoundsRandomAccess",
+			"net.imglib2.view.composite.CompositeView$CompositeRandomAccess.sourceAccess",
+			"net.imglib2.view.StackView$DefaultRA.sliceAccess",
+			"net.imglib2.img.cell.CellRandomAccess.randomAccessOnCells",
+			"net.imglib2.view.SubsampleView$SubsampleRandomAccess.sourceRandomAccess"
+		 ],
+		 "label":[
+			"access"
+		 ]
+
+		},
+		{
+		 "fields":[
+			"net.imglib2.view.composite.CompositeView$CompositeRandomAccess.sourceAccess",
+			"net.imglib2.view.TransformRandomAccess.source",
+			"net.imglib2.display.projector.sampler.SelectiveSampler.m_source",
+			"net.imglib2.view.SubsampleView$SubsampleRandomAccess.sourceRandomAccess"
+		 ],
+		 "label":[
+			"source"
+		 ]
+
+		}
+	]
+}
