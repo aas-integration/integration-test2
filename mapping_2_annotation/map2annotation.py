@@ -135,5 +135,10 @@ def main():
     if not args.field_mapping_file is None:
         field_mappings_to_annotation(args.field_mapping_file)
 
+    project_list = common.get_project_list()
+
+    for project in project_list:
+        frontend_pa_inference.run_inference(project)
+
 if __name__ == '__main__':
     main()
