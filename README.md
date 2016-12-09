@@ -4,8 +4,15 @@
 Our new story is:
 - TBD
 
-How to run:
+# Dependencies and Requirements
 
+- Java 8
+  - JAVA_HOME environment variable must be set to the location of your JDK install.
+- Python 2.7
+  - glob2 module (required by `map2annoAndAfu.py`, install with pip)
+
+# How to run
+    
     python fetch.py
 
 This downloads all the jars, compiles stuff, and downloads the corpus. Only needs to be run once unless you need to update tools or the corpus.
@@ -25,8 +32,3 @@ runs the main loop over the corpus, or the subset of corpus programs specified i
 
 Results of all tools running can be found on Travis:
 [![Click here to see the Results of the experiments on TravisCI](https://travis-ci.org/aas-integration/integration-test.svg?branch=master)](https://travis-ci.org/aas-integration/integration-test)
-
----
-
-- pip dependencies
-script `map2annoAndAfu.py` needs an additional dependency named `glob2`. This one could be installed by `pip install glob2`.
