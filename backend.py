@@ -3,7 +3,7 @@ import common
 import dot
 import argparse
 
-import map2annoAndAfu
+import map2annotation
 
 def generate_graphs(project):
   """Run dljc
@@ -93,7 +93,7 @@ def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name="
 
   if wf_map_file_name:
     print ("Generate jaif file")
-    map2annoAndAfu.main(wf_map_file_name)
+    map2annotation.field_mappings_to_annotation(wf_map_file_name)
 
 def run(project_list, args, kernel_dir):
   if os.path.isfile(common.CLUSTER_FILE) and not args.recompute_clusters:
