@@ -23,7 +23,7 @@ def generate_dtrace(project):
                   ['dyntrace'], ['--cache'])  
 
 def gather_kernels(projects, corpus_kernel_file):
-  print("Gathering kernels from projects {0}".format(" and ".join(projects)))
+  print("Gathering kernels from projects {0}".format(",".join(projects)))
   with open(corpus_kernel_file, "w") as corpus_kernel_file_handle:
     for project in projects:
       project_dir = common.get_project_dir(project)
@@ -39,7 +39,7 @@ def gather_kernels(projects, corpus_kernel_file):
           project,
           project_kernel_file_path
           ))
-
+        sys.exit(0)
 
 def generate_project_kernel(project, cluster_json=None):
   """ run graph kernel computation """
@@ -72,8 +72,7 @@ def generate_project_kernel(project, cluster_json=None):
 def get_method_map(project_list):
   dot_to_method_map = {}
   for project in project_list:
-    for output_dir in dot.dot_dirs(project):
-      #output_dir = dot.dot_dirs(project)[0] # first folder only for now
+    for output_dir in [dot.dot_dirs(project)[0]]: # first folder only for now
       method_file = dot.get_method_path(project, output_dir)
       if not os.path.isfile(method_file):
         print ("Cannot find method file for project {0} at {1}".format(project, method_file))
@@ -103,22 +102,25 @@ def check_similarity(project, result_file, kernel_file, corpus_dot_to_method_map
   sim = Similarity()
   sim.read_graph_kernels(kernel_file)
   iter_num = 3 # number of iteration of the WL-Kernel method
-  with open(result_file, "w") as fo:
-    for dot_file in corpus_dot_to_method_map.keys():
-      dot_method = corpus_dot_to_method_map[dot_file]
-      json_result[dot_method] = []
-      result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num, cluster_json)
-      line = dot_file+":\n"
-      for (dt, score) in result_program_list_with_score:
-        line += "{} , {}\n".format(dt, score)
-        if dt not in corpus_dot_to_method_map:
-          print("{0} does not exist.".format(dt))
-          sys.exit(0)
-        json_result[dot_method].append((corpus_dot_to_method_map[dt], score))
-      line += "\n"
-      fo.write(line)
+  this_method_map = get_method_map([project])
+  with open(result_file, "w") as fo:    
+  	for dot_file in this_method_map.keys():
+  		dot_method = corpus_dot_to_method_map[dot_file]
+  		json_result[dot_method] = []
+  		result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num, cluster_json)
+  		line = dot_file+":\n"
+  		for (dt, score) in result_program_list_with_score:
+  			line += "{} , {}\n".format(dt, score)
+  			if dt not in corpus_dot_to_method_map:
+  				print("{0} does not exist.".format(dt))
+  				sys.exit(0)
+  		tmp_dict = {}
+  		tmp_dict[corpus_dot_to_method_map[dt]] = score
+  		json_result[dot_method].append(tmp_dict)
+  		line += "\n"
+  		fo.write(line)
   with open(output_json_file, "w") as jo:
-    json.dump(json_result, jo)
+  	jo.write(json.dumps(json_result, indent=4))
 
 def main():
 	
