@@ -1,0 +1,8 @@
+import map2annotation
+
+field_mappings_to_annotation = map2annotation.field_mappings_to_annotation
+type_mappings_to_rules = map2annotation.type_mappings_to_rules
+insert_anno_to_project = map2annotation.insert_anno_to_project
+create_corpus_jaif = map2annotation.create_corpus_jaif
+create_jaif_file = map2annotation.create_jaif_file
+convert_2_ontology_value = map2annotation.convert_2_ontology_value

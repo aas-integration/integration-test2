@@ -9,7 +9,7 @@ Our new story is:
 - Java 8
   - JAVA_HOME environment variable must be set to the location of your JDK install.
 - Python 2.7
-  - glob2 module (required by `map2annoAndAfu.py`, install with pip)
+  - glob2 module (required by `map2annotation.py`, install with pip)
 
 # How to run
     
