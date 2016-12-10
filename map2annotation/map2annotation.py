@@ -126,6 +126,7 @@ def main():
     if args.type_mapping_file is None and args.field_mapping_file is None:
         print "error, required at least one mapping file to be indicated."
         parser.print_help()
+        sys.exit(1)
 
     pa2checker.revert_checker_source()
     
