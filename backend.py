@@ -105,18 +105,19 @@ def run(project_list, args, kernel_dir):
       #TODO: If you don't clean stuff before, nothing
       #happens here. 
       common.clean_project(project)
+      print ("Running Bixie")
       common.run_dljc(project,
                       ['bixie'], [ ])
       #common.run_dljc(project, [], [])
     # now run clusterer.jar to get the json file containing the clusters.
-
     compute_clusters_for_classes(project_list, common.CLUSTER_FILE, common.CLASS2FIELDS_FILE)
-
+    
   for project in project_list:
     if args.graph:
       #TODO: If you don't clean stuff before, nothing
       #happens here.
       #common.clean_project(project)
+      print ("Generate Graphs")
       generate_graphs(project)
       pass
     generate_project_kernel(project, common.CLUSTER_FILE)
