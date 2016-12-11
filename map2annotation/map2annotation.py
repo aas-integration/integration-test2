@@ -28,11 +28,24 @@ def field_mappings_to_annotation(json_file):
 
     corpus_jaif_file = create_corpus_jaif(mappings)
 
-    # for project in project_list:
-    #     insert_anno_to_project(project, corpus_jaif_file)
+    for project in project_list:
+        refactor_multi_decl(project)
 
-    # for project in project_list:
-    #     frontend_pa_inference.run_inference(project)
+    for project in project_list:
+        insert_anno_to_project(project, corpus_jaif_file)
+
+    for project in project_list:
+        frontend_pa_inference.run_inference(project)
+
+def refactor_multi_decl(project):
+    project_dir = common.get_project_dir(project)
+    refactor_script = os.path.join(MAP_WORKING_DIR, "multiDeclRefactor", "run-refactor.sh")
+    refactor_cmd = [refactor_script, project_dir]
+    common.run_cmd(refactor_cmd)
+
+def init_multi_decl_refactor():
+    FETCH_TOOL_SCRIPT = os.path.join(MAP_WORKING_DIR, "fetch_map2anno_tools.sh")
+    common.run_cmd(FETCH_TOOL_SCRIPT)
 
 def type_mappings_to_rules(json_file):
     with open(json_file) as data_file:
