@@ -1,10 +1,7 @@
 # integration-test2
 2nd big integration test of all tools
 
-Our new story is:
-- TBD
-
-# Dependencies and Requirements
+## Dependencies and Requirements
 
 - Java 8
   - JAVA_HOME environment variable must be set to the location of your JDK install.
@@ -12,24 +9,23 @@ Our new story is:
   - packages: glob2 (required by `map2annotation.py`), subprocess32 (required by `fetch.py`)
   - install with `sudo pip install glob2 subprocess32` or, if you don't have sudo privileges, with `pip install --user glob2 subprocess32`)
 
-# How to run
+## How to run
     
     python fetch.py
 
-This downloads all the jars, compiles stuff, and downloads the corpus. Only needs to be run once unless you need to update tools or the corpus.
+This downloads all the jars, compiles stuff, and downloads the corpus. Only needs to be run once unless you need to update tools or the corpus. After all dependencies and the corpus are ready, run the tools using one of the `run_*` scripts. For example
 
-    python backend.py
+    ./run_restricted.sh
+    
+Which processes the projects `react` and `jreactphysics3d` from the corpus. Each of these `run_*.sh` scripts contains an example invokation of `experiments.py` which executes all tools. This includes the following tools:
 
-Compiles the corpus projects, generates tests and dtrace files, computes dot files, runs petablox.
-
-    python frontend.py
-
-or
-
-    python frontend.py imgscalr dyn4j
-
-runs the main loop over the corpus, or the subset of corpus programs specified in the args.
-
-
-Results of all tools running can be found on Travis:
-[![Click here to see the Results of the experiments on TravisCI](https://travis-ci.org/aas-integration/integration-test.svg?branch=master)](https://travis-ci.org/aas-integration/integration-test)
+  - Bixie: a bug finding tool that reports inconsistencies.
+  - Randoop: A black-box fuzz-testing tool that records execution data for each corpus project.
+  - Daikon: A tool to infer likely invariants from recorded execution data.
+  - Clusterer: A tool to cluster classes and fields that are likely to be similiar based on their naming scheme.
+  - Partitions: A tool to cluster projects that are likely to serve a similar purpose.
+  - Checker-Framework-Inference: A tool to propagate and infer type annotations (provided by clusterer).
+  - Simprog: A tool that computes method similarity across projects (uses input from clusterer).
+  
+  
+  *TODO* will paste the description of the individual tools.

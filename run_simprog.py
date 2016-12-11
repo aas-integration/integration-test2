@@ -11,7 +11,7 @@ def generate_graphs(project):
   Generate program graphs using prog2dfg
   Precompute graph kernels that are independent of ontology stuff
   """
-  print("Generating graphs for {0}".format(project))
+  print("Generating graphs for {0}...".format(project))
   common.run_dljc(project,
                   ['graphtool'],
                   ['--graph-jar', common.get_jar('prog2dfg.jar'),
@@ -124,47 +124,60 @@ def check_similarity(project, result_file, kernel_file, corpus_dot_to_method_map
 
 def main():
 	
-	parser = argparse.ArgumentParser()
+  parser = argparse.ArgumentParser()
 
-	parser.add_argument("-c", "--cluster", type=str, help="Path to the input json file that contains the clustering information.")
-  	parser.add_argument("-d", "--dir", type=str, required=True, help="Output folder.")
-  	parser.add_argument("-p", "--plist", type=str, help="A comma separated list of projects to work with.")
-  	parser.add_argument("-k", "--kernel", action="store_true", help="Recompute kernel vectors.")
-  	parser.add_argument("-g", "--graph", action="store_true", help="Regenerate graphs.")
+  parser.add_argument("-c", "--cluster", type=str, help="path to the input json file that contains the clustering information.")
+  parser.add_argument("-d", "--dir", type=str, required=True, help="output folder.")
+  parser.add_argument("-p", "--plist", type=str, help="a comma separated list of projects to work with.")
+  parser.add_argument("-k", "--kernel", action="store_true", help="recompute kernel vectors.")
+  parser.add_argument("-g", "--graph", action="store_true", help="regenerate graphs.")
+  parser.add_argument("-s", "--sim", type=str, help="specify a specific project for finding similar programs in the list of projects.")
 
-  	args = parser.parse_args()
+  args = parser.parse_args()
 
-  	common.mkdir(args.dir)
+  common.mkdir(args.dir)
 
-  	# determine which projects to consider
-	project_list = common.get_project_list()
-	if args.plist:
-		arg_projects = args.plist.split(',')
-		project_list = [project for project in project_list if project in arg_projects]
+  # determine which projects to consider
+  project_list = common.get_project_list()
+  if args.plist:
+    arg_projects = args.plist.split(',')
+    project_list = [project for project in project_list if project in arg_projects]
 
 	# determine if need to regerenate graphs
-	if args.graph:
-		for project in project_list:
-			generate_graphs(project)
+  if args.graph:
+    for project in project_list:
+      generate_graphs(project)
 
     # determine if need to recompute the kernel vectors
-	if args.kernel:
-		for project in project_list:
-			generate_project_kernel(project, args.cluster)
+  if args.kernel:
+    for project in project_list:
+      generate_project_kernel(project, args.cluster)
 
 	# gather kernels for one-against-rest comparisons
-	for project in project_list:
-		pl = list(project_list) # create a copy
-		pl.remove(project)
-		gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt"))
+  for project in project_list:
+    pl = list(project_list) # create a copy
+    pl.remove(project)
+    gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt"))
 
    	# check similarity
-	dot_method_map = get_method_map(project_list)
-	for project in project_list:
-		result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
-		kernel_file = os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt")
-		json_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.json") 
-		check_similarity(project, result_file, kernel_file, dot_method_map, json_file, args.cluster, min(5,len(project_list)))
+  dot_method_map = get_method_map(project_list)
+  if args.sim:
+    if args.sim not in project_list:
+      print("Need to specify a project that is in the list of projects.")
+    else:
+      project = args.sim
+      print("Computing similar programs for {0}...".format(project))
+      result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
+      kernel_file = os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt")
+      json_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.json") 
+      check_similarity(project, result_file, kernel_file, dot_method_map, json_file, args.cluster, min(5,len(project_list)))
+  else:
+    for project in project_list:
+      print("Computing similar programs for {0}...".format(project))
+      result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
+      kernel_file = os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt")
+      json_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.json") 
+      check_similarity(project, result_file, kernel_file, dot_method_map, json_file, args.cluster, min(5,len(project_list)))
 
 if __name__ == "__main__":
 	main()
