@@ -50,6 +50,7 @@ Which processes the projects `react` and `jreactphysics3d` from the corpus. Each
     - `class_field_map.json`: clustering of class-fields based on their type.
     - `word_based_field_clusters.json`: sub-clustering of each cluster in `class_field_map.json` based on name similarity. This is used, for example, to distinguish `Integers` that store `height` or `weight` from integers that store `socialSecurityNamber`.
 
+Further, each of the `run_X.sh` scripts creates a folder `X` which contains json files per project that stores the k most similar methods to each method in that project together with their similarity score.
 
 
   *TODO* will paste the description of the individual tools.
