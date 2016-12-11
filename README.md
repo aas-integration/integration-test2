@@ -7,7 +7,7 @@
   - JAVA_HOME environment variable must be set to the location of your JDK install.
 - Python 2.7
   - install required packages with `sudo pip install glob2 networkx pydotplus subprocess32`
-     - if you don't have sudo privileges, install with `pip install --user glob2 subprocess32`
+     - if you don't have sudo privileges, install with `pip install --user glob2 networkx pydotplus subprocess32`
 
 ## How to run
     
