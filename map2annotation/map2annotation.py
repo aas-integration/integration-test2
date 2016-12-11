@@ -28,6 +28,8 @@ def field_mappings_to_annotation(json_file):
 
     corpus_jaif_file = create_corpus_jaif(mappings)
 
+    init_multi_decl_refactor()
+
     for project in project_list:
         refactor_multi_decl(project)
 
