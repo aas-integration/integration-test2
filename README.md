@@ -24,7 +24,9 @@ Which processes the projects `react` and `jreactphysics3d` from the corpus. Each
 
   - Bixie: a bug finding tool that reports inconsistencies.
   - [Randoop](https://randoop.github.io/randoop/): A tool that automatically generates unit tests.
+    See the [Randoop tutorial](https://github.com/randoop/tutorial-examples).
   - [Daikon](https://plse.cs.washington.edu/daikon/): A tool to infer likely invariants from recorded execution data.
+    See the [Daikon tutorial](https://github.com/aas-integration/daikon-tutorial).
   - Clusterer: A tool to cluster classes and fields that are likely to be similiar based on their naming scheme.
   - Partitions: A tool to cluster projects that are likely to serve a similar purpose.
   - [Checker-Framework-Inference](https://github.com/typetools/checker-framework-inference): A tool to propagate and infer type annotations (provided by clusterer).
