@@ -9,7 +9,8 @@ Our new story is:
 - Java 8
   - JAVA_HOME environment variable must be set to the location of your JDK install.
 - Python 2.7
-  - glob2 module (required by `map2annotation.py`, install with pip)
+  - packages: glob2 (required by `map2annotation.py`), subprocess32 (required by `fetch.py`)
+  - install with `sudo pip install glob2 subprocess32` or, if you don't have sudo privileges, with `pip install --user glob2 subprocess32`)
 
 # How to run
     
