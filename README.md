@@ -29,5 +29,27 @@ Which processes the projects `react` and `jreactphysics3d` from the corpus. Each
   - [Checker-Framework-Inference](https://github.com/typetools/checker-framework-inference): A tool to propagate and infer type annotations (provided by clusterer).
   - Simprog: A tool that computes method similarity across projects (uses input from clusterer).
   
+  ## Which outputs to look for:
+
+  Project specific outputs are stored in the `./corpus/[PROJECT]/dljc-out/` folders. Outputs that are relevant across projects are stored in the root folder. Project specific outputs include:
+
+### Per-project outputs:
+
+    - `bixie_report`: a human readable report of inconsistencies.
+    - `javac.json`, `jars.json`, `stats.json`: various information about the build process.
+    - `dot`: flow-graphs for each public method including a `methods.txt` file that maps dot file name to fully qualified method name, and `sourcelines.txt` that maps method names to source code
+   locations.
+    - `dot/*/kernel.txt`: pre-computed Weisfeiler-Lehman graph kernels for all computed graphs (this includes global relabeling information).
+    - `test-classes*/`: generated unit tests.
+    - `test-classes*/RegressionTestDriver.dtrace.gz`: recorded execution data for the generated unit tests.
+    - `test-classes*/invariants.gz`: Likely invariants per method.
   
+### Cross-project outputs:
+
+    - `clusters.json`: clustering of all classes in the corpus based on name similarity.
+    - `class_field_map.json`: clustering of class-fields based on their type.
+    - `word_based_field_clusters.json`: sub-clustering of each cluster in `class_field_map.json` based on name similarity. This is used, for example, to distinguish `Integers` that store `height` or `weight` from integers that store `socialSecurityNamber`.
+
+
+
   *TODO* will paste the description of the individual tools.
