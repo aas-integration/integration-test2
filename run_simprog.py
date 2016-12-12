@@ -106,24 +106,25 @@ def check_similarity(project, result_file, kernel_file, corpus_dot_to_method_map
   sim.read_graph_kernels(kernel_file)
   iter_num = 3 # number of iteration of the WL-Kernel method
   this_method_map = get_method_map([project])
-  with open(result_file, "w") as fo:    
-  	for dot_file in this_method_map.keys():
-  		dot_method = corpus_dot_to_method_map[dot_file]
-  		json_result[dot_method] = []
-  		result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num, cluster_json)
-  		line = dot_file+":\n"
-  		for (dt, score) in result_program_list_with_score:
-  			line += "{} , {}\n".format(dt, score)
-  			if dt not in corpus_dot_to_method_map:
-  				print("{0} does not exist.".format(dt))
-  				sys.exit(0)
-  		tmp_dict = {}
-  		tmp_dict[corpus_dot_to_method_map[dt]] = score
-  		json_result[dot_method].append(tmp_dict)
-  		line += "\n"
-  		fo.write(line)
+  with open(result_file, "w") as fo:
+    for dot_file in this_method_map.keys():
+      dot_method = corpus_dot_to_method_map[dot_file]
+      json_result[dot_method] = []
+      print("Computing similar programs for {0}.".format(dot_method))
+      result_program_list_with_score = sim.find_top_k_similar_graphs(dot_file, dot_file, top_k, iter_num, cluster_json)
+      line = dot_file+":\n"
+      for (dt, score) in result_program_list_with_score:
+        line += "{} , {}\n".format(dt, score)
+        if dt not in corpus_dot_to_method_map:
+          print("{0} does not exist.".format(dt))
+          sys.exit(0)
+        tmp_dict = {}
+        tmp_dict[corpus_dot_to_method_map[dt]] = score
+        json_result[dot_method].append(tmp_dict)
+        line += "\n"
+        fo.write(line)
   with open(output_json_file, "w") as jo:
-  	jo.write(json.dumps(json_result, indent=4))
+    jo.write(json.dumps(json_result, indent=4))
 
 def main():
 	
@@ -156,14 +157,7 @@ def main():
   if args.kernel:
     for project in project_list:
       generate_project_kernel(project, args.cluster)
-    print("\n***** Done with computing kernels. *****\n") 
-
-  # gather kernels for one-against-rest comparisons
-  for project in project_list:
-    pl = list(project_list) # create a copy
-    pl.remove(project)
-    gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt"))
-  print("\n***** Done with gathering kernels. *****\n") 
+    print("\n***** Done with computing kernels. *****\n")
 
   # check similarity
   dot_method_map = get_method_map(project_list)
@@ -172,14 +166,20 @@ def main():
       print("Need to specify a project that is in the list of projects.")
     else:
       project = args.sim
-      print("Computing similar programs for {0}...".format(project))
+      pl = list(project_list) # create a copy
+      pl.remove(project)
+      gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt"))
+      print("Computing similar programs for {0}:".format(project))
       result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
       kernel_file = os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt")
       json_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.json") 
       check_similarity(project, result_file, kernel_file, dot_method_map, json_file, args.cluster, min(5,len(project_list)))
   else:
     for project in project_list:
-      print("Computing similar programs for {0}...".format(project))
+      pl = list(project_list) # create a copy
+      pl.remove(project)
+      gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt"))
+      print("Computing similar programs for {0}:".format(project))
       result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
       kernel_file = os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt")
       json_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.json") 
