@@ -27,7 +27,6 @@ def gather_kernels(projects, corpus_kernel_file):
   with open(corpus_kernel_file, "w") as corpus_kernel_file_handle:
     for project in projects:
       project_dir = common.get_project_dir(project)
-      #print dot.dot_dirs(project)
       out_dir = dot.dot_dirs(project)[0] # only consider the first one
       project_kernel_file_path = dot.get_kernel_path(project, out_dir)
       
@@ -35,7 +34,7 @@ def gather_kernels(projects, corpus_kernel_file):
         with open(project_kernel_file_path, "r") as fi: 
             corpus_kernel_file_handle.write(fi.read())
       else:
-        print ("No kernel file find for project {0}.\n   {1} is not a file.".format(
+        print("No kernel file find for project {0}.\n   {1} is not a file.".format(
           project,
           project_kernel_file_path
           ))
@@ -46,8 +45,12 @@ def generate_project_kernel(project, cluster_json=None):
   
   project_dir = common.get_project_dir(project)
 
+  if not dot.dot_dirs(project):
+    print project,dot.dot_dirs(project)
+    sys.exit(1)
+
   out_dir = dot.dot_dirs(project)[0]
-  
+    
   kernel_file_path = dot.get_kernel_path(project, out_dir)
   
   if cluster_json:
@@ -143,23 +146,26 @@ def main():
     arg_projects = args.plist.split(',')
     project_list = [project for project in project_list if project in arg_projects]
 
-	# determine if need to regerenate graphs
+  # determine if need to regerenate graphs
   if args.graph:
     for project in project_list:
       generate_graphs(project)
+    print("\n***** Done with generating graphs. *****\n") 
 
-    # determine if need to recompute the kernel vectors
+  # determine if need to recompute the kernel vectors
   if args.kernel:
     for project in project_list:
       generate_project_kernel(project, args.cluster)
+    print("\n***** Done with computing kernels. *****\n") 
 
-	# gather kernels for one-against-rest comparisons
+  # gather kernels for one-against-rest comparisons
   for project in project_list:
     pl = list(project_list) # create a copy
     pl.remove(project)
     gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt"))
+  print("\n***** Done with gathering kernels. *****\n") 
 
-   	# check similarity
+  # check similarity
   dot_method_map = get_method_map(project_list)
   if args.sim:
     if args.sim not in project_list:
