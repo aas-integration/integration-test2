@@ -45,10 +45,10 @@ def generate_project_kernel(project, cluster_json=None):
   
   project_dir = common.get_project_dir(project)
 
+  print project,dot.dot_dirs(project)
   if not dot.dot_dirs(project):
-    print project,dot.dot_dirs(project)
     sys.exit(1)
-
+  
   out_dir = dot.dot_dirs(project)[0]
     
   kernel_file_path = dot.get_kernel_path(project, out_dir)
@@ -75,7 +75,7 @@ def generate_project_kernel(project, cluster_json=None):
 def get_method_map(project_list):
   dot_to_method_map = {}
   for project in project_list:
-    for output_dir in [dot.dot_dirs(project)[0]]: # first folder only for now
+    for output_dir in dot.dot_dirs(project): # first folder only for now
       method_file = dot.get_method_path(project, output_dir)
       if not os.path.isfile(method_file):
         print ("Cannot find method file for project {0} at {1}".format(project, method_file))
