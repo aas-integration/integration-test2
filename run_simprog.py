@@ -17,11 +17,6 @@ def generate_graphs(project):
                   ['--graph-jar', common.get_jar('prog2dfg.jar'),
                    '--cache'])
 
-def generate_dtrace(project):
-  #TODO: set the out file to common.get_dtrace_file_for_project(project)
-  common.run_dljc(project,
-                  ['dyntrace'], ['--cache'])  
-
 def gather_kernels(projects, corpus_kernel_file):
   print("Gathering kernels from projects {0}".format(",".join(projects)))
   with open(corpus_kernel_file, "w") as corpus_kernel_file_handle:
@@ -72,10 +67,15 @@ def generate_project_kernel(project, cluster_json=None):
     
   print("Generated kernel file for {0} in {1}.".format(project, kernel_file_path))
 
-def get_method_map(project_list):
+def get_method_map(project_list, include_all=True):
   dot_to_method_map = {}
   for project in project_list:
-    for output_dir in dot.dot_dirs(project): # first folder only for now
+    project_dot_dirs = []
+    if include_all:
+      project_dot_dirs = dot.dot_dirs(project)
+    else:
+      project_dot_dirs = [dot.dot_dirs(project)[0]]
+    for output_dir in project_dot_dirs:
       method_file = dot.get_method_path(project, output_dir)
       if not os.path.isfile(method_file):
         print ("Cannot find method file for project {0} at {1}".format(project, method_file))
@@ -105,7 +105,7 @@ def check_similarity(project, result_file, kernel_file, corpus_dot_to_method_map
   sim = Similarity()
   sim.read_graph_kernels(kernel_file)
   iter_num = 3 # number of iteration of the WL-Kernel method
-  this_method_map = get_method_map([project])
+  this_method_map = get_method_map([project], False)
   with open(result_file, "w") as fo:
     for dot_file in this_method_map.keys():
       dot_method = corpus_dot_to_method_map[dot_file]
@@ -135,7 +135,7 @@ def main():
   parser.add_argument("-p", "--plist", type=str, help="a comma separated list of projects to work with.")
   parser.add_argument("-k", "--kernel", action="store_true", help="recompute kernel vectors.")
   parser.add_argument("-g", "--graph", action="store_true", help="regenerate graphs.")
-  parser.add_argument("-s", "--sim", type=str, help="specify a specific project for finding similar programs in the list of projects.")
+  parser.add_argument("-s", "--sim", type=str, help="specify a subset of projects for finding similar programs in the list of projects.")
 
   args = parser.parse_args()
 
@@ -162,18 +162,16 @@ def main():
   # check similarity
   dot_method_map = get_method_map(project_list)
   if args.sim:
-    if args.sim not in project_list:
-      print("Need to specify a project that is in the list of projects.")
-    else:
-      project = args.sim
-      pl = list(project_list) # create a copy
-      pl.remove(project)
-      gather_kernels(pl, os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt"))
-      print("Computing similar programs for {0}:".format(project))
-      result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
-      kernel_file = os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt")
-      json_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.json") 
-      check_similarity(project, result_file, kernel_file, dot_method_map, json_file, args.cluster, min(5,len(project_list)))
+    project_sublist = args.sim.split(',')
+    for project in project_sublist:
+      if project not in project_list:
+        print("Skipping {0} since it is not in the list of projects.".format(project))
+      else:
+        print("Computing similar programs for {0}:".format(project))
+        result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
+        kernel_file = os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt")
+        json_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.json") 
+        check_similarity(project, result_file, kernel_file, dot_method_map, json_file, args.cluster, min(5,len(project_list)))
   else:
     for project in project_list:
       pl = list(project_list) # create a copy
