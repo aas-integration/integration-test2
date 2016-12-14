@@ -3,9 +3,10 @@
 
 ## Dependencies and Requirements
 
-- Git and Mercurial
-  - `sudo apt-get install git mercurial`
+- Programs to download tool dependencies and build corpus projects
+  - `sudo apt-get install git mercurial ant gradle maven pip`
 - Java 8
+- Java 8 JDK
   - JAVA_HOME environment variable must be set to the location of your JDK install.
 - Python 2.7
   - install required packages with `sudo pip install glob2 networkx pydotplus subprocess32`
