@@ -4,7 +4,7 @@
 ## Dependencies and Requirements
 
 - Programs to download tool dependencies and build corpus projects
-  - `sudo apt-get install git mercurial ant gradle maven pip`
+  - `sudo apt-get install ant git gradle maven mercurial pip`
 - Java 8
 - Java 8 JDK
   - JAVA_HOME environment variable must be set to the location of your JDK install.
