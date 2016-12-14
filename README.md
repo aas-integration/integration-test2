@@ -7,7 +7,7 @@
   - `sudo apt-get install ant git gradle maven mercurial pip`
 - Java 8 JDK
   - JAVA_HOME environment variable must be set to the location of your JDK install.
-- Python 2.7 and PIP
+- Python 2.7 and some packages
   - install required packages with `sudo pip install glob2 networkx pydotplus subprocess32`
      - if you don't have sudo privileges, install with `pip install --user glob2 networkx pydotplus subprocess32`
 
