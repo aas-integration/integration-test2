@@ -3,6 +3,8 @@
 
 ## Dependencies and Requirements
 
+- Git and Mercurial
+  - `sudo apt-get install git mercurial`
 - Java 8
   - JAVA_HOME environment variable must be set to the location of your JDK install.
 - Python 2.7
