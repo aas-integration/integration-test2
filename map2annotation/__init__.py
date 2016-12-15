@@ -6,3 +6,4 @@ insert_anno_to_project = map2annotation.insert_anno_to_project
 create_corpus_jaif = map2annotation.create_corpus_jaif
 create_jaif_file = map2annotation.create_jaif_file
 convert_2_ontology_value = map2annotation.convert_2_ontology_value
+run_anno_inference = map2annotation.run_anno_inference
