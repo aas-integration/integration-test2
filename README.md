@@ -3,8 +3,10 @@
 
 ## Dependencies and Requirements
 
+Tested on Ubuntu 14.04.
+
 - Programs to download tool dependencies and build corpus projects
-  - `sudo apt-get install ant git gradle maven mercurial python-pip graphviz libgraphviz-dev`
+  - `sudo apt-get install ant git gradle maven mercurial python2.7-dev python-pip graphviz libgraphviz-dev`
 - Java 8 JDK
   - JAVA_HOME environment variable must be set to the location of your JDK install.
 - Python 2.7 and some packages
