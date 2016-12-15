@@ -52,8 +52,8 @@
       "name": "react",
       "git-url": "https://github.com/flow/react.git",
       "git-ref": "e8f7ee5ec666d2d1783c8a16b9cbd49bc11f037c",
-      "build": "gradle compileJava",
-      "clean": "gradle clean"
+      "build": "mvn compile",
+      "clean": "mvn clean"
     },
 
 
