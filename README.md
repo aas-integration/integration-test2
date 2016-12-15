@@ -8,8 +8,8 @@
 - Java 8 JDK
   - JAVA_HOME environment variable must be set to the location of your JDK install.
 - Python 2.7 and some packages
-  - install required packages with `sudo pip install glob2 decorator networkx pydotplus subprocess32`
-     - if you don't have sudo privileges, install with `pip install --user glob2 networkx pydotplus subprocess32`
+  - install required packages with `sudo pip install glob2 decorator networkx==1.10 pydotplus subprocess32`
+     - if you don't have sudo privileges, install with `pip install --user glob2 decorator networkx==1.10 pydotplus subprocess32`
 
 ## How to run
     
