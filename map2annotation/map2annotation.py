@@ -13,13 +13,12 @@ package ontology.qual:\n\
   annotation @Ontology:\n\
     enum ontology.qual.OntologyValue[] values\n"
 
-def field_mappings_to_annotation(json_file):
+def field_mappings_to_annotation(project_list, json_file):
     with open(json_file) as data_file:
         data = json.load(data_file)
 
     mappings = data["mappings"]
     ontology_set = set()
-    project_list = common.get_project_list()
 
     for mapping in mappings:
         ontology_set.add(mapping['label'][0])
@@ -36,8 +35,8 @@ def field_mappings_to_annotation(json_file):
     for project in project_list:
         insert_anno_to_project(project, corpus_jaif_file)
 
-    for project in project_list:
-        frontend_pa_inference.run_inference(project)
+def run_anno_inference(project):
+    frontend_pa_inference.run_inference(project)
 
 def refactor_multi_decl(project):
     project_dir = common.get_project_dir(project)
@@ -137,11 +136,18 @@ def main():
     parser = argparse.ArgumentParser(description='command line interface for map2annotation')
     parser.add_argument('--type-mapping',dest='type_mapping_file')
     parser.add_argument('--field-mapping', dest='field_mapping_file')
+    parser.add_argument('--project-list', dest='projects', help='project_nameA,project_nameB,...')
     args = parser.parse_args()
     if args.type_mapping_file is None and args.field_mapping_file is None:
         print "error, required at least one mapping file to be indicated."
         parser.print_help()
         sys.exit(1)
+
+    project_list = common.get_project_list()
+
+    if args.projects:
+        arg_projects = args.projects.split(',')
+        project_list = [project for project in project_list if project in arg_projects]
 
     pa2checker.revert_checker_source()
     
@@ -149,12 +155,10 @@ def main():
         type_mappings_to_rules(args.type_mapping_file)
 
     if not args.field_mapping_file is None:
-        field_mappings_to_annotation(args.field_mapping_file)
-
-    project_list = common.get_project_list()
+        field_mappings_to_annotation(project_list, args.field_mapping_file)
 
     for project in project_list:
-        frontend_pa_inference.run_inference(project)
+        run_anno_inference(project)
 
 if __name__ == '__main__':
     main()

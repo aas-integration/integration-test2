@@ -21,6 +21,7 @@ corpus/annotated/
 corpus/**/logs/
 **/*.jaif
 **/__java_file_names.txt
+word_based_field_clusters.json
 
 # Pycharm
 .idea/*
@@ -34,3 +35,7 @@ clusters.json
 kernel_directory/
 mini/
 results/
+
+# map2annotation
+map2annotation/checkstyle/
+map2annotation/multiDeclRefactor/
