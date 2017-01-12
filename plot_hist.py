@@ -134,9 +134,9 @@ def main():
 	#parser.add_argument("-a", "--all", action="store_true", help="set to merge results from all benchmark projects in a single histogram")
 	args = parser.parse_args()
 
-    strategy = "strategy"
-    if args.strategy:
-        strategy = args.strategy
+        strategy = "strategy"
+        if args.strategy:
+            strategy = args.strategy
 
 	proj_lst = common.LIMITED_PROJECT_LIST
 
