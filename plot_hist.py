@@ -134,9 +134,13 @@ def main():
 	#parser.add_argument("-a", "--all", action="store_true", help="set to merge results from all benchmark projects in a single histogram")
 	args = parser.parse_args()
 
+    strategy = "strategy"
+    if args.strategy:
+        strategy = args.strategy
+
 	proj_lst = common.LIMITED_PROJECT_LIST
 
-        fig_dir = args.strategy+"_hist"
+        fig_dir = strategy+"_hist"
         if args.fig:
             fig_dir = args.fig
 	common.mkdir(fig_dir)
@@ -176,12 +180,12 @@ def main():
             all_score_lst_nc += score_lst_nc
             all_score_lst_c += score_lst_c
 	    
-            plot_hist(score_lst_nc, "w/o clustering", score_lst_c, args.strategy, os.path.join(fig_dir, proj), proj+" : "+args.strategy)
+            plot_hist(score_lst_nc, "w/o clustering", score_lst_c, strategy, os.path.join(fig_dir, proj), proj+" : "+strategy)
             print("\n")
 	
         all_avg_impr = (all_c_total - all_nc_total)/all_method_num
         all_percent_impr = (all_c_total - all_nc_total)*100/all_nc_total
-        plot_hist(all_score_lst_nc, "w/o clustering", all_score_lst_c, args.strategy, os.path.join(fig_dir, args.strategy), "all : "+args.strategy)
+        plot_hist(all_score_lst_nc, "w/o clustering", all_score_lst_c, strategy, os.path.join(fig_dir, strategy), "all : "+strategy)
         print("Average score improvement across projects: {0}".format(all_avg_impr))
         print("Percentage score improvement across projects: {0}".format(all_percent_impr))
         print("Largest score improvement for a single method: {0}".format(all_largest_impr))
