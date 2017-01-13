@@ -47,7 +47,7 @@ fi
 git clone https://github.com/SRI-CSL/do-like-javac.git
 
 if [ ! -d daikon-src ]; then
-    curl -L -o daikon-src.tgz http://plse.cs.washington.edu/daikon/download/daikon-5.4.4.tar.gz
+    curl -L -o daikon-src.tgz http://plse.cs.washington.edu/daikon/download/daikon-5.4.6.tar.gz
     bash ../build_daikon.sh `pwd`/daikon-src.tgz
     cp daikon-src/daikon.jar ../libs/daikon.jar
 fi
