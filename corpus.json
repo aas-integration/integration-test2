@@ -119,6 +119,39 @@
       "name": "Sort10",
       "build": "ant",
       "clean": "ant clean"
+    },
+
+    "jcodec":
+    {
+      "name": "jcodec",
+      "git-url": "https://github.com/jcodec/jcodec.git",
+      "git-ref": "0993f3ff68d28ea08b40732915c4009c7561b707",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    },
+    "ejml":
+    {
+      "name": "ejml",
+      "git-url": "https://github.com/lessthanoptimal/ejml.git",
+      "git-ref": "2a2bfb58d789148d06fc002e7118e5f870012683",
+      "build": "gradle jar",
+      "clean": "gradle clean"
+    },
+    "ojalgo":
+    {
+      "name": "ojalgo",
+      "git-url": "https://github.com/optimatika/ojAlgo.git",
+      "git-ref": "0a28f91db144914dc58aa45ddf94a4bea72b8bf7",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    },
+    "commonsmath":
+    {
+      "name": "commonsmath",
+      "git-url": "https://github.com/apache/commons-math.git",
+      "git-ref": "657b1b49da5ea1593dd7f950eae99a88a8ada87a",
+      "build": "mvn compile",
+      "clean": "mvn clean"
     }
   }
 }
