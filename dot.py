@@ -1,6 +1,13 @@
 from common import DLJC_OUTPUT_DIR, get_project_dir
 import os
 
+PROJ_DOT_DIR_DICT = {}
+PROJ_DOT_DIR_DICT['boofcv'] = ['_main_ip_build_classes_main']
+PROJ_DOT_DIR_DICT['catalano'] = ['_build_classes']
+PROJ_DOT_DIR_DICT['dyn4j'] = ['_bin']
+PROJ_DOT_DIR_DICT['jbox2d'] = ['_jbox2d-library_target_classes']
+PROJ_DOT_DIR_DICT['jmonkeyengine'] = ['_jme3-core_build_classes_main']
+
 def find_dot_name(method_name, method_file):
   with open(method_file, "r") as fi:
     for line in fi:
@@ -20,7 +27,9 @@ def dot_dir(project_name):
 def dot_dirs(project_name):
   dd = dot_dir(project_name)
 
-  if os.path.exists(dd):
+  if project_name in PROJ_DOT_DIR_DICT:
+    return PROJ_DOT_DIR_DICT[project_name]
+  elif os.path.exists(dd):
     return os.listdir(dd)
   else:
     print("dd: {0}".format(dd))
