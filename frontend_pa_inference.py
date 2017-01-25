@@ -8,7 +8,7 @@ def run_pa2checker(ontology_values):
   for ontology_value, classes in ontology_values.iteritems():
     pa2checker.insert_ontology_value(ontology_value)
     pa2checker.update_ontology_utils(ontology_value, classes)
-  pa2checker.recompile_checker_framework()
+  common.recompile_checker_framework()
 
 def run_inference(project):
   common.setup_checker_framework_env()

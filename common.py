@@ -166,6 +166,18 @@ def run_dljc(project_name, tools, options=[], timelimit=1800.0):
     dljc_command.extend(build_command)
     run_cmd(dljc_command, print_output=True, timeout=timelimit)
 
+def ensure_java_home():
+  if not os.environ.get('JAVA_HOME'):
+    # If we're on OS X, we can auto-set JAVA_HOME
+    if os.path.exists('/usr/libexec/java_home'):
+      java_home = run_cmd(['/usr/libexec/java_home'])['output'].strip()
+      print "Automatically setting JAVA_HOME to {}".format(java_home)
+      os.environ['JAVA_HOME'] = java_home
+    else:
+      caller = inspect.stack()[1][3]
+      print "ERROR: {} requires the JAVA_HOME environment variable to be set, and we couldn't set it automatically. Please set the JAVA_HOME environment variable and try again.".format(caller)
+      sys.exit(0)
+
 CHECKER_ENV_SETUP = False
 def setup_checker_framework_env():
   global CHECKER_ENV_SETUP
@@ -179,3 +191,21 @@ def setup_checker_framework_env():
   os.environ['AFU'] = afu
   os.environ['PATH'] += ':' + os.path.join(afu, 'scripts')
   CHECKER_ENV_SETUP = True
+
+def recompile_checker_framework():
+  """ recompile checker framework stuffs
+      include:
+      - checker-framework-inference
+      - ontology
+  """
+  ensure_java_home()
+  checker_framework_inference_dir = os.path.join(TOOLS_DIR, "checker-framework-inference")
+  ontology_dir = os.path.join(TOOLS_DIR, "ontology")
+
+  with cd(checker_framework_inference_dir):
+    setup_checker_framework_env()
+    run_cmd(["gradle", "dist", "-i"], print_output=True)
+
+  with cd(ontology_dir):
+    setup_checker_framework_env()
+    run_cmd(["gradle", "build", "-i"], print_output=True)

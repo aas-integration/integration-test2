@@ -1,9 +1,5 @@
 import sys, os
 import shutil, tempfile
-
-WORKING_DIR = os.path.dirname(os.path.realpath(__file__))
-
-sys.path.insert(0, os.path.abspath(os.path.join(WORKING_DIR, '..')))
 import common
 
 SOLVER_SRC_DIR = os.path.join(common.TOOLS_DIR, 'ontology', 'src', 'ontology')
@@ -82,32 +78,11 @@ def update_ontology_utils(value_name, java_type_names):
         out_file.flush()
         shutil.copyfile(out_file.name, ontology_util_file)
 
-def recompile_checker_framework():
-  """ recompile checker framework stuffs
-      include:
-      - checker-framework-inference
-      - ontology
-  """
-  if not os.environ.get('JAVA_HOME'):
-    print "ERROR in pa2checker.recompile_checker_framework(): Gradle will fail if your JAVA_HOME environment variable is unset. Please set it and try again."
-    sys.exit(0)
-  checker_framework_inference_dir = os.path.join(common.TOOLS_DIR, "checker-framework-inference")
-  ontology_dir = os.path.join(common.TOOLS_DIR, "ontology")
-
-  with common.cd(checker_framework_inference_dir):
-    common.setup_checker_framework_env()
-    common.run_cmd(["gradle", "dist", "-i"], print_output=True)
-
-  with common.cd(ontology_dir):
-    common.setup_checker_framework_env()
-    common.run_cmd(["gradle", "build", "-i"], print_output=True)
-
-
 def main():
   annotation = "Disco"
   insert_ontology_value(annotation)
   update_ontology_utils(annotation, ["java.util.Collection", "java.util.LinkedList"])
-  recompile_checker_framework()
+  common.recompile_checker_framework()
 
 
 if __name__ == '__main__':
