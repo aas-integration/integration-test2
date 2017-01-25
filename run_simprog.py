@@ -23,6 +23,7 @@ def gather_kernels(projects, corpus_kernel_file):
     for project in projects:
       project_dir = common.get_project_dir(project)
       out_dir = dot.dot_dirs(project)[0] # only consider the first one
+      print("Gathering kernels: {0} in {1}.".format(out_dir, project))
       project_kernel_file_path = dot.get_kernel_path(project, out_dir)
       
       if os.path.isfile(project_kernel_file_path):
