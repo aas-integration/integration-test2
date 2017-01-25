@@ -2,11 +2,9 @@ import sys, os
 import json
 import argparse
 import glob2 as glob
+import common, pa2checker, frontend_pa_inference
 
 MAP_WORKING_DIR = os.path.dirname(os.path.realpath(__file__))
-sys.path.insert(0, os.path.abspath(os.path.join(MAP_WORKING_DIR, '..')))
-
-import common, pa2checker, frontend_pa_inference
 
 JAIF_FILE_ONTOLOGY_HEADER ="\
 package ontology.qual:\n\
@@ -58,7 +56,7 @@ def type_mappings_to_rules(json_file):
         pa2checker.insert_ontology_value(ontology_value)
         pa2checker.update_ontology_utils(ontology_value, java_types)
 
-    pa2checker.recompile_checker_framework()
+    common.recompile_checker_framework()
 
 def insert_anno_to_project(project, jaif_file):
     """ Insert annotation info in the ${jaif_file} to ${project}.
@@ -130,7 +128,7 @@ def convert_2_ontology_value(ontology_set):
     pa2checker.revert_checker_source()
     for new_ontology in ontology_set:
         pa2checker.insert_ontology_value(new_ontology)
-    pa2checker.recompile_checker_framework()
+    common.recompile_checker_framework()
 
 def main():
     parser = argparse.ArgumentParser(description='command line interface for map2annotation')

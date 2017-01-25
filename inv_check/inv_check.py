@@ -1,17 +1,14 @@
-
 import sys, os
 import subprocess
 import traceback
 import urllib
 import zipfile
-
-WORKING_DIR = os.path.dirname(os.path.realpath(__file__))
-daikon_jar = os.path.join(WORKING_DIR, '..', 'libs', "daikon.jar")
-DAIKON_SPLITTER = "====================="
-
-sys.path.insert(0, os.path.abspath(os.path.join(WORKING_DIR, '..')))
 import ontology_to_daikon
 import common
+
+daikon_jar = common.get_jar("daikon.jar")
+DAIKON_SPLITTER = "====================="
+
 
 def run_daikon_on_dtrace_file(dtrace_file, classpath=daikon_jar, checked_invariant=None):
   cmd = ["java", "-classpath", classpath, "daikon.DaikonSimple", dtrace_file]  
@@ -59,7 +56,7 @@ def find_ppts_that_establish_inv(dtrace_file, pattern_class_dir, pattern_class_n
   return ppts
 
 def main():
-  with common.cd(WORKING_DIR):
+  with common.cd(common.WORKING_DIR):
     test_dtrace = "test.dtrace.gz"
     test_inv_name = "TestInvariant"
     ontology_to_daikon.create_daikon_invariant("README.md", test_inv_name)
