@@ -160,7 +160,7 @@ def main():
     print("\n***** Done with computing kernels. *****\n")
 
   # check similarity
-  dot_method_map = get_method_map(project_list)
+  dot_method_map = get_method_map(project_list, False)
   if args.sim:
     project_sublist = args.sim.split(',')
     for project in project_sublist:
@@ -182,6 +182,7 @@ def main():
       kernel_file = os.path.join(common.WORKING_DIR, args.dir, project+"_kernel.txt")
       json_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.json") 
       check_similarity(project, result_file, kernel_file, dot_method_map, json_file, args.cluster, min(5,len(project_list)))
+  print("\n***** Done with computing similar programs. *****\n")
 
 if __name__ == "__main__":
 	main()
