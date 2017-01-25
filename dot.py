@@ -30,6 +30,7 @@ def dot_dirs(project_name):
   if project_name in PROJ_DOT_DIR_DICT:
     return PROJ_DOT_DIR_DICT[project_name]
   elif os.path.exists(dd):
+    assert len(os.listdir(dd))==1, "{0}: {1}".format(project_name, " ".join(os.listdir(dd)))
     return os.listdir(dd)
   else:
     print("dd: {0}".format(dd))

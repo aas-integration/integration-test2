@@ -40,7 +40,7 @@ def generate_project_kernel(project, cluster_json=None):
   
   project_dir = common.get_project_dir(project)
 
-  print project,dot.dot_dirs(project)
+  print("Generating kernel for {0} with dot files in {1}.".format(project, " ".join(dot.dot_dirs(project))))
   if not dot.dot_dirs(project):
     sys.exit(1)
   
@@ -161,6 +161,7 @@ def main():
 
   # check similarity
   dot_method_map = get_method_map(project_list, False)
+  print("Done gathering all method-dot pairs.")
   if args.sim:
     project_sublist = args.sim.split(',')
     for project in project_sublist:
