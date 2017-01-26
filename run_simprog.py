@@ -23,7 +23,7 @@ def gather_kernels(projects, corpus_kernel_file):
     for project in projects:
       project_dir = common.get_project_dir(project)
       out_dir = dot.dot_dirs(project)[0] # only consider the first one
-      print("Gathering kernels: {0} in {1}.".format(out_dir, project))
+      print("Grabbing kernel from {0} for {1}.".format(out_dir, project))
       project_kernel_file_path = dot.get_kernel_path(project, out_dir)
       
       if os.path.isfile(project_kernel_file_path):
@@ -39,13 +39,8 @@ def gather_kernels(projects, corpus_kernel_file):
 def generate_project_kernel(project, cluster_json=None):
   """ run graph kernel computation """
   
-  project_dir = common.get_project_dir(project)
-
-  print("Generating kernel for {0} with dot files in {1}.".format(project, " ".join(dot.dot_dirs(project))))
-  if not dot.dot_dirs(project):
-    sys.exit(1)
-  
   out_dir = dot.dot_dirs(project)[0]
+  print("Generating kernel for {0} with dot files in {1}.".format(project, out_dir))
     
   kernel_file_path = dot.get_kernel_path(project, out_dir)
   
@@ -53,7 +48,7 @@ def generate_project_kernel(project, cluster_json=None):
     print("Using clustering output for node relabeling:")
     graph_kernel_cmd = ['python',
                         common.get_simprog('precompute_kernel.py'),
-                        project_dir,
+                        os.path.join(dot.dot_dir(project), out_dir),
                         kernel_file_path,
                         cluster_json
                         ]
@@ -61,7 +56,7 @@ def generate_project_kernel(project, cluster_json=None):
   else:
     graph_kernel_cmd = ['python',
                         common.get_simprog('precompute_kernel.py'),
-                        project_dir,
+                        os.path.join(dot.dot_dir(project), out_dir),
                         kernel_file_path
                         ]
     common.run_cmd(graph_kernel_cmd, True)
@@ -75,7 +70,7 @@ def get_method_map(project_list, include_all=True):
     if include_all:
       project_dot_dirs = dot.dot_dirs(project)
     else:
-      project_dot_dirs = [dot.dot_dirs(project)[0]]
+      project_dot_dirs = [dot.dot_dirs(project)[0]]    
     for output_dir in project_dot_dirs:
       method_file = dot.get_method_path(project, output_dir)
       if not os.path.isfile(method_file):
