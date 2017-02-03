@@ -160,7 +160,7 @@
       "git-ref": "1a8c91328f96e90cc2c8270d6adce9e663793bc0",
       "build": "mvn compile",
       "clean": "mvn clean"
-    }
+    },
     "facer":
     {
       "name": "facer",
