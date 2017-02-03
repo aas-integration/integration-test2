@@ -152,6 +152,30 @@
       "git-ref": "657b1b49da5ea1593dd7f950eae99a88a8ada87a",
       "build": "mvn compile",
       "clean": "mvn clean"
+    },
+    "facedetection1":
+    {
+      "name": "facedetection1",
+      "git-url": "https://github.com/azeevg/FaceDetection.git",
+      "git-ref": "1a8c91328f96e90cc2c8270d6adce9e663793bc0",
+      "build": "mvn compile",
+      "clean": "mvn clean"
     }
+    "facer":
+    {
+      "name": "facer",
+      "git-url": "https://github.com/bharathk005/Facer.git",
+      "git-ref": "6ce45ce52310fc820173a12b72b29261acdf3181",
+      "build": "ant",
+      "clean": "ant clean"
+    },
+    "jviolajones":
+    {
+      "name": "jviolajones",
+      "git-url": "https://github.com/tc/jviolajones.git",
+      "git-ref": "2881bf4aa61775ecb9f09278390a3572065b7ef8",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    }    
   }
 }
