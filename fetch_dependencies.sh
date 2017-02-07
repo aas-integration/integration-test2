@@ -11,7 +11,6 @@ mkdir -p libs
 pushd libs &> /dev/null
 
 JARS=(
-    "http://plse.cs.washington.edu/daikon/download/daikon.jar"
     "https://github.com/randoop/randoop/releases/download/v3.0.8/randoop-all-3.0.8.jar"
     "https://github.com/aas-integration/prog2dfg/releases/download/v0.1/prog2dfg.jar"
     "https://github.com/junit-team/junit/releases/download/r4.12/junit-4.12.jar"
@@ -24,13 +23,17 @@ for jar in "${JARS[@]}"
 do
     base=$(basename ${jar})
     echo Fetching ${base}
-    curl -L -o ${base} ${jar} &> /dev/null
 
-    # Rename randoop's release-specific-name to just randoop.jar
-    if  [[ ${base} == randoop* ]] ;
-    then
-        echo Renaming ${base} to randoop.jar
-        mv ${base} "randoop.jar"
+    if curl -fLo ${base} ${jar} &> /dev/null; then
+      # Rename randoop's release-specific-name to just randoop.jar
+      if  [[ ${base} == randoop* ]] ;
+      then
+          echo Renaming ${base} to randoop.jar
+          mv ${base} "randoop.jar"
+      fi
+    else
+      echo Fetching ${base} failed.
+      exit 1;
     fi
 done
 
@@ -42,14 +45,20 @@ pushd tools &> /dev/null
 
 # Fetch do-like-javac
 if [ -d do-like-javac ]; then
-    rm -rf do-like-javac
+  rm -rf do-like-javac
 fi
 git clone https://github.com/SRI-CSL/do-like-javac.git
 
+DAIKON_SRC="http://plse.cs.washington.edu/daikon/download/daikon-5.5.0.tar.gz"
+
 if [ ! -d daikon-src ]; then
-    curl -L -o daikon-src.tgz http://plse.cs.washington.edu/daikon/download/daikon-5.4.6.tar.gz
+  if curl -fLo daikon-src.tgz $DAIKON_SRC; then
     bash ../build_daikon.sh `pwd`/daikon-src.tgz
     cp daikon-src/daikon.jar ../libs/daikon.jar
+  else
+    echo "Fetching $DAIKON_SRC failed."
+    exit 1;
+  fi
 fi
 
 if [ -d "ontology" ]; then
