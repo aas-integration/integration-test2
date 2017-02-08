@@ -109,7 +109,7 @@ def run(project_list, args, kernel_dir):
       common.clean_project(project)
       print ("Running Bixie")
       common.run_dljc(project,
-                      ['bixie'], [ ])
+                      ['bixie'], ['-o',common.DLJC_OUTPUT_DIR])
       #common.run_dljc(project, [], [])
     # now run clusterer.jar to get the json file containing the clusters.
     compute_clusters_for_classes(project_list, common.CLUSTER_FILE, common.CLASS2FIELDS_FILE)
