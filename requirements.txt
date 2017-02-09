@@ -1,0 +1,5 @@
+decorator
+glob2
+networkx==1.10
+pydotplus
+subprocess32
