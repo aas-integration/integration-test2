@@ -22,11 +22,12 @@ ENV INTEGRATION_DIR /integration-test2/
 RUN mkdir $INTEGRATION_DIR
 WORKDIR $INTEGRATION_DIR
 
-COPY common.py fetch_corpus.py corpus.json ./
 RUN mkdir corpus
 COPY corpus/Sort07 corpus/Sort07
 COPY corpus/Sort09 corpus/Sort09
 COPY corpus/Sort10 corpus/Sort10
+
+COPY fetch_corpus.py corpus.json ./
 RUN python fetch_corpus.py \
     && find corpus -name .git | xargs rm -rf
 
@@ -42,10 +43,6 @@ COPY map2annotation map2annotation
 COPY ontology_to_daikon ontology_to_daikon
 COPY pa2checker pa2checker
 COPY simprog simprog
-
-RUN mkdir /build-context/
-COPY . /build-context/
-
 
 CMD ["bash"]
 
