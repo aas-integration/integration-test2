@@ -49,7 +49,7 @@ if [ -d do-like-javac ]; then
 fi
 git clone https://github.com/SRI-CSL/do-like-javac.git
 
-DAIKON_SRC="http://plse.cs.washington.edu/daikon/download/daikon-5.4.6.tar.gz"
+DAIKON_SRC="http://plse.cs.washington.edu/daikon/download/daikon-5.5.0.tar.gz"
 
 if [ ! -d daikon-src ]; then
   if curl -fLo daikon-src.tgz $DAIKON_SRC; then
