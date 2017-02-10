@@ -1,5 +1,32 @@
-import os, tempfile, urllib, zipfile, shutil
-from common import mkdir, run_cmd, cd, CORPUS_DIR, get_corpus_info
+import os, tempfile, urllib, zipfile, shutil, json
+import subprocess32 as subprocess
+from contextlib import contextmanager
+
+WORKING_DIR = os.path.dirname(os.path.realpath(__file__))
+CORPUS_INFO = None
+with open(os.path.join(WORKING_DIR, 'corpus.json')) as f:
+  CORPUS_INFO = json.loads(f.read())
+CORPUS_DIR = os.path.join(WORKING_DIR, "corpus")
+
+def run_cmd(cmd):
+  stats = {'output': ''}
+
+  process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+  for line in iter(process.stdout.readline, b''):
+    stats['output'] = stats['output'] + line
+  process.stdout.close()
+  process.wait()
+
+  return stats
+
+@contextmanager
+def cd(newdir):
+  prevdir = os.getcwd()
+  os.chdir(os.path.expanduser(newdir))
+  try:
+    yield
+  finally:
+    os.chdir(prevdir)
 
 def download_zip(project):
   tdir = tempfile.mkdtemp()
@@ -61,9 +88,8 @@ def update_project(project):
       svn_update(project)
 
 def fetch_corpus():
-  mkdir(CORPUS_DIR)
   with cd(CORPUS_DIR):
-    for project in get_corpus_info()['projects'].values():
+    for project in CORPUS_INFO['projects'].values():
       download_project(project)
 
       if os.path.isdir(project['name']):
