@@ -1,10 +1,1 @@
-org.jbox2d.collision
-org.jbox2d.common.MathUtils
-org.jbox2d.common.Vec2
-org.jbox2d.dynamics.contacts.Contact
-org.jbox2d.dynamics.contacts.ContactVelocityConstraint
 org.jbox2d.dynamics.World
-org.jbox2d.pooling.normal
-org.jbox2d.testbed.framework.ContactPoint
-org.jbox2d.testbed.perf
-org.jbox2d.tests.math
