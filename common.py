@@ -20,7 +20,7 @@ DYNTRACE_ADDONS_DIR = os.path.join(WORKING_DIR, "dyntrace")
 
 LIMITED_PROJECT_LIST = ["dyn4j", "jreactphysics3d", "jbox2d", "react", "jmonkeyengine"]
 
-def run_cmd(cmd, print_output=False, timeout=None):
+def run_cmd(cmd, print_output=True, timeout=None):
   def kill_proc(proc, stats):
     stats['timed_out'] = True
     proc.kill()
@@ -117,7 +117,8 @@ def clean_project(project_name):
   with cd(project_dir):
     clean_command = project_info(project_name)['clean'].strip().split()
     run_cmd(clean_command)
-    run_cmd(['rm', '-r', DLJC_OUTPUT_DIR])
+    run_cmd(['rm', '-rf', 'dljc-out.prev'])
+    run_cmd(['mv', DLJC_OUTPUT_DIR, 'dljc-out.prev'])
 
 def get_class_dirs(project_name):
   classdirs = []
