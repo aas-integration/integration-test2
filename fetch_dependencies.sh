@@ -50,15 +50,21 @@ fi
 git clone https://github.com/SRI-CSL/do-like-javac.git
 
 DAIKON_SRC="http://plse.cs.washington.edu/daikon/download/daikon-5.5.0.tar.gz"
+DAIKON_SRC_FILE=$(basename ${DAIKON_SRC})
 
-if [ ! -d daikon-src ]; then
-  if curl -fLo daikon-src.tgz $DAIKON_SRC; then
-    bash ../build_daikon.sh `pwd`/daikon-src.tgz
+if [ ! -e $DAIKON_SRC_FILE ]; then
+  rm -rf daikon-src
+
+  if curl -fLo $DAIKON_SRC_FILE $DAIKON_SRC; then
+    bash ../build_daikon.sh `pwd`/$DAIKON_SRC_FILE
     cp daikon-src/daikon.jar ../libs/daikon.jar
   else
     echo "Fetching $DAIKON_SRC failed."
     exit 1;
   fi
+
+else
+    echo "Daikon already up to date."
 fi
 
 if [ -d "ontology" ]; then
