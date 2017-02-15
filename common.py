@@ -151,20 +151,25 @@ def copy_dyntrace_files(project_name):
     shutil.copyfile(os.path.join(DYNTRACE_ADDONS_DIR, addon),
                     os.path.join(out_dir, addon_type))
 
-def run_dljc(project_name, tools, options=[], timelimit=1800.0):
+def run_dljc(project_name, tools, options=[]):
+  project = project_info(project_name)
+  timelimit = project.get('timelimit') or 900
+
   copy_dyntrace_files(project_name)
   os.environ['DAIKONDIR'] = os.path.join(TOOLS_DIR, 'daikon-src')
+
   project_dir = get_project_dir(project_name)
   with cd(project_dir):
-    build_command = project_info(project_name)['build'].strip().split()
+    build_command = project['build'].strip().split()
     dljc_command = [DLJC_BINARY,
                     '-l', LIBS_DIR,
                     '-o', DLJC_OUTPUT_DIR,
-                    '-t', ','.join(tools)]
+                    '-t', ','.join(tools),
+                    '--timeout', str(timelimit)]
     dljc_command.extend(options)
     dljc_command.append('--')
     dljc_command.extend(build_command)
-    run_cmd(dljc_command, print_output=True, timeout=timelimit)
+    run_cmd(dljc_command, print_output=True)
 
 def ensure_java_home():
   if not os.environ.get('JAVA_HOME'):
