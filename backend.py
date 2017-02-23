@@ -91,11 +91,15 @@ def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name="
 
   common.run_cmd(clusterer_cmd, True) 
 
-  if wf_map_file_name:
+  # Check if the file exists and is not empty.
+  if os.path.exists(wf_map_file_name) and os.path.getsize(wf_map_file_name) > 0:
     print ("Generate jaif file")
     map2annotation.field_mappings_to_annotation(project_list, wf_map_file_name)
     for project in project_list:
         map2annotation.run_anno_inference(project)
+  else:
+    print("Warning: Missing or empty {0} file.".format(wf_map_file_name))
+    print("Warning: map2annotation won't be executed.")
 
 def run(project_list, args, kernel_dir):
   if os.path.isfile(common.CLUSTER_FILE) and not args.recompute_clusters:
