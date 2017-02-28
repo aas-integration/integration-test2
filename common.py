@@ -147,7 +147,7 @@ def copy_dyntrace_files(project_name):
             if f.startswith(project_info(project_name)['name']+".")]
 
   for addon in addons:
-    addon_type = addon.rsplit('.', 1)[-1]
+    addon_type = addon.split('.', 1)[-1]
     shutil.copyfile(os.path.join(DYNTRACE_ADDONS_DIR, addon),
                     os.path.join(out_dir, addon_type))
 
