@@ -10,8 +10,9 @@ CORPUS_INFO = None
 TOOLS_DIR = os.path.join(WORKING_DIR, "tools")
 SIMPROG_DIR = os.path.join(WORKING_DIR, "simprog")
 
-CLUSTER_FILE = os.path.join(WORKING_DIR, "clusters.json")
-CLASS2FIELDS_FILE = os.path.join(WORKING_DIR, "c2f.json")
+CLUSTER_FILE = "clusters.json"
+CLASS2FIELDS_FILE = "c2f.json"
+WORDCLUSTERS_FILE = "word_based_field_clusters.json"
 
 DLJC_BINARY = os.path.join(TOOLS_DIR, "do-like-javac", "dljc")
 DLJC_OUTPUT_DIR = "dljc-out"

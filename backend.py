@@ -66,7 +66,7 @@ def generate_project_kernel(project, cluster_json=None):
     
   print("Generated kernel file for {0} in {1}.".format(project, kernel_file_path))
 
-def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name="./class_field_map.json", wf_map_file_name="./word_based_field_clusters.json"):
+def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name, wf_map_file_name):
   class_dirs = list()
   for project in project_list:
     print common.get_class_dirs(project)
@@ -74,8 +74,6 @@ def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name="
   if len(class_dirs)<1:
     print("No class dirs found to cluster. Make sure you run dljc first.")
     return
-
-  
 
   clusterer_cmd = ['java', '-jar', common.get_jar('clusterer.jar'),
                    '-cs', '3',
@@ -98,9 +96,14 @@ def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name="
     print("Warning: Missing or empty {0} file.".format(wf_map_file_name))
     print("Warning: map2annotation won't be executed.")
 
+
 def run(project_list, args, kernel_dir):
-  if os.path.isfile(common.CLUSTER_FILE) and not args.recompute_clusters:
-    print ("Using clusters from: {0}".format(common.CLUSTER_FILE))
+  cluster_file = os.path.join(args.dir, common.CLUSTER_FILE)
+  c2f_file = os.path.join(args.dir, common.CLASS2FIELDS_FILE)
+  wfc_file = os.path.join(args.dir, common.WORDCLUSTERS_FILE)
+
+  if os.path.isfile(cluster_file) and not args.recompute_clusters:
+    print ("Using clusters from: {0}".format(cluster_file))
   else:
 
     # first compile everything using dljc to get the class dirs.
@@ -114,20 +117,20 @@ def run(project_list, args, kernel_dir):
       common.run_dljc(project, ['bixie'], ['--cache'])
 
     # now run clusterer.jar to get the json file containing the clusters.
-    compute_clusters_for_classes(project_list, common.CLUSTER_FILE, common.CLASS2FIELDS_FILE)
+    compute_clusters_for_classes(project_list, cluster_file, c2f_file, wfc_file)
     
   for project in project_list:
     if args.graph:
       print ("Generate Graphs")
       generate_graphs(project)
 
-    generate_project_kernel(project, common.CLUSTER_FILE)
+    generate_project_kernel(project, cluster_file)
 
   # gather kernels for one-against-all comparisons
   for project in project_list:
     pl = list(project_list) # create a copy
     pl.remove(project)
-    gather_kernels(pl, os.path.join(common.WORKING_DIR, kernel_dir, project+"_kernel.txt"))
+    gather_kernels(pl, os.path.join(kernel_dir, project+"_kernel.txt"))
 
   for project in project_list:
     print ("Generate dtrace for {0}".format(project))

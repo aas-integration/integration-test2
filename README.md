@@ -54,7 +54,8 @@ Which processes the projects `react` and `jreactphysics3d` from the corpus. Each
 
   ## Which outputs to look for:
 
-  Project specific outputs are stored in the `./corpus/[PROJECT]/dljc-out/` folders. Outputs that are relevant across projects are stored in the root folder. Project specific outputs include:
+  Outputs is stored in `results/<projectset>`. For example, `run_mini.sh` stores its output in `results/mini`.
+  Project specific outputs are stored in the `dljc-out/[PROJECT]` folder under the results folder. Project specific outputs include:
 
 ### Per-project outputs:
 

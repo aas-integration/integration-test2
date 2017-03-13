@@ -63,7 +63,7 @@ def run(project_list, args, kernel_dir):
   dot_method_map = get_method_map(project_list)
   for project in project_list:
     print("Computing similar programs for {0}...".format(project))
-    result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
-    kernel_file = os.path.join(common.WORKING_DIR, kernel_dir, project+"_kernel.txt")
-    json_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.json") 
+    result_file = os.path.join(args.dir, project+"_result.txt")
+    kernel_file = os.path.join(kernel_dir, project+"_kernel.txt")
+    json_file = os.path.join(args.dir, project+"_result.json")
     check_similarity(project, result_file, kernel_file, dot_method_map, json_file, args.cluster, min(5,len(project_list)))

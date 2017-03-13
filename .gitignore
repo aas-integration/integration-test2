@@ -1,41 +1,21 @@
 # if you are on a mac.
-**/.DS_Store
-
-**/*.pyc
-
-corpus
-libs/*
-do-like-javac
-tools
-
-dynamic_analysis/dljc/bin/__randoop_files/
-
-type_inference/annotation-tools/
-type_inference/checker-framework-inference/
-type_inference/checker-framework/
-type_inference/dataflowexample
-type_inference/generic-type-inference-solver/
-type_inference/jsr308-langtools/
-type_inference/do-like-javac/
-corpus/annotated/
-corpus/**/logs/
-**/*.jaif
-**/__java_file_names.txt
-word_based_field_clusters.json
+.DS_Store
 
 # Pycharm
 .idea/*
 
-TODO_*.*
-**/*.inv.gz
-invClass/
+# Python bytecode
+*.pyc
 
-c2f.json
-clusters.json
-kernel_directory/
-mini/
-results/
+# Things we download
+libs
+tools
+corpus
 
-# map2annotation
+# Things we generate
+results
 map2annotation/checkstyle/
 map2annotation/multiDeclRefactor/
+
+# TODO - figure out how to put this in the right place
+class_info.json
