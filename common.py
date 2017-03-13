@@ -151,7 +151,7 @@ def copy_dyntrace_files(project_name):
     shutil.copyfile(os.path.join(DYNTRACE_ADDONS_DIR, addon),
                     os.path.join(out_dir, addon_type))
 
-def run_dljc(project_name, tools, options=[]):
+def run_dljc(project_name, tools=[], options=[]):
   project = project_info(project_name)
   timelimit = project.get('timelimit') or 900
 
@@ -164,8 +164,10 @@ def run_dljc(project_name, tools, options=[]):
     dljc_command = [DLJC_BINARY,
                     '-l', LIBS_DIR,
                     '-o', DLJC_OUTPUT_DIR,
-                    '-t', ','.join(tools),
                     '--timeout', str(timelimit)]
+
+    if tools:
+      dljc_command.extend(['-t', ','.join(tools)])
     dljc_command.extend(options)
     dljc_command.append('--')
     dljc_command.extend(build_command)

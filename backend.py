@@ -1,13 +1,11 @@
 import os, sys
 import common
 import dot
-import argparse
 
 import map2annotation
 
 def generate_graphs(project):
   """Run dljc
-  Compile test sources
   Generate program graphs using prog2dfg
   Precompute graph kernels that are independent of ontology stuff
   """
@@ -18,7 +16,6 @@ def generate_graphs(project):
                    '--cache'])
 
 def generate_dtrace(project):
-  #TODO: set the out file to common.get_dtrace_file_for_project(project)
   common.run_dljc(project,
                   ['dyntrace'], ['--cache'])  
 
@@ -105,27 +102,25 @@ def run(project_list, args, kernel_dir):
   if os.path.isfile(common.CLUSTER_FILE) and not args.recompute_clusters:
     print ("Using clusters from: {0}".format(common.CLUSTER_FILE))
   else:
-    #compute clusters. 
+
     # first compile everything using dljc to get the class dirs.
+    print("Building projects and populating dljc cache")
     for project in project_list:
-      #TODO: If you don't clean stuff before, nothing
-      #happens here. 
       common.clean_project(project)
-      print ("Running Bixie")
-      common.run_dljc(project,
-                      ['bixie'], ['-o',common.DLJC_OUTPUT_DIR])
-      #common.run_dljc(project, [], [])
+      common.run_dljc(project)
+
+    print ("Running Bixie")
+    for project in project_list:
+      common.run_dljc(project, ['bixie'], ['--cache'])
+
     # now run clusterer.jar to get the json file containing the clusters.
     compute_clusters_for_classes(project_list, common.CLUSTER_FILE, common.CLASS2FIELDS_FILE)
     
   for project in project_list:
     if args.graph:
-      #TODO: If you don't clean stuff before, nothing
-      #happens here.
-      #common.clean_project(project)
       print ("Generate Graphs")
       generate_graphs(project)
-      pass
+
     generate_project_kernel(project, common.CLUSTER_FILE)
 
   # gather kernels for one-against-all comparisons
@@ -136,5 +131,4 @@ def run(project_list, args, kernel_dir):
 
   for project in project_list:
     print ("Generate dtrace for {0}".format(project))
-    #common.clean_project(project)
     generate_dtrace(project)
