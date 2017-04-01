@@ -1,3 +1,5 @@
+boofcv.alg.feature.orientation.OrientationImageAverage
+boofcv.alg.filter.kernel.KernelMath
 boofcv.struct.convolve.Kernel2D_F32
 boofcv.struct.convolve.Kernel1D_I32
 boofcv.struct.image

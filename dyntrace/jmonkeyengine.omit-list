@@ -1,1 +1,15 @@
+com.jme3.app.Stats
+com.jme3.effect.ParticleEmitter
+com.jme3.environment.util
+com.jme3.font.Letters
+com.jme3.math.FastMath
+com.jme3.math.Vector3f
+com.jme3.post.FilterPostProcessor
+com.jme3.post.HDRRenderer
+com.jme3.renderer.RenderManager
+com.jme3.scene
+com.jme3.shadow
+com.jme3.util.BufferUtils
 com.jme3.util.RingBuffer
+jme3tools.optimize.LodGenerator
+java.nio
