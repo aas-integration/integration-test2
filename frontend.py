@@ -1,77 +1,9 @@
-import sys, os, shutil
+import sys, os
 
-import inv_check
-import insert_jaif
-import ontology_to_daikon
-import pa2checker
-
-import backend
 import common
 import dot
-import argparse
 from simprog import Similarity
 import json
-
-def get_daikon_patterns():
-  ordering_operator = "<="
-
-  ontology_invariant_file = "TODO_from_Howie.txt"
-  with open(ontology_invariant_file, 'w') as f:
-    f.write(ordering_operator)
-
-  invariant_name = "TODO_sorted_sequence"
-
-  daikon_pattern_java_file = ontology_to_daikon.create_daikon_invariant(ontology_invariant_file, invariant_name)
-
-  pattern_class_dir = os.path.join(common.WORKING_DIR, "invClass")
-  if os.path.isdir(pattern_class_dir):
-    shutil.rmtree(pattern_class_dir)
-  os.mkdir(pattern_class_dir)
-
-  cmd = ["javac", "-g", "-classpath", common.get_jar('daikon.jar'),
-         daikon_pattern_java_file, "-d", pattern_class_dir]
-  common.run_cmd(cmd)
-
-  return pattern_class_dir
-
-
-def compute_daikon_invariants(project_list, pattern_class_dir=None):
-
-  list_of_methods = []
-  for project in project_list:
-
-    dljc_dir = common.get_dljc_dir_for_project(project)
-    if (not dljc_dir) or (not os.path.isdir(dljc_dir)):
-      print ("Project {0} was not built".format(project))
-      continue
-    i=0
-    while True:
-      i+=1
-      dtrace_dir = os.path.join(dljc_dir, "test-classes{}".format(i))
-      dtrace_file = os.path.join(dtrace_dir, 'RegressionTestDriver.dtrace.gz')
-      if not os.path.isfile(dtrace_file):
-        print ("No dtrace file found at {0}".format(dtrace_file))
-        break
-    
-      ppt_names = inv_check.find_ppts_that_establish_inv(dtrace_file, pattern_class_dir, "TODO_sorted_sequence")
-      methods = set()
-      for ppt in ppt_names:
-        print ("BINGO !!!!!!!!!!! {0}".format(ppt))
-        method_name = ppt[:ppt.find(':::EXIT')]
-        methods.add(method_name)
-      list_of_methods +=[(project, methods)]
-
-  print ("\n   ************")
-  print ("The following corpus methods return a sequence sorted by <=")
-  for project, methods in list_of_methods:
-    if len(methods)>0:
-      print (project)
-      for m in methods:
-        print("\t{}".format(m))
-  print ("\n   ************")
-
-  if pattern_class_dir:
-    shutil.rmtree(pattern_class_dir)
 
 def get_method_map(project_list):
   dot_to_method_map = {}
@@ -131,11 +63,7 @@ def run(project_list, args, kernel_dir):
   dot_method_map = get_method_map(project_list)
   for project in project_list:
     print("Computing similar programs for {0}...".format(project))
-    result_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.txt")
-    kernel_file = os.path.join(common.WORKING_DIR, kernel_dir, project+"_kernel.txt")
-    json_file = os.path.join(common.WORKING_DIR, args.dir, project+"_result.json") 
+    result_file = os.path.join(args.dir, project+"_result.txt")
+    kernel_file = os.path.join(kernel_dir, project+"_kernel.txt")
+    json_file = os.path.join(args.dir, project+"_result.json")
     check_similarity(project, result_file, kernel_file, dot_method_map, json_file, args.cluster, min(5,len(project_list)))
-
-    #compute_daikon_invariants(project_list, get_daikon_patterns())
-    #compute_daikon_invariants(project_list)
-

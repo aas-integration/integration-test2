@@ -1,7 +1,11 @@
 # integration-test2
 2nd big integration test of all tools
 
-## Dependencies and Requirements
+## Dependencies and Requirements (Docker)
+
+- Docker
+
+## Dependencies and Requirements (manual)
 
 Tested on Ubuntu 14.04.
 
@@ -10,17 +14,32 @@ Tested on Ubuntu 14.04.
 - Java 8 JDK
   - JAVA_HOME environment variable must be set to the location of your JDK install.
 - Python 2.7 and some packages
-  - install required packages with `sudo pip install glob2 decorator networkx==1.10 pydotplus subprocess32`
-     - if you don't have sudo privileges, install with `pip install --user glob2 decorator networkx==1.10 pydotplus subprocess32`
+  - install required packages with `sudo pip install -r requirements.txt`
+     - if you don't have sudo privileges, install with `pip install --user -r requirements.txt`
 
-## How to run
-    
+## Setup (Docker)
+
+To prepare the environment, run:
+
+    docker build -t pascali_integration .
+    docker run -it pascali_integration
+
+After the Docker image finishes building, you will be dropped into a bash shell in a fully prepared environment.
+
+If you're running on a Linux system, you may need to run the above commands with `sudo`.
+
+## Setup (manual)
+
     python fetch.py
 
-This downloads all the jars, compiles stuff, and downloads the corpus. Only needs to be run once unless you need to update tools or the corpus. After all dependencies and the corpus are ready, run the tools using one of the `run_*` scripts. For example
+This downloads all the jars, compiles stuff, and downloads the corpus. Only needs to be run once unless you need to update tools or the corpus.
+
+## Running
+
+After you've setup your environment, run the tools using one of the `run_*` scripts. For example
 
     ./run_restricted.sh
-    
+
 Which processes the projects `react` and `jreactphysics3d` from the corpus. Each of these `run_*.sh` scripts contains an example invokation of `experiments.py` which executes all tools. This includes the following tools:
 
   - [Bixie](http://sri-csl.github.io/bixie/): a bug finding tool that reports inconsistencies.
@@ -32,10 +51,11 @@ Which processes the projects `react` and `jreactphysics3d` from the corpus. Each
   - [Partitions](https://github.com/aas-integration/partitions): A tool to cluster projects that are likely to serve a similar purpose.
   - [Checker-Framework-Inference](https://github.com/typetools/checker-framework-inference): A tool to propagate and infer type annotations (provided by clusterer).
   - Simprog: A tool that computes method similarity across projects (uses input from clusterer).
-  
+
   ## Which outputs to look for:
 
-  Project specific outputs are stored in the `./corpus/[PROJECT]/dljc-out/` folders. Outputs that are relevant across projects are stored in the root folder. Project specific outputs include:
+  Outputs is stored in `results/<projectset>`. For example, `run_mini.sh` stores its output in `results/mini`.
+  Project specific outputs are stored in the `dljc-out/[PROJECT]` folder under the results folder. Project specific outputs include:
 
 ### Per-project outputs:
 
@@ -47,7 +67,7 @@ Which processes the projects `react` and `jreactphysics3d` from the corpus. Each
     - `test-classes*/`: generated unit tests.
     - `test-classes*/RegressionTestDriver.dtrace.gz`: recorded execution data for the generated unit tests.
     - `test-classes*/invariants.gz`: Likely invariants per method.
-  
+
 ### Cross-project outputs:
 
     - `clusters.json`: clustering of all classes in the corpus based on name similarity.

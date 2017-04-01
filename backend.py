@@ -1,13 +1,11 @@
 import os, sys
 import common
 import dot
-import argparse
 
 import map2annotation
 
 def generate_graphs(project):
   """Run dljc
-  Compile test sources
   Generate program graphs using prog2dfg
   Precompute graph kernels that are independent of ontology stuff
   """
@@ -18,7 +16,6 @@ def generate_graphs(project):
                    '--cache'])
 
 def generate_dtrace(project):
-  #TODO: set the out file to common.get_dtrace_file_for_project(project)
   common.run_dljc(project,
                   ['dyntrace'], ['--cache'])  
 
@@ -69,7 +66,7 @@ def generate_project_kernel(project, cluster_json=None):
     
   print("Generated kernel file for {0} in {1}.".format(project, kernel_file_path))
 
-def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name="./class_field_map.json", wf_map_file_name="./word_based_field_clusters.json"):
+def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name, wf_map_file_name):
   class_dirs = list()
   for project in project_list:
     print common.get_class_dirs(project)
@@ -77,8 +74,6 @@ def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name="
   if len(class_dirs)<1:
     print("No class dirs found to cluster. Make sure you run dljc first.")
     return
-
-  
 
   clusterer_cmd = ['java', '-jar', common.get_jar('clusterer.jar'),
                    '-cs', '3',
@@ -91,46 +86,52 @@ def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name="
 
   common.run_cmd(clusterer_cmd, True) 
 
-  if wf_map_file_name:
+  # Check if the file exists and is not empty.
+  if os.path.exists(wf_map_file_name) and os.path.getsize(wf_map_file_name) > 0:
     print ("Generate jaif file")
     map2annotation.field_mappings_to_annotation(project_list, wf_map_file_name)
     for project in project_list:
         map2annotation.run_anno_inference(project)
+  else:
+    print("Warning: Missing or empty {0} file.".format(wf_map_file_name))
+    print("Warning: map2annotation won't be executed.")
+
 
 def run(project_list, args, kernel_dir):
-  if os.path.isfile(common.CLUSTER_FILE) and not args.recompute_clusters:
-    print ("Using clusters from: {0}".format(common.CLUSTER_FILE))
+  cluster_file = os.path.join(args.dir, common.CLUSTER_FILE)
+  c2f_file = os.path.join(args.dir, common.CLASS2FIELDS_FILE)
+  wfc_file = os.path.join(args.dir, common.WORDCLUSTERS_FILE)
+
+  if os.path.isfile(cluster_file) and not args.recompute_clusters:
+    print ("Using clusters from: {0}".format(cluster_file))
   else:
-    #compute clusters. 
+
     # first compile everything using dljc to get the class dirs.
+    print("Building projects and populating dljc cache")
     for project in project_list:
-      #TODO: If you don't clean stuff before, nothing
-      #happens here. 
       common.clean_project(project)
-      print ("Running Bixie")
-      common.run_dljc(project,
-                      ['bixie'], ['-o',common.DLJC_OUTPUT_DIR])
-      #common.run_dljc(project, [], [])
+      common.run_dljc(project)
+
+    print ("Running Bixie")
+    for project in project_list:
+      common.run_dljc(project, ['bixie'], ['--cache'])
+
     # now run clusterer.jar to get the json file containing the clusters.
-    compute_clusters_for_classes(project_list, common.CLUSTER_FILE, common.CLASS2FIELDS_FILE)
+    compute_clusters_for_classes(project_list, cluster_file, c2f_file, wfc_file)
     
   for project in project_list:
     if args.graph:
-      #TODO: If you don't clean stuff before, nothing
-      #happens here.
-      #common.clean_project(project)
       print ("Generate Graphs")
       generate_graphs(project)
-      pass
-    generate_project_kernel(project, common.CLUSTER_FILE)
+
+    generate_project_kernel(project, cluster_file)
 
   # gather kernels for one-against-all comparisons
   for project in project_list:
     pl = list(project_list) # create a copy
     pl.remove(project)
-    gather_kernels(pl, os.path.join(common.WORKING_DIR, kernel_dir, project+"_kernel.txt"))
+    gather_kernels(pl, os.path.join(kernel_dir, project+"_kernel.txt"))
 
   for project in project_list:
     print ("Generate dtrace for {0}".format(project))
-    #common.clean_project(project)
     generate_dtrace(project)

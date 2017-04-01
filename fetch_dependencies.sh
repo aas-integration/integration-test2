@@ -11,7 +11,7 @@ mkdir -p libs
 pushd libs &> /dev/null
 
 JARS=(
-    "https://github.com/randoop/randoop/releases/download/v3.0.8/randoop-all-3.0.8.jar"
+    "https://github.com/randoop/randoop/releases/download/v3.1.1/randoop-all-3.1.1.jar"
     "https://github.com/aas-integration/prog2dfg/releases/download/v0.1/prog2dfg.jar"
     "https://github.com/junit-team/junit/releases/download/r4.12/junit-4.12.jar"
     "http://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
@@ -50,15 +50,21 @@ fi
 git clone https://github.com/SRI-CSL/do-like-javac.git
 
 DAIKON_SRC="http://plse.cs.washington.edu/daikon/download/daikon-5.5.0.tar.gz"
+DAIKON_SRC_FILE=$(basename ${DAIKON_SRC})
 
-if [ ! -d daikon-src ]; then
-  if curl -fLo daikon-src.tgz $DAIKON_SRC; then
-    bash ../build_daikon.sh `pwd`/daikon-src.tgz
+if [ ! -e $DAIKON_SRC_FILE ]; then
+  rm -rf daikon-src
+
+  if curl -fLo $DAIKON_SRC_FILE $DAIKON_SRC; then
+    bash ../build_daikon.sh `pwd`/$DAIKON_SRC_FILE
     cp daikon-src/daikon.jar ../libs/daikon.jar
   else
     echo "Fetching $DAIKON_SRC failed."
     exit 1;
   fi
+
+else
+    echo "Daikon already up to date."
 fi
 
 if [ -d "ontology" ]; then
