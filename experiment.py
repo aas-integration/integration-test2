@@ -8,6 +8,9 @@ def collect_stray_output(project_list, out_dir):
   jaif_out_dir = os.path.join(out_dir, "jaif")
   common.mkdir(jaif_out_dir)
 
+  shutil.move(os.path.join(common.WORKING_DIR, 'class_info.json'),
+              os.path.join(out_dir, 'class_info.json'))
+
   for project in project_list:
     dljc_in_dir = common.get_dljc_dir_for_project(project)
     shutil.move(dljc_in_dir, os.path.join(dljc_out_dir, project))
