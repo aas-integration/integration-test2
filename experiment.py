@@ -1,6 +1,10 @@
 import frontend, backend, common
 import argparse, os, shutil
 
+def move(src, dst):
+  if os.path.exists(src):
+    shutil.move(src, dst)
+
 def collect_stray_output(project_list, out_dir):
   dljc_out_dir = os.path.join(out_dir, common.DLJC_OUTPUT_DIR)
   common.mkdir(dljc_out_dir)
@@ -8,25 +12,24 @@ def collect_stray_output(project_list, out_dir):
   jaif_out_dir = os.path.join(out_dir, "jaif")
   common.mkdir(jaif_out_dir)
 
-  shutil.move(os.path.join(common.WORKING_DIR, 'class_info.json'),
-              os.path.join(out_dir, 'class_info.json'))
+  move(os.path.join(common.WORKING_DIR, 'class_info.json'),
+       os.path.join(out_dir, 'class_info.json'))
 
   for project in project_list:
     dljc_in_dir = common.get_dljc_dir_for_project(project)
-    shutil.move(dljc_in_dir, os.path.join(dljc_out_dir, project))
+    move(dljc_in_dir, os.path.join(dljc_out_dir, project))
 
-    shutil.move(os.path.join(common.get_project_dir(project), 'default.jaif'),
-                os.path.join(jaif_out_dir, "{}.jaif".format(project)))
+    move(os.path.join(common.get_project_dir(project), 'default.jaif'),
+         os.path.join(jaif_out_dir, "{}.jaif".format(project)))
 
-  shutil.move(os.path.join(common.CORPUS_DIR, 'corpus.jaif'),
-              os.path.join(jaif_out_dir, 'corpus.jaif'))
+  move(os.path.join(common.CORPUS_DIR, 'corpus.jaif'),
+       os.path.join(jaif_out_dir, 'corpus.jaif'))
 
 def main():
   project_list = common.get_project_list()
 
   parser = argparse.ArgumentParser()
 
-  
   parser.add_argument("-rc", "--recompute_clusters", action="store_true", help="recompute clustering for selected projects")
   parser.add_argument("-c", "--cluster", type=str, help="path to the json file that contains clustering information")
   parser.add_argument("-g", "--graph", action="store_true", help="set to regenerate graphs from the programs")
