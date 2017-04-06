@@ -43,6 +43,7 @@ def main():
 
   args.dir = os.path.abspath(os.path.join('results', args.dir))
   common.mkdir(args.dir)
+  common.set_output_dir(args.dir)
   kernel_dir = os.path.join(args.dir, "kernel_directory")
   common.mkdir(kernel_dir)
 

@@ -4,6 +4,7 @@ from threading import Timer
 from contextlib import contextmanager
 
 WORKING_DIR = os.path.dirname(os.path.realpath(__file__))
+OUTPUT_DIR = WORKING_DIR
 LIBS_DIR = os.path.join(WORKING_DIR, "libs")
 CORPUS_DIR = os.path.join(WORKING_DIR, "corpus")
 CORPUS_INFO = None
@@ -21,17 +22,37 @@ DYNTRACE_ADDONS_DIR = os.path.join(WORKING_DIR, "dyntrace")
 
 LIMITED_PROJECT_LIST = ["dyn4j", "jreactphysics3d", "jbox2d", "react", "jmonkeyengine"]
 
-def run_cmd(cmd, print_output=False, timeout=None):
-  def kill_proc(proc, stats):
-    stats['timed_out'] = True
-    proc.kill()
+def set_output_dir(newdir):
+  global OUTPUT_DIR
+  if os.path.isdir(newdir):
+    OUTPUT_DIR = newdir
 
+def run_cmd(cmd, output=False, timeout=None):
   stats = {'timed_out': False,
            'output': ''}
   timer = None
+  out = None
+  out_file = None
+  friendly_cmd = ' '.join(cmd)
 
-  if print_output:
-    print ("Running %s" % ' '.join(cmd))
+  if hasattr(output, 'write'):
+    out = output
+  elif isinstance(output, basestring):
+    out_file = os.path.join(OUTPUT_DIR, output + '.log')
+    out = open(out_file, 'a')
+
+  def output(line):
+    if out:
+      out.write(line)
+      out.flush()
+
+  def kill_proc(proc, stats):
+    output('Timed out on {}'.format(friendly_cmd))
+    stats['timed_out'] = True
+    proc.kill()
+
+  output("Running {}\n\n".format(friendly_cmd))
+
   try:
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
@@ -41,9 +62,8 @@ def run_cmd(cmd, print_output=False, timeout=None):
 
     for line in iter(process.stdout.readline, b''):
       stats['output'] = stats['output'] + line
-      if print_output:
-        sys.stdout.write(line)
-        sys.stdout.flush()
+      output(line)
+
     process.stdout.close()
     process.wait()
     stats['return_code'] = process.returncode
@@ -51,7 +71,12 @@ def run_cmd(cmd, print_output=False, timeout=None):
       timer.cancel()
 
   except:
-    print ('calling {cmd} failed\n{trace}'.format(cmd=' '.join(cmd),trace=traceback.format_exc()))
+    output('calling {} failed\n{}'.format(friendly_cmd,
+                                          traceback.format_exc()))
+
+  if out_file:
+    out.close()
+
   return stats
 
 @contextmanager
@@ -113,12 +138,17 @@ def get_dljc_dir_for_project(project_name):
     return None
 
 def clean_project(project_name):
-  print "Cleaning {}".format(project_name)
+  info = project_info(project_name)
   project_dir = get_project_dir(project_name)
+
   with cd(project_dir):
-    clean_command = project_info(project_name)['clean'].strip().split()
+    clean_command = info['clean'].strip().split()
     run_cmd(clean_command)
     run_cmd(['rm', '-r', DLJC_OUTPUT_DIR])
+
+    if 'git-url' in info:
+      run_cmd(['git', 'reset', '--hard', 'HEAD'])
+      run_cmd(['git', 'clean', '-f', '.'])
 
 def get_class_dirs(project_name):
   classdirs = []
@@ -172,7 +202,7 @@ def run_dljc(project_name, tools=[], options=[]):
     dljc_command.extend(options)
     dljc_command.append('--')
     dljc_command.extend(build_command)
-    run_cmd(dljc_command, print_output=True)
+    run_cmd(dljc_command, 'dljc')
 
 def ensure_java_home():
   if not os.environ.get('JAVA_HOME'):
@@ -212,8 +242,8 @@ def recompile_checker_framework():
 
   with cd(checker_framework_inference_dir):
     setup_checker_framework_env()
-    run_cmd(["gradle", "dist", "-i"], print_output=True)
+    run_cmd(["gradle", "dist", "-i"], 'checker_build')
 
   with cd(ontology_dir):
     setup_checker_framework_env()
-    run_cmd(["gradle", "build", "-i"], print_output=True)
+    run_cmd(["gradle", "build", "-i"], 'checker_build')

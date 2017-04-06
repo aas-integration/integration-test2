@@ -9,7 +9,6 @@ def generate_graphs(project):
   Generate program graphs using prog2dfg
   Precompute graph kernels that are independent of ontology stuff
   """
-  print("Generating graphs for {0}".format(project))
   common.run_dljc(project,
                   ['graphtool'],
                   ['--graph-jar', common.get_jar('prog2dfg.jar'),
@@ -48,28 +47,24 @@ def generate_project_kernel(project, cluster_json=None):
   kernel_file_path = dot.get_kernel_path(project, out_dir)
   
   if cluster_json:
-    print("Using clustering output for node relabeling:")
     graph_kernel_cmd = ['python',
                         common.get_simprog('precompute_kernel.py'),
                         project_dir,
                         kernel_file_path,
                         cluster_json
                         ]
-    common.run_cmd(graph_kernel_cmd, True)
+    common.run_cmd(graph_kernel_cmd, 'graphkernel')
   else:
     graph_kernel_cmd = ['python',
                         common.get_simprog('precompute_kernel.py'),
                         project_dir,
                         kernel_file_path
                         ]
-    common.run_cmd(graph_kernel_cmd, True)
-    
-  print("Generated kernel file for {0} in {1}.".format(project, kernel_file_path))
+    common.run_cmd(graph_kernel_cmd, 'graphkernel')
 
 def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name, wf_map_file_name):
   class_dirs = list()
   for project in project_list:
-    print common.get_class_dirs(project)
     class_dirs.extend(common.get_class_dirs(project))
   if len(class_dirs)<1:
     print("No class dirs found to cluster. Make sure you run dljc first.")
@@ -84,7 +79,7 @@ def compute_clusters_for_classes(project_list, out_file_name, cf_map_file_name, 
                   ]
   clusterer_cmd.extend(class_dirs)
 
-  common.run_cmd(clusterer_cmd, True) 
+  common.run_cmd(clusterer_cmd, 'clusterer')
 
   # Check if the file exists and is not empty.
   if os.path.exists(wf_map_file_name) and os.path.getsize(wf_map_file_name) > 0:
@@ -112,8 +107,8 @@ def run(project_list, args, kernel_dir):
       common.clean_project(project)
       common.run_dljc(project)
 
-    print ("Running Bixie")
     for project in project_list:
+      print ("Running Bixie on {}".format(project))
       common.run_dljc(project, ['bixie'], ['--cache'])
 
     # now run clusterer.jar to get the json file containing the clusters.
@@ -121,7 +116,7 @@ def run(project_list, args, kernel_dir):
     
   for project in project_list:
     if args.graph:
-      print ("Generate Graphs")
+      print ("Generate graphs for {}".format(project))
       generate_graphs(project)
 
     generate_project_kernel(project, cluster_file)
