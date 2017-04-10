@@ -68,7 +68,7 @@ def insert_anno_to_project(project, jaif_file):
         # using glob2.glob to recursive get java files under project dir
         java_files = glob.glob('{}/**/*.java'.format(project_dir))
         insert_cmd.extend(java_files)
-        common.run_cmd(insert_cmd, print_output=True)
+        common.run_cmd(insert_cmd, 'map2anno')
 
 def create_corpus_jaif(mappings):
     return create_jaif_file("corpus", mappings)

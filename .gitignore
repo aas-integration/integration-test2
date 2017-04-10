@@ -13,6 +13,7 @@ tools
 corpus
 
 # Things we generate
+corpus.log
 results
 map2annotation/checkstyle/
 map2annotation/multiDeclRefactor/

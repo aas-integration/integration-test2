@@ -105,18 +105,21 @@
     "Sort07":
     {
       "name": "Sort07",
+      "timelimit": 120,
       "build": "ant",
       "clean": "ant clean"
     },
     "Sort09":
     {
       "name": "Sort09",
+      "timelimit": 120,
       "build": "ant",
       "clean": "ant clean"
     },
     "Sort10":
     {
       "name": "Sort10",
+      "timelimit": 120,
       "build": "ant",
       "clean": "ant clean"
     },
