@@ -43,28 +43,33 @@ popd &> /dev/null # Exit libs
 mkdir -p tools
 pushd tools &> /dev/null
 
-# Fetch do-like-javac
-if [ -d do-like-javac ]; then
-  rm -rf do-like-javac
+# Fetch do-like-javac if not using external
+if [[ -z "${DLJCDIR}" ]]; then
+    if [ -d do-like-javac ]; then
+    rm -rf do-like-javac
+    fi
+    git clone https://github.com/SRI-CSL/do-like-javac.git
 fi
-git clone https://github.com/SRI-CSL/do-like-javac.git
 
-DAIKON_SRC="http://plse.cs.washington.edu/daikon/download/daikon-5.5.4.tar.gz"
-DAIKON_SRC_FILE=$(basename ${DAIKON_SRC})
+# Fetch Daikon if not using external
+if [[ -z "${DAIKONDIR}" ]]; then
+    DAIKON_SRC="http://plse.cs.washington.edu/daikon/download/daikon-5.5.4.tar.gz"
+    DAIKON_SRC_FILE=$(basename ${DAIKON_SRC})
 
-if [ ! -e $DAIKON_SRC_FILE ]; then
-  rm -rf daikon-src
+    if [ ! -e $DAIKON_SRC_FILE ]; then
+    rm -rf daikon-src
 
-  if curl -fLo $DAIKON_SRC_FILE $DAIKON_SRC; then
-    bash ../build_daikon.sh `pwd`/$DAIKON_SRC_FILE
-    cp daikon-src/daikon.jar ../libs/daikon.jar
-  else
-    echo "Fetching $DAIKON_SRC failed."
-    exit 1;
-  fi
+    if curl -fLo $DAIKON_SRC_FILE $DAIKON_SRC; then
+        bash ../build_daikon.sh `pwd`/$DAIKON_SRC_FILE
+        cp daikon-src/daikon.jar ../libs/daikon.jar
+    else
+        echo "Fetching $DAIKON_SRC failed."
+        exit 1;
+    fi
 
-else
-    echo "Daikon already up to date."
+    else
+        echo "Daikon already up to date."
+    fi
 fi
 
 if [ -d "ontology" ]; then
