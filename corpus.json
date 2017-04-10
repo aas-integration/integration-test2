@@ -78,8 +78,8 @@
     "imagej":
     {
       "name": "imagej",
-      "zip-url": "https://imagej.nih.gov/ij/download/src/ij151h-src.zip",
-      "build-dir": "source",
+      "git-url": "https://github.com/aas-integration/imagej.git",
+      "git-ref": "fc5cc397096fadc749e573df0817d7835d885b1d",
       "build": "ant build",
       "clean": "ant clean"
     },
@@ -105,6 +105,8 @@
     "Sort07":
     {
       "name": "Sort07",
+      "git-url": "https://github.com/aas-integration/Sort07.git",
+      "git-ref": "3a79246dffbebfd14026b5fa3f98a734f243a506",
       "timelimit": 120,
       "build": "ant",
       "clean": "ant clean"
@@ -112,6 +114,8 @@
     "Sort09":
     {
       "name": "Sort09",
+      "git-url": "https://github.com/aas-integration/Sort09.git",
+      "git-ref": "12f1464816ed34dbe24e395f578a3bf5196f5502",
       "timelimit": 120,
       "build": "ant",
       "clean": "ant clean"
@@ -119,6 +123,8 @@
     "Sort10":
     {
       "name": "Sort10",
+      "git-url": "https://github.com/aas-integration/Sort10.git",
+      "git-ref": "a65dc9a777cf10e228b572fa00c32eb99312f20a",
       "timelimit": 120,
       "build": "ant",
       "clean": "ant clean"
