@@ -15,7 +15,11 @@ CLUSTER_FILE = "clusters.json"
 CLASS2FIELDS_FILE = "c2f.json"
 WORDCLUSTERS_FILE = "word_based_field_clusters.json"
 
-DLJC_BINARY = os.path.join(TOOLS_DIR, "do-like-javac", "dljc")
+if os.environ.get('DLJCDIR'):
+  DLJC_BINARY = os.path.join(os.environ.get('DLJCDIR'), 'dljc')
+else:
+  DLJC_BINARY = os.path.join(TOOLS_DIR, "do-like-javac", "dljc")
+
 DLJC_OUTPUT_DIR = "dljc-out"
 
 DYNTRACE_ADDONS_DIR = os.path.join(WORKING_DIR, "dyntrace")
@@ -187,7 +191,8 @@ def run_dljc(project_name, tools=[], options=[]):
   timelimit = project.get('timelimit') or 900
 
   copy_dyntrace_files(project_name)
-  os.environ['DAIKONDIR'] = os.path.join(TOOLS_DIR, 'daikon-src')
+  if not os.environ.get('DAIKONDIR'):
+    os.environ['DAIKONDIR'] = os.path.join(TOOLS_DIR, 'daikon-src')
 
   project_dir = get_project_dir(project_name)
   with cd(project_dir):
