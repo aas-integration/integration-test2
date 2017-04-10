@@ -11,7 +11,7 @@ mkdir -p libs
 pushd libs &> /dev/null
 
 JARS=(
-    "https://github.com/randoop/randoop/releases/download/v3.1.1/randoop-all-3.1.1.jar"
+    "https://github.com/randoop/randoop/releases/download/v3.1.2/randoop-all-3.1.2.jar"
     "https://github.com/aas-integration/prog2dfg/releases/download/v0.1/prog2dfg.jar"
     "https://github.com/junit-team/junit/releases/download/r4.12/junit-4.12.jar"
     "http://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
@@ -49,7 +49,7 @@ if [ -d do-like-javac ]; then
 fi
 git clone https://github.com/SRI-CSL/do-like-javac.git
 
-DAIKON_SRC="http://plse.cs.washington.edu/daikon/download/daikon-5.5.0.tar.gz"
+DAIKON_SRC="http://plse.cs.washington.edu/daikon/download/daikon-5.5.4.tar.gz"
 DAIKON_SRC_FILE=$(basename ${DAIKON_SRC})
 
 if [ ! -e $DAIKON_SRC_FILE ]; then
