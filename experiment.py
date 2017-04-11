@@ -25,6 +25,15 @@ def collect_stray_output(project_list, out_dir):
   move(os.path.join(common.CORPUS_DIR, 'corpus.jaif'),
        os.path.join(jaif_out_dir, 'corpus.jaif'))
 
+def rotate_log_dir(d):
+  i = 1
+  dirformat = "{}.{}"
+
+  while os.path.exists(dirformat.format(d, i)):
+    i += 1
+
+  move(d, dirformat.format(d, i))
+
 def main():
   project_list = common.get_project_list()
 
@@ -42,6 +51,10 @@ def main():
     project_list = [project for project in project_list if project in arg_projects]
 
   args.dir = os.path.abspath(os.path.join('results', args.dir))
+
+  if os.path.exists(args.dir):
+    rotate_log_dir(args.dir)
+
   common.mkdir(args.dir)
   common.set_output_dir(args.dir)
   kernel_dir = os.path.join(args.dir, "kernel_directory")
