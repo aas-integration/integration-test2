@@ -5,6 +5,10 @@ def move(src, dst):
   if os.path.exists(src):
     shutil.move(src, dst)
 
+def copytree(src, dst):
+  if os.path.exists(src):
+    shutil.copytree(src, dst)
+
 def collect_stray_output(project_list, out_dir):
   dljc_out_dir = os.path.join(out_dir, common.DLJC_OUTPUT_DIR)
   common.mkdir(dljc_out_dir)
@@ -17,7 +21,7 @@ def collect_stray_output(project_list, out_dir):
 
   for project in project_list:
     dljc_in_dir = common.get_dljc_dir_for_project(project)
-    move(dljc_in_dir, os.path.join(dljc_out_dir, project))
+    copytree(dljc_in_dir, os.path.join(dljc_out_dir, project))
 
     move(os.path.join(common.get_project_dir(project), 'default.jaif'),
          os.path.join(jaif_out_dir, "{}.jaif".format(project)))
