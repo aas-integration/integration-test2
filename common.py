@@ -211,7 +211,10 @@ def run_dljc(project_name, tools=[], options=[]):
     dljc_command.extend(options)
     dljc_command.append('--')
     dljc_command.extend(build_command)
-    run_cmd(dljc_command, 'dljc')
+    result = run_cmd(dljc_command, 'dljc')
+    if result['return_code'] != 0:
+      print "DLJC command failed on {}".format(project_name)
+      sys.exit(1)
 
 def ensure_java_home():
   if not os.environ.get('JAVA_HOME'):
