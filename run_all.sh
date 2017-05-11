@@ -1,4 +1,4 @@
 #!/bin/bash
 
 echo "Run for the entire corpus"
-python experiment.py -g -rc -d results
+python experiment.py -g -rc -d all
