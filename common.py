@@ -152,7 +152,8 @@ def clean_project(project_name):
   with cd(project_dir):
     clean_command = info['clean'].strip().split()
     run_cmd(clean_command)
-    run_cmd(['rm', '-r', DLJC_OUTPUT_DIR])
+    run_cmd(['rm', '-rf', 'dljc-out.prev'])
+    run_cmd(['mv', DLJC_OUTPUT_DIR, 'dljc-out.prev'])
 
     if 'git-url' in info:
       run_cmd(['git', 'reset', '--hard', 'HEAD'])
