@@ -185,6 +185,78 @@
       "git-ref": "2881bf4aa61775ecb9f09278390a3572065b7ef8",
       "build": "mvn compile",
       "clean": "mvn clean"
-    }    
+    },
+    "parallelcolt":
+    {
+      "name": "parallelcolt",
+      "git-url": "https://github.com/rwl/ParallelColt.git",
+      "git-ref": "36a75e68abae9ed7ece5426cd96272a9ba328346",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    },
+    "jama":
+    {
+      "name": "jama",
+      "git-url": "https://github.com/cstroe/jama.git",
+      "git-ref": "d6b3e3d192bb901aec5e16a084c824d8db336d74",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    },
+    "jblas":
+    {
+      "name": "jblas",
+      "git-url": "https://github.com/mikiobraun/jblas.git",
+      "git-ref": "65687a90318631a2f4cb176b623278d7cee05d59",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    },
+    "matrixtoolkit":
+    {
+      "name": "matrixtoolkit",
+      "git-url": "https://github.com/fommil/matrix-toolkits-java.git",
+      "git-ref": "6157618bc86bcda3749af2a60bf869d8f3292960",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    },
+    "exp4j":
+    {
+      "name": "exp4j",
+      "git-url": "https://github.com/fasseg/exp4j",
+      "git-ref": "8a4e2104b6e73d54bb7b0ac39fd18e7a0874c4ea",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    },
+    "JLargeArrays":
+    {
+      "name": "JLargeArrays",
+      "git-url": "https://gitlab.com/ICM-VisLab/JLargeArrays.git",
+      "git-ref": "31e6840a5636cdbd4f7f66a7bef73918d7a86e25",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    },
+    "jscience":
+    {
+      "name": "jscience",
+      "git-url": "https://github.com/tarelli/jscience",
+      "git-ref": "28bf87f3e98dde9524e877bade78d5a32728f65e",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    },
+    "la4j":
+    {
+      "name": "la4j",
+      "git-url": "https://github.com/vkostyukov/la4j",
+      "git-ref": "db204167aa6161cd2104ce845e62518cae451d70",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    },
+    "jump":
+    {
+      "name": "jump",
+      "git-url": "https://github.com/aas-integration/jump",
+      "git-ref": "e05cac7b1b584a493978d6861cbc7fa762816f34",
+      "build": "ant jar",
+      "clean": "ant clean"
+    }
   }
 }
