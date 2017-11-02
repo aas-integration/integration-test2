@@ -213,8 +213,8 @@
     "matrixtoolkit":
     {
       "name": "matrixtoolkit",
-      "git-url": "https://github.com/fommil/matrix-toolkits-java.git",
-      "git-ref": "6157618bc86bcda3749af2a60bf869d8f3292960",
+      "git-url": "https://github.com/hwinkler/matrix-toolkits-java.git",
+      "git-ref": "f2594128eee45a188957c854acede3d6a511d717",
       "build": "mvn compile",
       "clean": "mvn clean"
     },
