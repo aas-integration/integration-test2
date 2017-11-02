@@ -45,6 +45,9 @@ def cd(newdir):
     os.chdir(prevdir)
 
 def git_update(project):
+  if project['git-url'] != run_cmd(['git', 'remote', '-v']):
+    print "git_url for {} has changed. Please delete the directory to redownload.".format(project['name'])
+    return
   if project['git-ref'] not in run_cmd(['git', 'rev-parse', 'HEAD'])['output']:
     print "Checking out git ref %s." % project['git-ref']
     run_cmd(['git', 'fetch'])
