@@ -35,6 +35,15 @@ def run_cmd(cmd):
 
   return stats
 
+def run_git(subcommand, args=None, opts=None):
+  cmd = ['git', subcommand]
+  if opts:
+    cmd.extend(opts)
+  if args:
+    cmd.extend(args)
+
+  return run_cmd(cmd)
+
 @contextmanager
 def cd(newdir):
   prevdir = os.getcwd()
@@ -50,17 +59,18 @@ def git_update(project):
     return
   if project['git-ref'] not in run_cmd(['git', 'rev-parse', 'HEAD'])['output']:
     print "Checking out git ref %s." % project['git-ref']
-    run_cmd(['git', 'fetch'])
-    run_cmd(['git', 'reset', '--hard'])
-    run_cmd(['git', 'checkout', project['git-ref']])
+    run_git('fetch')
+    run_git('reset', ['--hard'])
+    run_git('checkout', [project['git-ref']])
 
 def download_project(project):
   if not os.path.isdir(project['name']):
     if 'git-url' in project:
+      opts = None
+      if 'git-opt' in project:
+        opts = project['git-opt'].split()
       print "Downloading %s" % project['name']
-      run_cmd(['git', 'clone',
-                project['git-url'],
-                project['name']])
+      run_git('clone', [project['git-url'], project['name']], opts=opts)
   else:
     print "Already downloaded %s." % (project['name'])
 

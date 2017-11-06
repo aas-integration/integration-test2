@@ -207,6 +207,7 @@
       "name": "jblas",
       "git-url": "https://github.com/mikiobraun/jblas.git",
       "git-ref": "65687a90318631a2f4cb176b623278d7cee05d59",
+      "git-opt": "--config transfer.fsckObjects=false",
       "build": "mvn compile",
       "clean": "mvn clean"
     },
@@ -239,8 +240,8 @@
       "name": "jscience",
       "git-url": "https://github.com/tarelli/jscience",
       "git-ref": "28bf87f3e98dde9524e877bade78d5a32728f65e",
-      "build": "mvn compile",
-      "clean": "mvn clean"
+      "build": "ant jarfile",
+      "clean": "ant clean"
     },
     "la4j":
     {
