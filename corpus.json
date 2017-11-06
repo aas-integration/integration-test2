@@ -258,6 +258,30 @@
       "git-ref": "e05cac7b1b584a493978d6861cbc7fa762816f34",
       "build": "ant jar",
       "clean": "ant clean"
+    },
+    "scijava-common":
+    {
+      "name": "scijava-common",
+      "git-url": "https://github.com/scijava/scijava-common",
+      "git-ref": "cfd3e736f74a7b4a900b2eb18521cbe45f0d62d5",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    },
+    "scifio":
+    {
+      "name": "scifio",
+      "git-url": "https://github.com/scifio/scifio",
+      "git-ref": "c6971950a3569ef8a2bdd81fa8fc3e2b89544cbb",
+      "build": "mvn compile",
+      "clean": "mvn clean"
+    },
+    "nd4j":
+    {
+      "name": "nd4j",
+      "git-url": "https://github.com/deeplearning4j/nd4j",
+      "git-ref": "0bc4e2224b1b9e4405b6f3111761956d4224439e",
+      "build": "mvn compile -pl :nd4j-api",
+      "clean": "mvn clean"
     }
   }
 }
