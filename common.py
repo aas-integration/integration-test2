@@ -193,6 +193,7 @@ def copy_dyntrace_files(project_name):
 def run_dljc(project_name, tools=[], options=[]):
   project = project_info(project_name)
   timelimit = project.get('timelimit') or 900
+  extra_opts = project.get('dljc-opt')
 
   copy_dyntrace_files(project_name)
   if not os.environ.get('DAIKONDIR'):
@@ -209,6 +210,8 @@ def run_dljc(project_name, tools=[], options=[]):
     if tools:
       dljc_command.extend(['-t', ','.join(tools)])
     dljc_command.extend(options)
+    if extra_opts:
+      dljc_command.extend(extra_opts.split())
     dljc_command.append('--')
     dljc_command.extend(build_command)
     result = run_cmd(dljc_command, 'dljc')

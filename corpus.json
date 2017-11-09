@@ -264,6 +264,7 @@
       "name": "scijava-common",
       "git-url": "https://github.com/scijava/scijava-common",
       "git-ref": "cfd3e736f74a7b4a900b2eb18521cbe45f0d62d5",
+      "dljc-opt": "--guess",
       "build": "mvn compile",
       "clean": "mvn clean"
     },
@@ -272,6 +273,7 @@
       "name": "scifio",
       "git-url": "https://github.com/scifio/scifio",
       "git-ref": "c6971950a3569ef8a2bdd81fa8fc3e2b89544cbb",
+      "dljc-opt": "--guess",
       "build": "mvn compile",
       "clean": "mvn clean"
     },
