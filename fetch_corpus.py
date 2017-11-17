@@ -1,4 +1,4 @@
-import os, tempfile, urllib, zipfile, shutil, json
+import os, tempfile, urllib, zipfile, shutil, json, sys
 import subprocess32 as subprocess
 from contextlib import contextmanager
 
@@ -79,21 +79,31 @@ def update_project(project):
     if 'git-url' in project:
       git_update(project)
 
+def fetch_project(project_name):
+  with cd(CORPUS_DIR):
+    project = CORPUS_INFO['projects'][project_name]
+    download_project(project)
+
+    if os.path.isdir(project['name']):
+      update_project(project)
+    else:
+      print "{} not available.".format(project['name'])
+
+
 def fetch_corpus():
   global LOG_FILE
   LOG_FILE = open(os.path.join(WORKING_DIR, 'corpus.log'), 'w')
 
   with cd(CORPUS_DIR):
-    for project in CORPUS_INFO['projects'].values():
-      download_project(project)
-
-      if os.path.isdir(project['name']):
-        update_project(project)
-      else:
-        print "{} not available.".format(project['name'])
+    for project_name in CORPUS_INFO['projects'].keys():
+      fetch_project(project_name)
 
   LOG_FILE.close()
   LOG_FILE = None
 
 if __name__ == "__main__":
-  fetch_corpus()
+  if len(sys.argv) > 1:
+    for project_name in sys.argv[1:]:
+      fetch_project(project_name)
+  else:
+    fetch_corpus()
