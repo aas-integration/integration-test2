@@ -51,7 +51,7 @@ def run_cmd(cmd, output=False, timeout=None):
       out.flush()
 
   def kill_proc(proc, stats):
-    output('Timed out on {}'.format(friendly_cmd))
+    output('Timed out after {} seconds on {}'.format(timeout, friendly_cmd))
     stats['timed_out'] = True
     proc.kill()
 
