@@ -262,8 +262,10 @@ def recompile_checker_framework():
 
   with cd(checker_framework_inference_dir):
     setup_checker_framework_env()
-    run_cmd(["gradle", "dist", "-i"], 'checker_build')
+    run_cmd("gradle dist -i", 'checker_build')
 
   with cd(ontology_dir):
     setup_checker_framework_env()
-    run_cmd(["gradle", "build", "-i"], 'checker_build')
+    run_cmd("gradle build -i -x test", 'checker_build')
+    install_cmd = "mvn install:install-file -Dfile=dist/ontology.jar -DgroupId=pascaliUWat -DartifactId=ontology -Dversion=1.0 -Dpackaging=jar"
+    run_cmd(install_cmd, 'checker_build')

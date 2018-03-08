@@ -144,6 +144,7 @@
       "git-url": "https://github.com/lessthanoptimal/ejml.git",
       "git-ref": "2a2bfb58d789148d06fc002e7118e5f870012683",
       "build": "gradle jar",
+      "jar": "gradle jar",
       "clean": "gradle clean"
     },
     "ojalgo":
@@ -152,6 +153,7 @@
       "git-url": "https://github.com/optimatika/ojAlgo.git",
       "git-ref": "0a28f91db144914dc58aa45ddf94a4bea72b8bf7",
       "build": "mvn compile",
+      "jar": "mvn package -Dmaven.test.skip=true",
       "clean": "mvn clean"
     },
     "commonsmath":
@@ -160,6 +162,7 @@
       "git-url": "https://github.com/apache/commons-math.git",
       "git-ref": "657b1b49da5ea1593dd7f950eae99a88a8ada87a",
       "build": "mvn compile",
+      "jar": "mvn package -Dmaven.test.skip=true",
       "clean": "mvn clean"
     },
     "facedetection1":
@@ -184,6 +187,7 @@
       "git-url": "https://github.com/tc/jviolajones.git",
       "git-ref": "2881bf4aa61775ecb9f09278390a3572065b7ef8",
       "build": "mvn compile",
+      "jar": "mvn package -Dmaven.test.skip=true",
       "clean": "mvn clean"
     },
     "parallelcolt":
@@ -192,6 +196,7 @@
       "git-url": "https://github.com/rwl/ParallelColt.git",
       "git-ref": "36a75e68abae9ed7ece5426cd96272a9ba328346",
       "build": "mvn compile",
+      "jar": "mvn package -Dmaven.test.skip=true",
       "clean": "mvn clean"
     },
     "jama":
@@ -200,6 +205,7 @@
       "git-url": "https://github.com/cstroe/jama.git",
       "git-ref": "d6b3e3d192bb901aec5e16a084c824d8db336d74",
       "build": "mvn compile",
+      "jar": "mvn package -Dmaven.test.skip=true",
       "clean": "mvn clean"
     },
     "jblas":
@@ -209,6 +215,7 @@
       "git-ref": "65687a90318631a2f4cb176b623278d7cee05d59",
       "git-opt": "--config transfer.fsckObjects=false",
       "build": "mvn compile",
+      "jar": "mvn package -Dmaven.test.skip=true",
       "clean": "mvn clean"
     },
     "matrixtoolkit":
@@ -217,6 +224,7 @@
       "git-url": "https://github.com/hwinkler/matrix-toolkits-java.git",
       "git-ref": "f2594128eee45a188957c854acede3d6a511d717",
       "build": "mvn compile",
+      "jar": "mvn package -Dmaven.test.skip=true",
       "clean": "mvn clean"
     },
     "exp4j":
@@ -225,6 +233,7 @@
       "git-url": "https://github.com/fasseg/exp4j",
       "git-ref": "8a4e2104b6e73d54bb7b0ac39fd18e7a0874c4ea",
       "build": "mvn compile",
+      "jar": "mvn package -Dmaven.test.skip=true",
       "clean": "mvn clean"
     },
     "JLargeArrays":
@@ -233,6 +242,7 @@
       "git-url": "https://gitlab.com/ICM-VisLab/JLargeArrays.git",
       "git-ref": "31e6840a5636cdbd4f7f66a7bef73918d7a86e25",
       "build": "mvn compile",
+      "jar": "mvn package -Dmaven.test.skip=true",
       "clean": "mvn clean"
     },
     "jscience":
@@ -249,6 +259,7 @@
       "git-url": "https://github.com/vkostyukov/la4j",
       "git-ref": "db204167aa6161cd2104ce845e62518cae451d70",
       "build": "mvn compile",
+      "jar": "mvn package -Dmaven.test.skip=true",
       "clean": "mvn clean"
     },
     "jump":
@@ -266,6 +277,7 @@
       "git-ref": "cfd3e736f74a7b4a900b2eb18521cbe45f0d62d5",
       "dljc-opt": "--guess",
       "build": "mvn compile",
+      "jar": "mvn package -Dmaven.test.skip=true",
       "clean": "mvn clean"
     },
     "scifio":
@@ -275,6 +287,7 @@
       "git-ref": "c6971950a3569ef8a2bdd81fa8fc3e2b89544cbb",
       "dljc-opt": "--guess",
       "build": "mvn compile",
+      "jar": "mvn package -Dmaven.test.skip=true",
       "clean": "mvn clean"
     },
     "nd4j":
@@ -283,6 +296,7 @@
       "git-url": "https://github.com/deeplearning4j/nd4j",
       "git-ref": "b6981f82fa788da1b9518b0ee3e79d96ea5bc1c4",
       "build": "mvn compile -pl :nd4j-api",
+      "jar": "mvn package -Dmaven.test.skip=true -pl :nd4j-api",
       "clean": "mvn clean"
     }
   }

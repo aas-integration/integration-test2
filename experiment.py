@@ -20,6 +20,7 @@ def collect_stray_output(project_list, out_dir):
        os.path.join(out_dir, 'class_info.json'))
 
   for project in project_list:
+    collect_jars(project, out_dir)
     dljc_in_dir = common.get_dljc_dir_for_project(project)
     copytree(dljc_in_dir, os.path.join(dljc_out_dir, project))
 
@@ -28,6 +29,18 @@ def collect_stray_output(project_list, out_dir):
 
   move(os.path.join(common.CORPUS_DIR, 'corpus.jaif'),
        os.path.join(jaif_out_dir, 'corpus.jaif'))
+
+def collect_jars(project_name, out_dir):
+  jars_dir = os.path.join(out_dir, "jars", project_name)
+  common.mkdir(jars_dir)
+  project_dir = common.get_project_dir(project_name)
+  for path, _, files in os.walk(project_dir):
+    if ".mvn" in path:
+      continue
+    for file in files:
+      if file.endswith('.jar'):
+        move(os.path.join(path, file),
+             os.path.join(jars_dir))
 
 def rotate_log_dir(d):
   i = 1
