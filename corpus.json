@@ -281,7 +281,7 @@
     {
       "name": "nd4j",
       "git-url": "https://github.com/deeplearning4j/nd4j",
-      "git-ref": "0bc4e2224b1b9e4405b6f3111761956d4224439e",
+      "git-ref": "b6981f82fa788da1b9518b0ee3e79d96ea5bc1c4",
       "build": "mvn compile -pl :nd4j-api",
       "clean": "mvn clean"
     }
