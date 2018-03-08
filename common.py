@@ -37,7 +37,12 @@ def run_cmd(cmd, output=False, timeout=None):
   timer = None
   out = None
   out_file = None
-  friendly_cmd = ' '.join(cmd)
+
+  if isinstance(cmd, basestring):
+    friendly_cmd = cmd
+    cmd = cmd.split()
+  else:
+    friendly_cmd = ' '.join(cmd)
 
   if hasattr(output, 'write'):
     out = output
