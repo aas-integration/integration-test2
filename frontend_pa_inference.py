@@ -69,7 +69,9 @@ def add_mvn_deps(project_dir):
     project.appendChild(create_mvn_deps(tree))
 
   with open(pom_file, 'w') as f:
-    tree.writexml(f)
+    xml = tree.toprettyxml()
+    escaped_xml = xml.encode('ascii', 'xmlcharrefreplace')
+    f.write(escaped_xml)
 
 GRADLE_DEP_STRING = "\\1\n        implementation \"pascaliUWat:ontology:1.0\"\n"
 GRADLE_SEARCH_PATTERN = r"(dependencies\s*{)"
