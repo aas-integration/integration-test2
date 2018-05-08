@@ -12,6 +12,7 @@ pushd libs &> /dev/null
 
 JARS=(
     "https://github.com/randoop/randoop/releases/download/v4.0.3/randoop-all-4.0.3.jar"
+    "https://github.com/randoop/randoop/releases/download/v4.0.3/replacecall-4.0.3.jar"
     "https://github.com/aas-integration/prog2dfg/releases/download/v0.1/prog2dfg.jar"
     "https://github.com/junit-team/junit/releases/download/r4.12/junit-4.12.jar"
     "http://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
@@ -31,11 +32,20 @@ do
           echo Renaming ${base} to randoop.jar
           mv ${base} "randoop.jar"
       fi
+      # Rename replacecall's release-specific-name to just replacecall.jar
+      if  [[ ${base} == replacecall* ]] ;
+      then
+          echo Renaming ${base} to replacecall.jar
+          mv ${base} "replacecall.jar"
+      fi
     else
       echo Fetching ${base} failed.
       exit 1;
     fi
 done
+
+# extract the default replacements file
+jar -xf replacecall.jar default-replacements.txt
 
 popd &> /dev/null # Exit libs
 
