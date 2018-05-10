@@ -8,6 +8,12 @@ with open(os.path.join(WORKING_DIR, 'corpus.json')) as f:
   CORPUS_INFO = json.loads(f.read())
 CORPUS_DIR = os.path.join(WORKING_DIR, "corpus")
 
+def get_corpus_set(setname):
+  if setname == "all":
+    return CORPUS_INFO['projects'].keys()
+  else:
+    return CORPUS_INFO['sets'][setname]
+
 LOG_FILE = None
 
 def write_log(line):
@@ -90,12 +96,12 @@ def fetch_project(project_name):
       print "{} not available.".format(project['name'])
 
 
-def fetch_corpus():
+def fetch_corpus(projects):
   global LOG_FILE
   LOG_FILE = open(os.path.join(WORKING_DIR, 'corpus.log'), 'w')
 
   with cd(CORPUS_DIR):
-    for project_name in CORPUS_INFO['projects'].keys():
+    for project_name in projects:
       fetch_project(project_name)
 
   LOG_FILE.close()
@@ -103,7 +109,15 @@ def fetch_corpus():
 
 if __name__ == "__main__":
   if len(sys.argv) > 1:
-    for project_name in sys.argv[1:]:
-      fetch_project(project_name)
+    if len(sys.argv) == 2 and get_corpus_set(sys.argv[1]):
+      setname = sys.argv[1]
+      print("Fetching corpus subset labeled {}".format(setname))
+      to_fetch = get_corpus_set(setname)
+    else:
+      to_fetch = sys.argv[1:]
+      print("Fetching {}".format(', '.join(to_fetch)))
   else:
-    fetch_corpus()
+    print("Fetching entire corpus")
+    to_fetch = get_corpus_set("all")
+
+  fetch_corpus(to_fetch)

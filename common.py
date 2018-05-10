@@ -114,6 +114,14 @@ def get_jar(jar_name):
   else:
     return None
 
+def get_corpus_set(setname):
+  corpus = get_corpus_info()
+
+  if setname == "all":
+    return corpus['projects'].keys()
+  else:
+    return corpus['sets'][setname]
+
 def get_corpus_info():
   global CORPUS_INFO
   if not CORPUS_INFO:

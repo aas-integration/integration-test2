@@ -60,12 +60,11 @@ def main():
   parser.add_argument("-c", "--cluster", type=str, help="path to the json file that contains clustering information")
   parser.add_argument("-g", "--graph", action="store_true", help="set to regenerate graphs from the programs")
   parser.add_argument("-d", "--dir", type=str, required=True, help="The output directory")
-  parser.add_argument("-p", "--projects", type=str, help="A comma separated list of projects to work with.")
+  parser.add_argument("-p", "--projectset", type=str, help="A project set name to work on")
   args = parser.parse_args()
 
-  if args.projects:
-    arg_projects = args.projects.split(',')
-    project_list = [project for project in project_list if project in arg_projects]
+  if args.projectset:
+    project_list = common.get_corpus_set(args.projectset)
 
   args.dir = os.path.abspath(os.path.join('results', args.dir))
 
