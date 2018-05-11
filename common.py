@@ -244,6 +244,13 @@ def ensure_java_home():
       print "ERROR: {} requires the JAVA_HOME environment variable to be set, and we couldn't set it automatically. Please set the JAVA_HOME environment variable and try again.".format(caller)
       sys.exit(0)
 
+def get_os_lib_path_name():
+  import platform
+  if platform.system() == 'Darwin':
+    return 'DYLD_LIBRARY_PATH'
+  else:
+    return 'LD_LIBRARY_PATH'
+
 CHECKER_ENV_SETUP = False
 def setup_checker_framework_env():
   global CHECKER_ENV_SETUP
@@ -252,6 +259,7 @@ def setup_checker_framework_env():
 
   jsr308 = TOOLS_DIR
   os.environ['JSR308'] = jsr308
+  os.environ[get_os_lib_path_name()] = os.path.join(TOOLS_DIR, 'checker-framework-inference', 'lib')
 
   afu = os.path.join(jsr308, 'annotation-tools', 'annotation-file-utilities')
   os.environ['AFU'] = afu
@@ -273,7 +281,6 @@ def recompile_checker_framework():
     run_cmd("gradle dist -i", 'checker_build')
 
   with cd(ontology_dir):
-    setup_checker_framework_env()
     run_cmd("gradle build -i -x test", 'checker_build')
     install_cmd = "mvn install:install-file -Dfile=dist/ontology.jar -DgroupId=pascaliUWat -DartifactId=ontology -Dversion=1.0 -Dpackaging=jar"
     run_cmd(install_cmd, 'checker_build')
