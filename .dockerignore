@@ -1,7 +1,4 @@
 corpus
-!corpus/Sort07
-!corpus/Sort09
-!corpus/Sort10
 **/dljc-out
 **/.DS_Store
 **/*.pyc

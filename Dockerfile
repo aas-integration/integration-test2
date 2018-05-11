@@ -23,13 +23,11 @@ RUN mkdir $INTEGRATION_DIR
 WORKDIR $INTEGRATION_DIR
 
 RUN mkdir corpus
-COPY corpus/Sort07 corpus/Sort07
-COPY corpus/Sort09 corpus/Sort09
-COPY corpus/Sort10 corpus/Sort10
+
+ARG corpus=all
 
 COPY fetch_corpus.py corpus.json ./
-RUN python fetch_corpus.py \
-    && find corpus -name .git | xargs rm -rf
+RUN python fetch_corpus.py $corpus
 
 COPY fetch_dependencies.sh build_daikon.sh ./
 RUN bash fetch_dependencies.sh 1
