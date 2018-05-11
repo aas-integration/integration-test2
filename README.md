@@ -17,30 +17,34 @@ Tested on Ubuntu 14.04.
   - install required packages with `sudo pip install -r requirements.txt`
      - if you don't have sudo privileges, install with `pip install --user -r requirements.txt`
 
+## Setup (manual)
+
+    ./fetch_dependencies.sh
+
+This downloads all the jars and dependencies, and compiles them. Only needs to be run once unless you need to update tools.
+
+    python fetch_corpus.py [<projectset>]
+
+This fetches the corpus to be processed. With no arguments, `fetch_corpus.py` will download all available projects. It can also be given a named subset of the corpus (as defined at the start of `corpus.json`) or a list of projects to download.
+
 ## Setup (Docker)
 
 To prepare the environment, run:
 
-    docker build -t pascali_integration .
+    docker build -t pascali_integration --build-args corpus=<projectset> .
     docker run -it pascali_integration
 
 After the Docker image finishes building, you will be dropped into a bash shell in a fully prepared environment.
 
 If you're running on a Linux system, you may need to run the above commands with `sudo`.
 
-## Setup (manual)
-
-    python fetch.py
-
-This downloads all the jars, compiles stuff, and downloads the corpus. Only needs to be run once unless you need to update tools or the corpus.
-
 ## Running
 
-After you've setup your environment, run the tools using one of the `run_*` scripts. For example
+After you've setup your environment, run the tools using the `run_set.sh` script. For example
 
-    ./run_restricted.sh
+    ./run_set.sh sci
 
-Which processes the projects `react` and `jreactphysics3d` from the corpus. Each of these `run_*.sh` scripts contains an example invokation of `experiments.py` which executes all tools. This includes the following tools:
+Which processes the projects from the scientific computing corpus. This invokes the following tools:
 
   - [Bixie](http://sri-csl.github.io/bixie/): a bug finding tool that reports inconsistencies.
   - [Randoop](https://randoop.github.io/randoop/): A tool that automatically generates unit tests.
@@ -54,7 +58,7 @@ Which processes the projects `react` and `jreactphysics3d` from the corpus. Each
 
   ## Which outputs to look for:
 
-  Outputs is stored in `results/<projectset>`. For example, `run_mini.sh` stores its output in `results/mini`.
+  Output is stored in `results/<projectset>`. For example, `run_set.sh sci` stores its output in `results/sci`.
   Project specific outputs are stored in the `dljc-out/[PROJECT]` folder under the results folder. Project specific outputs include:
 
 ### Per-project outputs:
@@ -67,14 +71,12 @@ Which processes the projects `react` and `jreactphysics3d` from the corpus. Each
     - `test-classes*/`: generated unit tests.
     - `test-classes*/RegressionTestDriver.dtrace.gz`: recorded execution data for the generated unit tests.
     - `test-classes*/invariants.gz`: Likely invariants per method.
+    - `jars/*.jar`: For projects that can build a jar, the jar files produced, including Checker Framework annotations.
 
 ### Cross-project outputs:
 
     - `clusters.json`: clustering of all classes in the corpus based on name similarity.
     - `class_field_map.json`: clustering of class-fields based on their type.
     - `word_based_field_clusters.json`: sub-clustering of each cluster in `class_field_map.json` based on name similarity. This is used, for example, to distinguish `Integers` that store `height` or `weight` from integers that store `socialSecurityNamber`.
-
-Further, each of the `run_X.sh` scripts creates a folder `X` which contains json files per project that stores the k most similar methods to each method in that project together with their similarity score.
-
 
 **Find more details on the tools in the [Wiki](https://github.com/aas-integration/integration-test2/wiki)**
