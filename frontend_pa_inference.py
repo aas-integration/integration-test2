@@ -29,9 +29,9 @@ def run_inference(project_name):
 
   common.run_dljc(project_name,
                   ['inference'],
-                  ['--solverArgs=backEndType=maxsatbackend.MaxSat',
+                  ['--solverArgs=solver=Z3',
                    '--checker', 'ontology.OntologyChecker',
-                   '--solver', 'ontology.solvers.backend.OntologyConstraintSolver',
+                   '--solver', 'ontology.solvers.backend.OntologySolverEngine',
                    '-m', 'ROUNDTRIP',
                    '--cache',
                    '-afud', annotation_dir])
