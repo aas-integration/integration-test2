@@ -3,7 +3,8 @@
     "image": ["boofcv", "imagej", "thumbnailinator", "imglib2", "imgscalr", "catalano"],
     "mini": ["Sort07", "Sort09", "Sort10"],
     "restricted": ["jreactphysics3d", "react"],
-    "sci": ["jama", "JLargeArrays", "la4j", "nd4j", "commonsmath", "ejml", "exp4j", "jblas", "matrixtoolkit", "parallelcolt", "ojalgo"]
+    "sci": ["jama", "JLargeArrays", "la4j", "nd4j", "commonsmath", "ejml", "exp4j", "jblas", "matrixtoolkit", "parallelcolt", "ojalgo"],
+    "test": ["jama", "la4j", "ejml", "exp4j", "jblas"]
   },
   "projects": {
     "boofcv":
