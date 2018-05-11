@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y \
     python2.7-dev \
     python-pip \
     wamerican \
-    && rm -rf /var/lib/apt/lists/*
+    vim \
+    ruby1.9
 
 COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
