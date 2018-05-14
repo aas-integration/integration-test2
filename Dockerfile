@@ -1,5 +1,8 @@
 FROM buildpack-deps:xenial-scm
 
+RUN apt-get update && apt-get install -y software-properties-common
+RUN apt-add-repository -y ppa:cwchien/gradle
+
 RUN apt-get update && apt-get install -y \
     ant \
     gradle \
@@ -12,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     wamerican \
     vim \
     ruby1.9
+
 
 COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
