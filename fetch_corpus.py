@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os, tempfile, urllib, zipfile, shutil, json, sys
 import subprocess32 as subprocess
 from contextlib import contextmanager

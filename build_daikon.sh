@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DAIKON_TARBALL=$1
 DAIKON_PARENT_DIR=`dirname $1`
