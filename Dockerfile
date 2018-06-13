@@ -4,6 +4,8 @@ RUN apt-get update && apt-get install -y software-properties-common
 RUN apt-add-repository -y ppa:cwchien/gradle
 
 RUN apt-get update && apt-get install -y \
+    git \
+    mercurial \
     ant \
     gradle \
     graphviz \
@@ -27,15 +29,12 @@ ENV INTEGRATION_DIR /integration-test2/
 RUN mkdir $INTEGRATION_DIR
 WORKDIR $INTEGRATION_DIR
 
-RUN mkdir corpus
-
-ARG corpus=all
-
-COPY fetch_corpus.py corpus.json ./
-RUN python fetch_corpus.py $corpus
 
 COPY fetch_dependencies.sh build_daikon.sh ./
 RUN bash fetch_dependencies.sh 1
+
+RUN mkdir corpus
+COPY corpus.json corpus.json
 
 COPY *.py ./
 COPY *.sh ./
@@ -46,6 +45,8 @@ COPY map2annotation map2annotation
 COPY ontology_to_daikon ontology_to_daikon
 COPY pa2checker pa2checker
 COPY simprog simprog
+
+RUN mkdir results
 
 CMD ["bash"]
 
