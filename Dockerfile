@@ -18,7 +18,6 @@ RUN apt-get update && apt-get install -y \
     vim \
     ruby1.9
 
-
 COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
 
@@ -29,12 +28,8 @@ ENV INTEGRATION_DIR /integration-test2/
 RUN mkdir $INTEGRATION_DIR
 WORKDIR $INTEGRATION_DIR
 
-
 COPY fetch_dependencies.sh build_daikon.sh ./
 RUN bash fetch_dependencies.sh 1
-
-RUN mkdir corpus
-COPY corpus.json corpus.json
 
 COPY *.py ./
 COPY *.sh ./
@@ -46,7 +41,14 @@ COPY ontology_to_daikon ontology_to_daikon
 COPY pa2checker pa2checker
 COPY simprog simprog
 
-RUN mkdir results
+RUN mkdir -p /persist/integration/corpus
+RUN mkdir -p /persist/integration/results
+RUN touch /persist/integration/corpus.json
+
+RUN ln -s /persist/integration/corpus $INTEGRATION_DIR/corpus
+RUN ln -s /persist/integration/corpus.json $INTEGRATION_DIR/corpus.json
+RUN ln -s /persist/integration/results $INTEGRATION_DIR/results
+RUN rm -rf /persist/integration/
 
 CMD ["bash"]
 
