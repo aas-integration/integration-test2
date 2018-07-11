@@ -14,9 +14,10 @@ corpus
 
 # Things we generate
 corpus.log
-results
+dljc.log
 map2annotation/checkstyle/
 map2annotation/multiDeclRefactor/
+results
 
 # TODO - figure out how to put this in the right place
 class_info.json
