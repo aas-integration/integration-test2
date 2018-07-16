@@ -63,7 +63,7 @@ fi
 
 # Fetch Daikon if not using external
 if [[ -z "${DAIKONDIR}" ]]; then
-    DAIKON_SRC="http://plse.cs.washington.edu/daikon/download/daikon-5.6.2.tar.gz"
+    DAIKON_SRC="http://plse.cs.washington.edu/daikon/download/daikon-5.6.6.tar.gz"
     DAIKON_SRC_FILE=$(basename ${DAIKON_SRC})
 
     if [ ! -e $DAIKON_SRC_FILE ]; then
