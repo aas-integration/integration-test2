@@ -108,7 +108,6 @@ def run(project_list, args, kernel_dir):
       common.run_dljc(project)
 
     for project in project_list:
-      print ("Running Bixie on {}".format(project))
       common.run_dljc(project, ['bixie'], ['--cache'])
 
     # now run clusterer.jar to get the json file containing the clusters.
@@ -116,7 +115,6 @@ def run(project_list, args, kernel_dir):
     
   for project in project_list:
     if args.graph:
-      print ("Generate graphs for {}".format(project))
       generate_graphs(project)
 
     generate_project_kernel(project, cluster_file)
@@ -128,5 +126,4 @@ def run(project_list, args, kernel_dir):
     gather_kernels(pl, os.path.join(kernel_dir, project+"_kernel.txt"))
 
   for project in project_list:
-    print ("Generate dtrace for {0}".format(project))
     generate_dtrace(project)

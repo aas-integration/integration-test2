@@ -1,4 +1,4 @@
-import os, traceback, sys, json, shutil
+import os, traceback, sys, json, shutil, copy
 import subprocess32 as subprocess
 from threading import Timer
 from contextlib import contextmanager
@@ -122,11 +122,24 @@ def get_corpus_set(setname):
   else:
     return corpus['sets'][setname]
 
+def load_corpus_info():
+  with open(os.path.join(WORKING_DIR, 'corpus.json')) as f:
+    info = json.loads(f.read())
+    global_properties = info.get('global', {})
+    projects = info['projects']
+
+    for project_name in projects.keys():
+      base = copy.deepcopy(global_properties)
+      base['name'] = project_name
+      base.update(projects[project_name])
+      projects[project_name] = base
+
+    return info
+
 def get_corpus_info():
   global CORPUS_INFO
   if not CORPUS_INFO:
-    with open(os.path.join(WORKING_DIR, 'corpus.json')) as f:
-      CORPUS_INFO = json.loads(f.read())
+    CORPUS_INFO = load_corpus_info()
 
   return CORPUS_INFO
 
@@ -207,6 +220,25 @@ def run_dljc(project_name, tools=[], options=[]):
   project = project_info(project_name)
   timelimit = project.get('timelimit') or 900
   extra_opts = project.get('dljc-opt')
+  exclusions = project['exclude']
+
+  skipped_tools = [tool for tool in exclusions if tool in tools]
+  remaining_tools = [tool for tool in tools if tool not in exclusions]
+
+  # If tools is non-empty but remaining_tools is empty, then we don't need to do anything
+  if tools and not remaining_tools:
+    print("Skipping {} on {}".format(', '.join(skipped_tools), project_name))
+    return
+  elif tools:
+    if skipped_tools:
+      print("Running {} on {} (skipping {})".format(
+            ', '.join(remaining_tools),
+            project_name,
+            ', '.join(skipped_tools)))
+    else:
+      print("Running {} on {}".format(
+        ', '.join(remaining_tools),
+        project_name))
 
   copy_dyntrace_files(project_name)
   if not os.environ.get('DAIKONDIR'):
@@ -220,8 +252,8 @@ def run_dljc(project_name, tools=[], options=[]):
                     '-o', DLJC_OUTPUT_DIR,
                     '--timeout', str(timelimit)]
 
-    if tools:
-      dljc_command.extend(['-t', ','.join(tools)])
+    if remaining_tools:
+      dljc_command.extend(['-t', ','.join(remaining_tools)])
     dljc_command.extend(options)
     if extra_opts:
       dljc_command.extend(extra_opts.split())

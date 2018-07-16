@@ -2,21 +2,11 @@
 
 import os, tempfile, urllib, zipfile, shutil, json, sys
 import subprocess32 as subprocess
+from common import WORKING_DIR, get_corpus_info, get_corpus_set, CORPUS_DIR
 from contextlib import contextmanager
 
-WORKING_DIR = os.path.dirname(os.path.realpath(__file__))
-CORPUS_INFO = None
-with open(os.path.join(WORKING_DIR, 'corpus.json')) as f:
-  CORPUS_INFO = json.loads(f.read())
-CORPUS_DIR = os.path.join(WORKING_DIR, "corpus")
-
-def get_corpus_set(setname):
-  if setname == "all":
-    return CORPUS_INFO['projects'].keys()
-  else:
-    return CORPUS_INFO['sets'][setname]
-
 LOG_FILE = None
+CORPUS_INFO = get_corpus_info()
 
 def write_log(line):
   global LOG_FILE
