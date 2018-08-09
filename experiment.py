@@ -23,7 +23,7 @@ def collect_stray_output(project_list, out_dir):
 
   for project in project_list:
     collect_jars(project, out_dir)
-    dljc_in_dir = common.get_dljc_dir_for_project(project)
+    dljc_in_dir = common.get_dljc_dir(project)
     copytree(dljc_in_dir, os.path.join(dljc_out_dir, project))
 
     move(os.path.join(common.get_project_dir(project), 'default.jaif'),
@@ -68,7 +68,7 @@ def main():
   if args.projectset:
     project_list = common.get_corpus_set(args.projectset)
 
-  args.dir = os.path.abspath(os.path.join('results', args.dir))
+  args.dir = os.path.abspath(os.path.join(common.WORKING_DIR, 'results', args.dir))
 
   if os.path.exists(args.dir):
     rotate_log_dir(args.dir)
@@ -83,6 +83,7 @@ def main():
   frontend.run(project_list, args, kernel_dir)
 
   collect_stray_output(project_list, args.dir)
+  check_run(project_list, args.dir)
 
 if __name__ == '__main__':
   main()
