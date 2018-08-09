@@ -160,7 +160,7 @@ def project_info(project_name):
 def get_simprog(py_file):
   return os.path.join(SIMPROG_DIR, py_file)
 
-def get_dljc_dir_for_project(project_name):
+def get_dljc_dir(project_name):
   dtrace_path = os.path.join(get_project_dir(project_name), DLJC_OUTPUT_DIR)
   if os.path.exists(dtrace_path):
     return dtrace_path
