@@ -32,8 +32,8 @@ def check_daikon(project):
     dirnum = m.group(1)
     inv_file = os.path.join(p_dir, 'test-classes{}'.format(dirnum), 'invariants.gz')
     if not os.path.exists(inv_file):
-      errors.extend(project, 'daikon',
-                    'No invariants found for generated tests #{}.'.format(dirnum))
+      errors.extend(error(project, 'daikon',
+                          'No invariants found for generated tests #{}.'.format(dirnum)))
 
   return errors
 
