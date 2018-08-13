@@ -1,7 +1,7 @@
 #/usr/bin/env python
 
-import frontend, backend, common
 import argparse, os, shutil
+import frontend, backend, common, sanity
 
 def move(src, dst):
   if os.path.exists(src):
@@ -83,7 +83,7 @@ def main():
   frontend.run(project_list, args, kernel_dir)
 
   collect_stray_output(project_list, args.dir)
-  check_run(project_list, args.dir)
+  sanity.check_run(project_list, args.dir)
 
 if __name__ == '__main__':
   main()
