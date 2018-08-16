@@ -26,9 +26,9 @@ def gather_kernels(projects, corpus_kernel_file):
       project_dir = common.get_project_dir(project)
       out_dir = dot.dot_dirs(project)[0] # only consider the first one
       project_kernel_file_path = dot.get_kernel_path(project, out_dir)
-      
+
       if os.path.isfile(project_kernel_file_path):
-        with open(project_kernel_file_path, "r") as fi: 
+        with open(project_kernel_file_path, "r") as fi:
             corpus_kernel_file_handle.write(fi.read())
       else:
         print ("No kernel file find for project {0}.\n   {1} is not a file.".format(
@@ -39,13 +39,13 @@ def gather_kernels(projects, corpus_kernel_file):
 
 def generate_project_kernel(project, cluster_json=None):
   """ run graph kernel computation """
-  
+
   project_dir = common.get_project_dir(project)
 
   out_dir = dot.dot_dirs(project)[0]
-  
+
   kernel_file_path = dot.get_kernel_path(project, out_dir)
-  
+
   if cluster_json:
     graph_kernel_cmd = ['python',
                         common.get_simprog('precompute_kernel.py'),
@@ -112,7 +112,7 @@ def run(project_list, args, kernel_dir):
 
     # now run clusterer.jar to get the json file containing the clusters.
     compute_clusters_for_classes(project_list, cluster_file, c2f_file, wfc_file)
-    
+
   for project in project_list:
     if args.graph:
       generate_graphs(project)

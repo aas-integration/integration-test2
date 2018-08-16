@@ -167,8 +167,8 @@ def get_dljc_dir(project_name):
   else:
     return None
 
-def clean_corpus():
-  for project in get_project_list():
+def clean_corpus(proj_set="all"):
+  for project in get_corpus_set(proj_set):
     clean_project(project)
 
 def clean_project(project_name):
