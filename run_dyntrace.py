@@ -23,7 +23,7 @@ def main():
 
   print "Cleaning {}".format(project)
   common.clean_project(project)
-  common.run_dljc(project, tools)
+  common.run_dljc(project, tools, ["-X"])
   print time.strftime('%X %x')
 
 if __name__ == "__main__":

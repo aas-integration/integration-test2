@@ -16,7 +16,7 @@ def generate_graphs(project):
 
 def generate_dtrace(project):
   common.run_dljc(project,
-                  ['dyntrace'], ['--cache'])  
+                  ['dyntrace'], ['--cache', '--daikon-xml'])
 
 
 def gather_kernels(projects, corpus_kernel_file):
