@@ -24,17 +24,21 @@ def gather_kernels(projects, corpus_kernel_file):
   with open(corpus_kernel_file, "w") as corpus_kernel_file_handle:
     for project in projects:
       project_dir = common.get_project_dir(project)
-      out_dir = dot.dot_dirs(project)[0] # only consider the first one
+      dot_dirs = dot.dot_dirs(project)
+
+      if not dot_dirs:
+        print("No graphs for {}, skipping.".format(project))
+        continue
+
+      out_dir = dot_dirs[0] # only consider the first one
       project_kernel_file_path = dot.get_kernel_path(project, out_dir)
 
-      if os.path.isfile(project_kernel_file_path):
+      if not os.path.isfile(project_kernel_file_path):
         with open(project_kernel_file_path, "r") as fi:
             corpus_kernel_file_handle.write(fi.read())
       else:
-        print ("No kernel file find for project {0}.\n   {1} is not a file.".format(
-          project,
-          project_kernel_file_path
-          ))
+        msg = "No kernel file find for project {0}.\n   {1} is not a file."
+        print(msg.format(project, project_kernel_file_path))
 
 
 def generate_project_kernel(project, cluster_json=None):
@@ -42,7 +46,13 @@ def generate_project_kernel(project, cluster_json=None):
 
   project_dir = common.get_project_dir(project)
 
-  out_dir = dot.dot_dirs(project)[0]
+  dot_dirs = dot.dot_dirs(project)
+
+  if not dot_dirs:
+    print "No graphs generated for {}".format(project)
+    return
+
+  out_dir = dot_dirs[0]
 
   kernel_file_path = dot.get_kernel_path(project, out_dir)
 
