@@ -175,6 +175,9 @@ def clean_project(project_name):
   info = project_info(project_name)
   project_dir = get_project_dir(project_name)
 
+  if not os.path.exists(project_dir):
+    return
+
   with cd(project_dir):
     clean_command = info['clean'].strip().split()
     run_cmd(clean_command)
@@ -182,7 +185,7 @@ def clean_project(project_name):
 
     if 'git-url' in info:
       run_cmd(['git', 'reset', '--hard', 'HEAD'])
-      run_cmd(['git', 'clean', '-f', '.'])
+      run_cmd(['git', 'clean', '-dxf', '.'])
 
 def get_class_dirs(project_name):
   classdirs = []
