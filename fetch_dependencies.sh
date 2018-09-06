@@ -90,6 +90,7 @@ git clone https://github.com/pascaliUWat/ontology.git
 pushd ontology &> /dev/null
 export TRAVIS_BUILD_DIR=`pwd`
 ./pascali-setup.sh
+ln -s dist/ontology.jar ../../libs/ontology.jar
 popd &> /dev/null # Exit ontology
 
 popd &> /dev/null # Exit tools
