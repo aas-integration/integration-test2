@@ -31,12 +31,30 @@ This fetches the corpus to be processed. With no arguments, `fetch_corpus.py` wi
 
 To prepare the environment, run:
 
-    docker build -t pascali_integration --build-args corpus=<projectset> .
-    docker run -it pascali_integration
+    docker build -t pascali_integration .
 
-After the Docker image finishes building, you will be dropped into a bash shell in a fully prepared environment.
+Our docker image expects that a directory will be mounted to its /persist mount point containing the `corpus.json` file, and `corpus` and `result` directories for storing the downloaded corpus and any generated results. On a Mac, however, Docker's shared filesystems are very slow, and this is not recommended.
 
-If you're running on a Linux system, you may need to run the above commands with `sudo`.
+If you want to use the shared filesystem, run the Docker image with
+
+    docker run -it -v /path/to/persist:/persist --name pascali_integration pascali_integration
+
+Otherwise, run
+
+    docker run -it --name pascali_integration pascali_integration
+
+Inside the container, run
+
+    rm -rf corpus results corpus.json
+    mkdir corpus results
+
+Then, from another terminal, run
+
+    docker cp corpus.json pascali_integration:/integration-test2/corpus.json
+
+Whether using the /persist directory or not, you can then run (inside Docker)
+
+    python fetch_corpus.py
 
 ## Running
 
