@@ -63,14 +63,16 @@ fi
 
 # Fetch Daikon if not using external
 if [[ -z "${DAIKONDIR}" ]]; then
-    DAIKON_SRC="http://plse.cs.washington.edu/daikon/download/daikon-5.6.6.tar.gz"
+    DAIKONBASEURL="http://plse.cs.washington.edu/daikon"
+    DAIKONVERSION=`curl --fail -s $DAIKONBASEURL/download/doc/VERSION | xargs echo -n`
+    DAIKON_SRC=$DAIKONBASEURL/download/daikon-$DAIKONVERSION.tar.gz
     DAIKON_SRC_FILE=$(basename ${DAIKON_SRC})
 
     if [ ! -e $DAIKON_SRC_FILE ]; then
     rm -rf daikon-src
 
     if curl -fLo $DAIKON_SRC_FILE $DAIKON_SRC; then
-        bash ../build_daikon.sh `pwd`/$DAIKON_SRC_FILE
+        bash ./build_daikon.sh `pwd`/$DAIKON_SRC_FILE
         cp daikon-src/daikon.jar ../libs/daikon.jar
     else
         echo "Fetching $DAIKON_SRC failed."
