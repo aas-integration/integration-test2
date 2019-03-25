@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 
 import os,sys,common
-import fetch
 import time
 
 def main():
-  if not os.path.exists(common.CORPUS_DIR) or not os.path.exists(common.LIBS_DIR):
-    print "Please run python fetch.py first to fetch the corpus and/or necessary tools."
+  if not os.path.exists(common.CORPUS_DIR):
+    print "Please run python fetch_corpus.py first to fetch the corpus."
+    sys.exit(1)
+    return
+
+  if not os.path.exists(common.LIBS_DIR):
+    print "Please run fetch_dependencies.sh first to fetch the necessary tools."
     sys.exit(1)
     return
 
