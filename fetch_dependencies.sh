@@ -11,8 +11,6 @@ mkdir -p libs
 pushd libs &> /dev/null
 
 JARS=(
-    "https://github.com/randoop/randoop/releases/download/v4.0.3/randoop-all-4.0.3.jar"
-    "https://github.com/randoop/randoop/releases/download/v4.0.3/replacecall-4.0.3.jar"
     "https://github.com/aas-integration/prog2dfg/releases/download/v0.1/prog2dfg.jar"
     "https://github.com/junit-team/junit/releases/download/r4.12/junit-4.12.jar"
     "http://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
@@ -26,24 +24,39 @@ do
     echo Fetching ${base}
 
     if curl -fLo ${base} ${jar} &> /dev/null; then
-      # Rename randoop's release-specific-name to just randoop.jar
-      if  [[ ${base} == randoop* ]] ;
-      then
-          echo Renaming ${base} to randoop.jar
-          mv ${base} "randoop.jar"
-      fi
-      # Rename replacecall's release-specific-name to just replacecall.jar
-      if  [[ ${base} == replacecall* ]] ;
-      then
-          echo Renaming ${base} to replacecall.jar
-          mv ${base} "replacecall.jar"
-      fi
+      :
     else
       echo Fetching ${base} failed.
       exit 1;
     fi
 done
 
+# Fetch the current version of randoop jars
+RANDOOPBASEURL="https://github.com/randoop/randoop/releases/download"
+RANDOOPVERSION=`curl --fail -s https://raw.githubusercontent.com/randoop/randoop/master/src/docs/CHANGES.txt|head -1|cut -f1 -d','|cut -f2 -d' '`
+jar=$RANDOOPBASEURL/v$RANDOOPVERSION/randoop-all-$RANDOOPVERSION.jar
+    base=$(basename ${jar})
+    echo Fetching ${base}
+
+    if curl -fLo ${base} ${jar} &> /dev/null; then
+      # Rename randoop's release-specific-name to just randoop.jar
+      mv ${base} "randoop.jar"
+    else
+      echo Fetching ${base} failed.
+      exit 1;
+    fi
+
+jar=$RANDOOPBASEURL/v$RANDOOPVERSION/replacecall-$RANDOOPVERSION.jar
+    base=$(basename ${jar})
+    echo Fetching ${base}
+
+    if curl -fLo ${base} ${jar} &> /dev/null; then
+      # Rename replacecall's release-specific-name to just replacecall.jar
+      mv ${base} "replacecall.jar"
+    else
+      echo Fetching ${base} failed.
+      exit 1;
+    fi
 # extract the default replacements file
 jar -xf replacecall.jar default-replacements.txt
 
