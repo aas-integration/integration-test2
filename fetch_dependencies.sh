@@ -33,7 +33,7 @@ done
 
 # Fetch the current version of randoop jars
 RANDOOPBASEURL="https://github.com/randoop/randoop/releases/download"
-RANDOOPVERSION=`curl --fail -s https://raw.githubusercontent.com/randoop/randoop/master/src/docs/CHANGES.txt|head -1|cut -f1 -d','|cut -f2 -d' '`
+RANDOOPVERSION=`curl --silent "https://api.github.com/repos/randoop/randoop/releases/latest"|grep '"tag_name"'|sed -E 's/.*"v([^"]+)".*/\1/'`
 jar=$RANDOOPBASEURL/v$RANDOOPVERSION/randoop-all-$RANDOOPVERSION.jar
     base=$(basename ${jar})
     echo Fetching ${base}
