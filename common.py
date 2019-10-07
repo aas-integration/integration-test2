@@ -160,20 +160,23 @@ def project_info(project_name):
 def get_simprog(py_file):
   return os.path.join(SIMPROG_DIR, py_file)
 
-def get_dljc_dir_for_project(project_name):
+def get_dljc_dir(project_name):
   dtrace_path = os.path.join(get_project_dir(project_name), DLJC_OUTPUT_DIR)
   if os.path.exists(dtrace_path):
     return dtrace_path
   else:
     return None
 
-def clean_corpus():
-  for project in get_project_list():
+def clean_corpus(proj_set="all"):
+  for project in get_corpus_set(proj_set):
     clean_project(project)
 
 def clean_project(project_name):
   info = project_info(project_name)
   project_dir = get_project_dir(project_name)
+
+  if not os.path.exists(project_dir):
+    return
 
   with cd(project_dir):
     clean_command = info['clean'].strip().split()
@@ -182,7 +185,7 @@ def clean_project(project_name):
 
     if 'git-url' in info:
       run_cmd(['git', 'reset', '--hard', 'HEAD'])
-      run_cmd(['git', 'clean', '-f', '.'])
+      run_cmd(['git', 'clean', '-dxf', '.'])
 
 def get_class_dirs(project_name):
   classdirs = []

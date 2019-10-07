@@ -16,7 +16,7 @@ def generate_graphs(project):
 
 def generate_dtrace(project):
   common.run_dljc(project,
-                  ['dyntrace'], ['--cache'])  
+                  ['dyntrace'], ['--cache', '--daikon-xml'])
 
 
 def gather_kernels(projects, corpus_kernel_file):
@@ -24,28 +24,38 @@ def gather_kernels(projects, corpus_kernel_file):
   with open(corpus_kernel_file, "w") as corpus_kernel_file_handle:
     for project in projects:
       project_dir = common.get_project_dir(project)
-      out_dir = dot.dot_dirs(project)[0] # only consider the first one
+      dot_dirs = dot.dot_dirs(project)
+
+      if not dot_dirs:
+        print("No graphs for {}, skipping.".format(project))
+        continue
+
+      out_dir = dot_dirs[0] # only consider the first one
       project_kernel_file_path = dot.get_kernel_path(project, out_dir)
-      
-      if os.path.isfile(project_kernel_file_path):
-        with open(project_kernel_file_path, "r") as fi: 
+
+      if not os.path.isfile(project_kernel_file_path):
+        with open(project_kernel_file_path, "r") as fi:
             corpus_kernel_file_handle.write(fi.read())
       else:
-        print ("No kernel file find for project {0}.\n   {1} is not a file.".format(
-          project,
-          project_kernel_file_path
-          ))
+        msg = "No kernel file find for project {0}.\n   {1} is not a file."
+        print(msg.format(project, project_kernel_file_path))
 
 
 def generate_project_kernel(project, cluster_json=None):
   """ run graph kernel computation """
-  
+
   project_dir = common.get_project_dir(project)
 
-  out_dir = dot.dot_dirs(project)[0]
-  
+  dot_dirs = dot.dot_dirs(project)
+
+  if not dot_dirs:
+    print "No graphs generated for {}".format(project)
+    return
+
+  out_dir = dot_dirs[0]
+
   kernel_file_path = dot.get_kernel_path(project, out_dir)
-  
+
   if cluster_json:
     graph_kernel_cmd = ['python',
                         common.get_simprog('precompute_kernel.py'),
@@ -112,7 +122,7 @@ def run(project_list, args, kernel_dir):
 
     # now run clusterer.jar to get the json file containing the clusters.
     compute_clusters_for_classes(project_list, cluster_file, c2f_file, wfc_file)
-    
+
   for project in project_list:
     if args.graph:
       generate_graphs(project)
