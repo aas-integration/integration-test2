@@ -85,7 +85,7 @@ def create_jaif_file(project, mappings):
 
     jaif_file = os.path.join(project_dir, "{}.jaif".format(project))
 
-    print ("Writing project {} annotated info to file {}".format(project, jaif_file))
+    print("Writing project {} annotated info to file {}".format(project, jaif_file))
 
     with open(jaif_file, 'w') as out_file:
         # write ontology package info
@@ -104,11 +104,11 @@ def create_jaif_file(project, mappings):
                 # assume 'label' at least has one element
                 jaif_dict[package][clazz][field].add(mapping['label'][0].upper())
 
-        for package, classes in jaif_dict.items():
+        for package, classes in list(jaif_dict.items()):
             out_file.write("\npackage {}:\n".format(package))
-            for clazz, fields in classes.items():
+            for clazz, fields in list(classes.items()):
                 out_file.write("  class {}:\n".format(clazz))
-                for field, value_set in fields.items():
+                for field, value_set in list(fields.items()):
                     out_file.write("    field {}:\n".format(field))
                     out_file.write("    @Ontology(values={{{value_name}}})\n".format(value_name=', '.join(value_set)))
     return jaif_file
@@ -137,7 +137,7 @@ def main():
     parser.add_argument('--project-list', dest='projects', help='project_nameA,project_nameB,...')
     args = parser.parse_args()
     if args.type_mapping_file is None and args.field_mapping_file is None:
-        print "error, required at least one mapping file to be indicated."
+        print("error, required at least one mapping file to be indicated.")
         parser.print_help()
         sys.exit(1)
 

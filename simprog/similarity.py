@@ -4,8 +4,8 @@ import sys
 import multiprocessing as mp
 import functools
 
-from kernel import GraphKernel
-from vector import *
+from .kernel import GraphKernel
+from .vector import *
 
 __author__ = 'Wenchao Li'
 
@@ -31,10 +31,10 @@ class Similarity(object):
                                 try:
                                         gsize = int(line_array[2])
                                 except IndexError:
-                                        print line_array[1]
+                                        print(line_array[1])
                                         sys.exit(1)
 				if gsize==0:
-                                        print "{0} is empty!!!".format(prog)
+                                        print("{0} is empty!!!".format(prog))
 					kernel = []
 				else:
 					kernel = self.read_kernel_vector_str(kernel_str)
@@ -73,7 +73,7 @@ class Similarity(object):
 		"""
 		graph_num = len(self.graphs)
 		kernel_matrix = [[0 for x in range(graph_num)] for x in range(graph_num)]
-		for (x,y) in itertools.product(range(graph_num), range(graph_num)):
+		for (x,y) in itertools.product(list(range(graph_num)), list(range(graph_num))):
 			if x < y: # only need upper-triangular portion since the kernel matrix is symmetric
 				kernel_matrix[x][y] = self.compute_wl_kernel_scalar_product(self.wl_vectors[self.graphs[x]], self.wl_vectors[self.graphs[y]], num_iter)
 				kernel_matrix[y][x] = kernel_matrix[x][y]
@@ -109,8 +109,8 @@ class Similarity(object):
                                 try:
                                         wl_kernel += ratio_list[i]*self.compute_vector_scalar_product(wl1[i], wl2[i])/(self.compute_vector_2norm(wl1[i])*self.compute_vector_2norm(wl2[i]))
                                 except IndexError:
-                                        print len(wl1)
-                                        print len(wl2)
+                                        print(len(wl1))
+                                        print(len(wl2))
                                         sys.exit(1)
 			return wl_kernel
 

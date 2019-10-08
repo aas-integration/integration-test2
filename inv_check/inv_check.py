@@ -1,7 +1,7 @@
 import sys, os
 import subprocess
 import traceback
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zipfile
 import ontology_to_daikon
 import common
@@ -73,7 +73,7 @@ def main():
     #ppts = find_ppts_that_establish_inv_in_daikon_output(output, " sorted by ")
     print ("Methods that establish FirstMuseInvariant:")
     for ppt in ppts:
-      print ppt
+      print(ppt)
 
 if __name__ == '__main__':
   main()

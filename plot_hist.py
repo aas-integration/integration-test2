@@ -8,21 +8,21 @@ import common, dot
 from nltk.stem.porter import *
 
 """Read the program similarity result files and plot histograms"""
-        
+
 def parse_result_file(result_file):
     """
-    file format: 
-    path_to_dotA: 
+    file format:
+    path_to_dotA:
     path_to_similar_dot1 , score
     ...
     path_to_similar_dot5 , score
-    
+
     path_to_dotB:
     ...
     """
     dot_score_lst = []
     dot_sim_result = {}
-  
+
     proj_lst = common.LIMITED_PROJECT_LIST
     match_count = defaultdict(int)
 
@@ -30,12 +30,12 @@ def parse_result_file(result_file):
     score = 0.0
     current_dot = None
     with open(result_file, "r") as fi:
-        for line in fi:                        
+        for line in fi:
             line = line.rstrip('\n')
             if len(line)>0 and line[-1]==":":
                 current_dot = line[:-1]
                 dot_sim_result[current_dot] = []
-            else:                        
+            else:
                 linarr = line.split(" , ")
                 if linarr[0][-3:]=="dot":
                     if count == 0:
@@ -44,7 +44,7 @@ def parse_result_file(result_file):
                     count += 1
                     score += float(linarr[1])
                     dot_sim_result[current_dot].append((linarr[0],linarr[1]))
-                    if count==5:                                
+                    if count==5:
                         dot_score_lst.append((current_dot, score/count))
                         count = 0
                         score = 0.0
@@ -69,7 +69,7 @@ def show_improvement(proj, dot_score_lst_nc, dot_score_lst_c, dot_sim_res_nc, do
         impr_lst.sort(key=lambda x: x[1], reverse=True)
         total_impr = c_total - nc_total
 	print("\n***************************\n")
-	print("{0}:".format(proj))        
+	print("{0}:".format(proj))
 	print("Average score improvement per method: {0}.".format(total_impr/len(dot_score_lst_nc)))
 	print("Percentage score improvement: {0}.".format(total_impr*100/nc_total))
 	print("Largest score improvement for a single method: {0}.\n".format(largest_impr))
@@ -97,7 +97,7 @@ def plot_hist(x, xlabel, y, ylabel, fig_file, title=""):
 	data = numpy.vstack([x, y]).T
         pyplot.figure()
 	pyplot.hist(data, bins, alpha=0.7, color=["white", "black"], hatch="//", label=[xlabel, ylabel])
-	pyplot.legend(loc="upper right")        
+	pyplot.legend(loc="upper right")
 	#pyplot.show()
         pyplot.title(title)
         pyplot.ylabel("number of program segments")
@@ -163,12 +163,12 @@ def main():
 	    (dot_lst_nc, dot_res_nc, match_count_nc) = parse_result_file(os.path.join(args.nocluster, proj_result_file_name))
 	    (dot_lst_c, dot_res_c, match_count_c) = parse_result_file(os.path.join(args.cluster, proj_result_file_name))
 	    score_lst_nc = [x[1] for x in dot_lst_nc]
-	    score_lst_c = [x[1] for x in dot_lst_c]            
+	    score_lst_c = [x[1] for x in dot_lst_c]
             (c_total, nc_total, method_num, largest_impr) = show_improvement(proj, dot_lst_nc, dot_lst_c, dot_res_nc, dot_res_c, dot_method_map, topk)
-            
+
             print("\n***************************\n")
             print("{0} after clustering:".format(proj))
-            for match in match_count_c.keys():
+            for match in list(match_count_c.keys()):
                 print("Number of matched methods in {0}: {1}".format(match, match_count_c[match]))
             print("\n***************************\n")
 
@@ -179,10 +179,10 @@ def main():
                 all_largest_impr = largest_impr
             all_score_lst_nc += score_lst_nc
             all_score_lst_c += score_lst_c
-	    
+
             plot_hist(score_lst_nc, "w/o clustering", score_lst_c, strategy, os.path.join(fig_dir, proj), proj+" : "+strategy)
             print("\n")
-	
+
         all_avg_impr = (all_c_total - all_nc_total)/all_method_num
         all_percent_impr = (all_c_total - all_nc_total)*100/all_nc_total
         plot_hist(all_score_lst_nc, "w/o clustering", all_score_lst_c, strategy, os.path.join(fig_dir, strategy), "all : "+strategy)

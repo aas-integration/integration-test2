@@ -6,7 +6,7 @@ import matplotlib.colors as colors
 import numpy as np
 
 def main(file_name):
-  print ("Opening {}".format(file_name))
+  print("Opening {}".format(file_name))
 
   w,h = 10, 10
   matrix = [[0 for x in range(w)] for y in range(h)]
@@ -19,7 +19,7 @@ def main(file_name):
     semantic_sim = [i.strip() for i in content[0].split(',')]
     syntactic_sim = [i.strip() for i in content[1].split(',')]
 
-    print ("Number of points: {}".format(len(semantic_sim)))
+    print("Number of points: {}".format(len(semantic_sim)))
 
     if len(semantic_sim)!=len(syntactic_sim):
       print ("Bad file format")

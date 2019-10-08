@@ -1,7 +1,7 @@
 import sys, os
 
-from kernel import GraphKernel
-from similarity import Similarity
+from .kernel import GraphKernel
+from .similarity import Similarity
 
 def check_all(repo_kernel_file, threshold_list, top_k):
 	total = 0
@@ -77,26 +77,26 @@ def main():
 	tnr_list = [float(x)/total for x in tn_list]
 	fnr_list = [float(x)/total for x in fn_list]
 	accr_list = [float(x)/total for x in acc_list]
-	print 'The dataset has a total of {0} programs'.format(total)
-	print 'Threholds:'
+	print('The dataset has a total of {0} programs'.format(total))
+	print('Threholds:')
 	for th in threshold_list:
-		print th
+		print(th)
 	num_points = len(threshold_list)
-	print 'True positve rate:'
+	print('True positve rate:')
 	for i in range(num_points):
-		print tpr_list[i]
-	print 'False positve rate:'
+		print(tpr_list[i])
+	print('False positve rate:')
 	for i in range(num_points):
-		print fpr_list[i]
-	print 'True negative rate:'
+		print(fpr_list[i])
+	print('True negative rate:')
 	for i in range(num_points):
-		print tnr_list[i]
-	print 'False negative rate:'
+		print(tnr_list[i])
+	print('False negative rate:')
 	for i in range(num_points):
-		print fnr_list[i]
-	print 'Top k accuracy (minus finding itself):'
+		print(fnr_list[i])
+	print('Top k accuracy (minus finding itself):')
 	for i in range(num_points):
-		print accr_list[i]
+		print(accr_list[i])
 
 if __name__ == '__main__':
 	main()

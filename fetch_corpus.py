@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import os, tempfile, urllib, zipfile, shutil, json, sys
-import subprocess32 as subprocess
+import os, tempfile, urllib.request, urllib.parse, urllib.error, zipfile, shutil, json, sys
+import subprocess
 from common import WORKING_DIR, get_corpus_info, get_corpus_set, CORPUS_DIR
 from contextlib import contextmanager
 
@@ -19,15 +19,12 @@ def run_cmd(cmd):
 
   write_log("Running command '{}'\n".format(' '.join(cmd)))
 
-  process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-  for line in iter(process.stdout.readline, b''):
-    stats['output'] = stats['output'] + line
-    write_log(line)
-  process.stdout.close()
-  process.wait()
+  process = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+  stats['output'] = process.stdout.decode('utf-8')
+  write_log(stats['output'])
 
   if process.returncode != 0:
-    print "Error running command '{}', check corpus.log for details.".format(' '.join(cmd))
+    print("Error running command '{}', check corpus.log for details.".format(' '.join(cmd)))
 
   write_log("\n\n")
 
@@ -53,10 +50,10 @@ def cd(newdir):
 
 def git_update(project):
   if project['git-url'] not in run_cmd(['git', 'remote', '-v'])['output']:
-    print "git_url for {} has changed. Please delete the directory to redownload.".format(project['name'])
+    print("git_url for {} has changed. Please delete the directory to redownload.".format(project['name']))
     return
   if project['git-ref'] not in run_cmd(['git', 'rev-parse', 'HEAD'])['output']:
-    print "Checking out git ref %s." % project['git-ref']
+    print("Checking out git ref %s." % project['git-ref'])
     run_git('fetch')
     run_git('reset', ['--hard'])
     run_git('checkout', [project['git-ref']])
@@ -67,10 +64,10 @@ def download_project(project):
       opts = None
       if 'git-opt' in project:
         opts = project['git-opt'].split()
-      print "Downloading %s" % project['name']
+      print("Downloading %s" % project['name'])
       run_git('clone', [project['git-url'], project['name']], opts=opts)
   else:
-    print "Already downloaded %s." % (project['name'])
+    print("Already downloaded %s." % (project['name']))
 
 def update_project(project):
   with cd(project['name']):
@@ -85,7 +82,7 @@ def fetch_project(project_name):
     if os.path.isdir(project['name']):
       update_project(project)
     else:
-      print "{} not available.".format(project['name'])
+      print("{} not available.".format(project['name']))
 
 
 def fetch_corpus(projects):
@@ -103,11 +100,11 @@ if __name__ == "__main__":
   if len(sys.argv) > 1:
     if len(sys.argv) == 2 and get_corpus_set(sys.argv[1]):
       setname = sys.argv[1]
-      print("Fetching corpus subset labeled {}".format(setname))
+      print(("Fetching corpus subset labeled {}".format(setname)))
       to_fetch = get_corpus_set(setname)
     else:
       to_fetch = sys.argv[1:]
-      print("Fetching {}".format(', '.join(to_fetch)))
+      print(("Fetching {}".format(', '.join(to_fetch))))
   else:
     print("Fetching entire corpus")
     to_fetch = get_corpus_set("all")

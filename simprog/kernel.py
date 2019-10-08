@@ -44,7 +44,7 @@ class GraphKernel(object):
 		"""
 		read in a json file containing node clustering information
 		"""
-                print "Reading clustering info:"
+                print("Reading clustering info:")
 		mapping = defaultdict(list)
 		with open(cluster_json) as json_data:
 			data = json.load(json_data)

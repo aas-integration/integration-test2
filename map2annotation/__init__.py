@@ -1,4 +1,4 @@
-import map2annotation
+from . import map2annotation
 
 field_mappings_to_annotation = map2annotation.field_mappings_to_annotation
 type_mappings_to_rules = map2annotation.type_mappings_to_rules

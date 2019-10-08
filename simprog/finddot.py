@@ -1,7 +1,7 @@
 import sys, os, time
 
-from similarity import Similarity
-from kernel import GraphKernel
+from .similarity import Similarity
+from .kernel import GraphKernel
 
 def find_top_k_similar_program(repo_kernel_file, user_prog_graph_dot_file, graph_name, k, num_iter, cluster_json):
 	sim = Similarity()
@@ -19,7 +19,7 @@ def main():
 	start = time.time()
 	result_program_list = find_top_k_similar_program(repo_kernel_file, user_prog_graph_dot_file, user_prog_graph_dot_file, top_k, 3, cluster_json)
 	end = time.time()
-        print
+        print()
 	for r in result_program_list:
 		print(r)
 	print("Time taken to find the similar dots: "+ str(end-start) + " seconds")

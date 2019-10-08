@@ -1,5 +1,5 @@
 import sys, os, fnmatch
-from kernel import GraphKernel
+from .kernel import GraphKernel
 
 repo_dir = sys.argv[1]
 kernel_file = sys.argv[2] # write to

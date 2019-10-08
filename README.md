@@ -13,9 +13,9 @@ Tested on Ubuntu 14.04.
   - `sudo apt-get install ant git gradle maven mercurial python2.7-dev python-pip graphviz libgraphviz-dev curl`
 - Java 8 JDK
   - JAVA_HOME environment variable must be set to the location of your JDK install.
-- Python 2.7 and some packages
+- Python 3.6 or later
   - install required packages with `sudo pip install -r requirements.txt`
-     - if you don't have sudo privileges, install with `pip install --user -r requirements.txt`
+     - if you don't have sudo privileges, install with `pip install --user -r requirements.txt`, or create a virtual environment
 
 ## Setup (manual)
 
