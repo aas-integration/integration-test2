@@ -1,7 +1,7 @@
 {
   "global": {
-    "build": "mvn compile",
-    "clean": "mvn clean",
+    "build": "mvn -B compile",
+    "clean": "mvn -B clean",
     "exclude": ["bixie"]
   },
   "sets": {
@@ -47,7 +47,7 @@
     {
       "git-url": "https://github.com/kovertopz/jReactPhysics3D.git",
       "git-ref": "8da0120f5fa2254a7e98a14f3446d97096bb0fd7",
-      "build": "mvn package -Dmaven.test.skip=true"
+      "build": "mvn -B package -Dmaven.test.skip=true"
     },
 
     "react":
@@ -68,7 +68,7 @@
     {
       "git-url": "https://github.com/jbox2d/jbox2d.git",
       "git-ref": "3746b69de71d3d23818cd4367b884c020c194981",
-      "build": "mvn compile -pl !jbox2d-testbed-jogl,!jbox2d-testbed-javafx"
+      "build": "mvn -B compile -pl !jbox2d-testbed-jogl,!jbox2d-testbed-javafx"
     },
 
     "imagej":
@@ -134,13 +134,13 @@
     {
       "git-url": "https://github.com/optimatika/ojAlgo.git",
       "git-ref": "0a28f91db144914dc58aa45ddf94a4bea72b8bf7",
-      "jar": "mvn package -Dmaven.test.skip=true"
+      "jar": "mvn -B package -Dmaven.test.skip=true"
     },
     "commonsmath":
     {
       "git-url": "https://github.com/apache/commons-math.git",
       "git-ref": "657b1b49da5ea1593dd7f950eae99a88a8ada87a",
-      "jar": "mvn package -Dmaven.test.skip=true"
+      "jar": "mvn -B package -Dmaven.test.skip=true"
     },
     "facedetection1":
     {
@@ -158,26 +158,26 @@
     {
       "git-url": "https://github.com/tc/jviolajones.git",
       "git-ref": "2881bf4aa61775ecb9f09278390a3572065b7ef8",
-      "jar": "mvn package -Dmaven.test.skip=true"
+      "jar": "mvn -B package -Dmaven.test.skip=true"
     },
     "parallelcolt":
     {
       "git-url": "https://github.com/rwl/ParallelColt.git",
       "git-ref": "36a75e68abae9ed7ece5426cd96272a9ba328346",
-      "jar": "mvn package -Dmaven.test.skip=true"
+      "jar": "mvn -B package -Dmaven.test.skip=true"
     },
     "jama":
     {
       "git-url": "https://github.com/cstroe/jama.git",
       "git-ref": "d6b3e3d192bb901aec5e16a084c824d8db336d74",
-      "jar": "mvn package -Dmaven.test.skip=true"
+      "jar": "mvn -B package -Dmaven.test.skip=true"
     },
     "jblas":
     {
       "git-url": "https://github.com/mikiobraun/jblas.git",
       "git-ref": "65687a90318631a2f4cb176b623278d7cee05d59",
       "git-opt": "--config transfer.fsckObjects=false",
-      "jar": "mvn package -Dmaven.test.skip=true",
+      "jar": "mvn -B package -Dmaven.test.skip=true",
       "exclude": ["bixie", "dyntrace"]
 
     },
@@ -185,19 +185,19 @@
     {
       "git-url": "https://github.com/hwinkler/matrix-toolkits-java.git",
       "git-ref": "f2594128eee45a188957c854acede3d6a511d717",
-      "jar": "mvn package -Dmaven.test.skip=true"
+      "jar": "mvn -B package -Dmaven.test.skip=true"
     },
     "exp4j":
     {
       "git-url": "https://github.com/fasseg/exp4j",
       "git-ref": "8a4e2104b6e73d54bb7b0ac39fd18e7a0874c4ea",
-      "jar": "mvn package -Dmaven.test.skip=true"
+      "jar": "mvn -B package -Dmaven.test.skip=true"
     },
     "JLargeArrays":
     {
       "git-url": "https://gitlab.com/ICM-VisLab/JLargeArrays.git",
       "git-ref": "31e6840a5636cdbd4f7f66a7bef73918d7a86e25",
-      "jar": "mvn package -Dmaven.test.skip=true",
+      "jar": "mvn -B package -Dmaven.test.skip=true",
       "exclude": ["bixie", "dyntrace"]
     },
     "jscience":
@@ -211,7 +211,7 @@
     {
       "git-url": "https://github.com/vkostyukov/la4j",
       "git-ref": "db204167aa6161cd2104ce845e62518cae451d70",
-      "jar": "mvn package -Dmaven.test.skip=true"
+      "jar": "mvn -B package -Dmaven.test.skip=true"
     },
     "jump":
     {
@@ -225,21 +225,21 @@
       "git-url": "https://github.com/scijava/scijava-common",
       "git-ref": "cfd3e736f74a7b4a900b2eb18521cbe45f0d62d5",
       "dljc-opt": "--guess",
-      "jar": "mvn package -Dmaven.test.skip=true"
+      "jar": "mvn -B package -Dmaven.test.skip=true"
     },
     "scifio":
     {
       "git-url": "https://github.com/scifio/scifio",
       "git-ref": "c6971950a3569ef8a2bdd81fa8fc3e2b89544cbb",
       "dljc-opt": "--guess",
-      "jar": "mvn package -Dmaven.test.skip=true"
+      "jar": "mvn -B package -Dmaven.test.skip=true"
     },
     "nd4j":
     {
       "git-url": "https://github.com/deeplearning4j/nd4j",
       "git-ref": "b6981f82fa788da1b9518b0ee3e79d96ea5bc1c4",
-      "build": "mvn compile -pl :nd4j-api",
-      "jar": "mvn package -Dmaven.test.skip=true -pl :nd4j-api"
+      "build": "mvn -B compile -pl :nd4j-api",
+      "jar": "mvn -B package -Dmaven.test.skip=true -pl :nd4j-api"
     }
   }
 }

@@ -317,5 +317,5 @@ def recompile_checker_framework():
 
   with cd(ontology_dir):
     run_cmd("gradle build -i -x test", 'checker_build')
-    install_cmd = "mvn install:install-file -Dfile=dist/ontology.jar -DgroupId=pascaliUWat -DartifactId=ontology -Dversion=1.0 -Dpackaging=jar"
+    install_cmd = "mvn -B install:install-file -Dfile=dist/ontology.jar -DgroupId=pascaliUWat -DartifactId=ontology -Dversion=1.0 -Dpackaging=jar"
     run_cmd(install_cmd, 'checker_build')
