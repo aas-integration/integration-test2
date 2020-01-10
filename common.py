@@ -38,7 +38,7 @@ def run_cmd(cmd, output=False, timeout=None):
   out = None
   out_file = None
 
-  if isinstance(cmd, basestring):
+  if isinstance(cmd, str):
     friendly_cmd = cmd
     cmd = cmd.split()
   else:
@@ -46,7 +46,7 @@ def run_cmd(cmd, output=False, timeout=None):
 
   if hasattr(output, 'write'):
     out = output
-  elif isinstance(output, basestring):
+  elif isinstance(output, str):
     out_file = os.path.join(OUTPUT_DIR, output + '.log')
     out = open(out_file, 'a')
 
@@ -118,7 +118,7 @@ def get_corpus_set(setname):
   corpus = get_corpus_info()
 
   if setname == "all":
-    return corpus['projects'].keys()
+    return list(corpus['projects'].keys())
   else:
     return corpus['sets'][setname]
 
@@ -128,7 +128,7 @@ def load_corpus_info():
     global_properties = info.get('global', {})
     projects = info['projects']
 
-    for project_name in projects.keys():
+    for project_name in list(projects.keys()):
       base = copy.deepcopy(global_properties)
       base['name'] = project_name
       base.update(projects[project_name])
@@ -152,7 +152,7 @@ def get_project_dir(project_name):
     return os.path.join(CORPUS_DIR, project['name'])
 
 def get_project_list():
-  return get_corpus_info()['projects'].keys()
+  return list(get_corpus_info()['projects'].keys())
 
 def project_info(project_name):
   return get_corpus_info()['projects'][project_name]
@@ -195,7 +195,7 @@ def get_class_dirs(project_name):
                              'javac.json')
 
   if not os.path.exists(dljc_output):
-    print 'Tried to get classdirs from project where DLJC has not been run.'
+    print('Tried to get classdirs from project where DLJC has not been run.')
     return None
 
   with open(dljc_output, 'r') as f:
@@ -264,7 +264,7 @@ def run_dljc(project_name, tools=[], options=[]):
     dljc_command.extend(build_command)
     result = run_cmd(dljc_command, 'dljc')
     if result['return_code'] != 0:
-      print "DLJC command failed on {}".format(project_name)
+      print("DLJC command failed on {}".format(project_name))
       sys.exit(1)
 
 def ensure_java_home():
@@ -272,11 +272,11 @@ def ensure_java_home():
     # If we're on OS X, we can auto-set JAVA_HOME
     if os.path.exists('/usr/libexec/java_home'):
       java_home = run_cmd(['/usr/libexec/java_home'])['output'].strip()
-      print "Automatically setting JAVA_HOME to {}".format(java_home)
+      print("Automatically setting JAVA_HOME to {}".format(java_home))
       os.environ['JAVA_HOME'] = java_home
     else:
       caller = inspect.stack()[1][3]
-      print "ERROR: {} requires the JAVA_HOME environment variable to be set, and we couldn't set it automatically. Please set the JAVA_HOME environment variable and try again.".format(caller)
+      print("ERROR: {} requires the JAVA_HOME environment variable to be set, and we couldn't set it automatically. Please set the JAVA_HOME environment variable and try again.".format(caller))
       sys.exit(0)
 
 def get_os_lib_path_name():

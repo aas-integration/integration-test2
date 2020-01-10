@@ -6,7 +6,7 @@ import common
 def run_pa2checker(ontology_values):
   pa2checker.revert_checker_source()
 
-  for ontology_value, classes in ontology_values.iteritems():
+  for ontology_value, classes in ontology_values.items():
     pa2checker.insert_ontology_value(ontology_value)
     pa2checker.update_ontology_utils(ontology_value, classes)
   common.recompile_checker_framework()

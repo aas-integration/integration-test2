@@ -168,7 +168,7 @@ def main():
             
             print("\n***************************\n")
             print("{0} after clustering:".format(proj))
-            for match in match_count_c.keys():
+            for match in list(match_count_c.keys()):
                 print("Number of matched methods in {0}: {1}".format(match, match_count_c[match]))
             print("\n***************************\n")
 

@@ -49,7 +49,7 @@ def generate_project_kernel(project, cluster_json=None):
   dot_dirs = dot.dot_dirs(project)
 
   if not dot_dirs:
-    print "No graphs generated for {}".format(project)
+    print("No graphs generated for {}".format(project))
     return
 
   out_dir = dot_dirs[0]
@@ -108,7 +108,7 @@ def run(project_list, args, kernel_dir):
   wfc_file = os.path.join(args.dir, common.WORDCLUSTERS_FILE)
 
   if os.path.isfile(cluster_file) and not args.recompute_clusters:
-    print ("Using clusters from: {0}".format(cluster_file))
+    print("Using clusters from: {0}".format(cluster_file))
   else:
 
     # first compile everything using dljc to get the class dirs.

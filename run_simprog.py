@@ -76,7 +76,7 @@ def get_method_map(project_list, include_all=True):
     for output_dir in project_dot_dirs:
       method_file = dot.get_method_path(project, output_dir)
       if not os.path.isfile(method_file):
-        print ("Cannot find method file for project {0} at {1}".format(project, method_file))
+        print("Cannot find method file for project {0} at {1}".format(project, method_file))
         sys.exit(0)
 
       with open(method_file, "r") as mf:
@@ -105,7 +105,7 @@ def check_similarity(project, result_file, kernel_file, corpus_dot_to_method_map
   iter_num = 3 # number of iteration of the WL-Kernel method
   this_method_map = get_method_map([project], False)
   with open(result_file, "w") as fo:
-    for dot_file in this_method_map.keys():
+    for dot_file in list(this_method_map.keys()):
       dot_method = corpus_dot_to_method_map[dot_file]
       json_result[dot_method] = []
       print("Computing similar programs for {0}.".format(dot_method))

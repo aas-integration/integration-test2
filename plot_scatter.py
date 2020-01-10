@@ -191,7 +191,7 @@ def main():
         ys = []
         
         count11 = 0
-        for m in method_dict.keys():
+        for m in list(method_dict.keys()):
             x_v = method_dict[m][1]
             y_v = method_dict[m][2]
             xs.append(x_v)
